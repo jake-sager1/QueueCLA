@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import App from './pages/App';
-import Home from './pages/Home';
+import Home from './pages/Home/Home';
 import CardPage from './pages/Card';
 
 ReactDOM.render(
