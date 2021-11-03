@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, Container } from '@material-ui/core'
+import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, Container } from '@mui/material'
 import { PhotoCamera } from '@mui/icons-material'
 import { Link } from 'react-router-dom';
 import useStyles from '../style';
@@ -46,7 +46,7 @@ const App = () => {
                             on the screen!
                         </Typography>
                         <div className={classes.buttons}>
-                            <Grid container spacing={2} justify="center">
+                            <Grid container spacing={2} justifyContent="space-around">
                                 <Grid item>
                                     <Button variant="contained" color="primary">
                                         See my photos

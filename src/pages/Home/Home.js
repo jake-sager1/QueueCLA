@@ -1,4 +1,4 @@
-import { Typography, Button, Grid, Container, CssBaseline, Card, CardMedia, CardContent, CardActions } from '@material-ui/core';
+import { Typography, Button, Grid, Container, CssBaseline, Card, CardMedia, CardContent, CardActions } from '@mui/material';
 import React from 'react'
 import useStyles from './home-styles';
 import Header from './Header';
@@ -7,15 +7,13 @@ import MainSection from './MainSection';
 
 function Home() {
 
-    const classes = useStyles();
-
     return (
         <>
-            <CssBaseline />
             <Header />
             <MainSection />
             <Footer />
         </>
+
     );
 }
 
