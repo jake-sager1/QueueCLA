@@ -27,6 +27,29 @@ const useStyles = makeStyles((theme) => ({
         bottom:"0",
         width:"100%",
     },
+    cardGrid: {
+        padding: '20px 0',
+        height: '100%',
+        flexDirection: 'column',
+    },
+    middle: {
+        position: 'absolute', left: '50%', top: '40%',
+        transform: 'translate(-50%, -50%)',
+    },
+    stackmiddle: {
+        margin: "auto",
+        width: "100%",
+
+    },
+
+    contained: {
+        paddingTop: "400px",
+        paddingBottom: "400px",
+    }
+
+
+
+    
 }));
 
 export default useStyles;

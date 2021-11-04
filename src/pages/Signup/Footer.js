@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography, Grid, Container} from '@mui/material';
 import { Stack } from '@mui/material';
-import useStyles from './home-styles'
+import useStyles from './signup-styles'
 
 
 function Footer() {
