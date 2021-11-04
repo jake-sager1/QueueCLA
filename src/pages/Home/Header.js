@@ -18,7 +18,7 @@ function Header() {
                             </Typography>
                         </Link>
                         <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-                            <Link to="/login" style={{textDecoration: "none"}}><Button variant="text" color="secondary">Log In</Button></Link>
+                            <Link to="/login" style={{textDecoration: "none"}}><Button variant="text" color="primary">Log In</Button></Link>
                             <Link to="../signup" style={{textDecoration: "none"}}><Button variant="contained" color="primary" href="../signup">Sign Up</Button></Link>
                         </Stack>
                     </Stack>

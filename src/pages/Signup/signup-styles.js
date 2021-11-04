@@ -37,7 +37,15 @@ const useStyles = makeStyles((theme) => ({
     page: {
         backgroundColor: "#3d3d3d",
         height: "100vh"
+    },
+    card: {
+        width: "40vh"
+    },
+    middletext: {
+        align: "center"
+
     }
+
     
 }));
 
