@@ -19,14 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
     logo: {
         color: "black",
-    },
-    footer: {
-        backgroundColor: "#3d3d3d",
-        color:"white",
-        position:"absolute",
-        bottom:"0",
-        width:"100%",
-    },
+    }
 }));
 
 export default useStyles;

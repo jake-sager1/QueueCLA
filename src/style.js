@@ -31,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
     secondSection: {
         paddingTop: "100px",
         paddingBottom: "100px",
+    },
+    page: {
+        backgroundColor: "#3d3d3d",
+        height: "100vh"
     }
 }));
 

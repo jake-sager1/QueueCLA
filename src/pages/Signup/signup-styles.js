@@ -23,8 +23,6 @@ const useStyles = makeStyles((theme) => ({
     footer: {
         backgroundColor: "#3d3d3d",
         color:"white",
-        position:"absolute",
-        bottom:"0",
         width:"100%",
     },
     cardGrid: {
@@ -32,23 +30,14 @@ const useStyles = makeStyles((theme) => ({
         height: '100%',
         flexDirection: 'column',
     },
-    middle: {
-        position: 'absolute', left: '50%', top: '40%',
-        transform: 'translate(-50%, -50%)',
-    },
-    stackmiddle: {
-        margin: "auto",
-        width: "100%",
-
-    },
-
     contained: {
-        paddingTop: "400px",
-        paddingBottom: "400px",
+        paddingTop: "150px",
+        paddingBottom: "150px",
+    },
+    page: {
+        backgroundColor: "#3d3d3d",
+        height: "100vh"
     }
-
-
-
     
 }));
 

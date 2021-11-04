@@ -9,6 +9,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import Signup from './pages/Signup/Signup'
 
+
 ReactDOM.render(
   <ThemeProvider theme={theme}>
       <Router>
