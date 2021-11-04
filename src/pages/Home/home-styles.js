@@ -19,7 +19,11 @@ const useStyles = makeStyles((theme) => ({
     },
     logo: {
         color: "black",
-    }
+    },
+    page: {
+        backgroundColor: "#3d3d3d",
+        height: "100vh"
+    },
 }));
 
 export default useStyles;
