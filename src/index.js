@@ -7,6 +7,7 @@ import Home from './pages/Home/Home';
 import CardPage from './pages/Card';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
+import Signup from './pages/Signup/Signup'
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
@@ -15,7 +16,7 @@ ReactDOM.render(
           <Route exact path="/"><Home /></Route>
           <Route path="/card"><CardPage /></Route>
           <Route path="/login"><App /></Route>
-          <Route path="/signup"><App /></Route>
+          <Route path="/signup"><Signup /></Route>
         </Switch>
       </Router>
     </ThemeProvider>,
