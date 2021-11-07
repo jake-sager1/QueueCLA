@@ -1,8 +1,16 @@
 import React from 'react'
-import useStyles from './signup-styles'
+import useStyles from './student-styles'
 import { Typography, Button, Container, AppBar, Toolbar } from '@mui/material';
 import { Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
+import SearchBar from "material-ui-search-bar";
+/*
+To learn about arrow functions assosciated with the search bar, look at docs.
+https://www.npmjs.com/package/material-ui-search-bar
+*/
+
+
+
 function Header() {
 
     const classes = useStyles();
@@ -17,6 +25,8 @@ function Header() {
                                 QueueCLA
                             </Typography>
                         </Link>
+
+                        <SearchBar/>
                     </Stack>
                 </Container>
             </Toolbar>
