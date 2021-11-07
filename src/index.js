@@ -19,7 +19,7 @@ ReactDOM.render(
           <Route path="/login"><App /></Route>
           <Route path="/signup"><Signup /></Route>
           <Route path="/student"><Student /></Route>
-
+          <Route path="/restaurants/:id" render={(props) => <App {...props}/>}></Route>
         </Switch>
       </Router>
     </ThemeProvider>,

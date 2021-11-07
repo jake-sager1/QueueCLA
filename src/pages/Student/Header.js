@@ -3,15 +3,13 @@ import useStyles from './student-styles'
 import { Typography, Button, Container, AppBar, Toolbar } from '@mui/material';
 import { Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
-import SearchBar from "material-ui-search-bar";
+import SearchBar from "./SearchBar"
 /*
 To learn about arrow functions assosciated with the search bar, look at docs.
 https://www.npmjs.com/package/material-ui-search-bar
 */
 
-
-
-function Header() {
+function Header(props) {
 
     const classes = useStyles();
 
@@ -25,8 +23,9 @@ function Header() {
                                 QueueCLA
                             </Typography>
                         </Link>
-
-                        <SearchBar/>
+                        <div className={classes.searchBar}>
+                            <SearchBar updateSearch={(value) => props.updateSearch(value)} options={props.cards.map((card) => card.heading)}/>
+                        </div>
                     </Stack>
                 </Container>
             </Toolbar>

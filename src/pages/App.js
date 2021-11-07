@@ -4,7 +4,7 @@ import { PhotoCamera } from '@mui/icons-material'
 import { Link } from 'react-router-dom';
 import useStyles from '../style';
 
-const App = () => {
+const App = (props) => {
 
     const classes = useStyles();
 
@@ -30,7 +30,7 @@ const App = () => {
                 <Toolbar>
                     <PhotoCamera className={classes.icon}/>
                     <Typography variant="h6">
-                        Photo Album
+                        {props.match.params.id}
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -38,7 +38,7 @@ const App = () => {
                 <div className={classes.container}>
                     <Container maxWidth="sm">
                         <Typography variant="h2" align="center" color="textPrimary" gutterBottom>
-                            Photo Album
+                            Restaurant #{props.match.params.id}
                         </Typography>
                         <Typography variant="h5" align="center" color="textSecondary" paragraph>
                             Hello everyone! This is a photo album and I am trying
