@@ -8,7 +8,7 @@ import CardPage from './pages/Card';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import Signup from './pages/Signup/Signup'
-
+import Student from './pages/Student/Student'
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
@@ -18,9 +18,10 @@ ReactDOM.render(
           <Route path="/card"><CardPage /></Route>
           <Route path="/login"><App /></Route>
           <Route path="/signup"><Signup /></Route>
+          <Route path="/student"><Student /></Route>
+
         </Switch>
       </Router>
     </ThemeProvider>,
   document.getElementById("root")
 );
-

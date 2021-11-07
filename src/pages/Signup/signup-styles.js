@@ -39,14 +39,15 @@ const useStyles = makeStyles((theme) => ({
         height: "100vh"
     },
     card: {
-        width: "40vh"
+        width: "40vh",
+        margin: "20px"
     },
     middletext: {
         align: "center"
 
     }
 
-    
+
 }));
 
 export default useStyles;
