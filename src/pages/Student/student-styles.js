@@ -25,25 +25,22 @@ const useStyles = makeStyles((theme) => ({
       color:"white",
       width:"100%",
   },
-  cardGrid: {
-      padding: '20px 0',
-      height: '100%',
-      flexDirection: 'column',
-  },
   contained: {
-      paddingTop: "150px",
-      paddingBottom: "150px",
-  },
-  page: {
-      backgroundColor: "#3d3d3d",
-      height: "100vh"
-  },
-  card: {
-      width: "25vh",
+      paddingTop: "75px",
+      paddingBottom: "75px",
   },
   middletext: {
       align: "center"
-
+  },
+  searchBar: {
+      marginLeft: "20px",
+      width: "250px",
+  },
+  card: {
+      minHeight: "280px",
+  },
+  cardActionArea: {
+      minHeight: "280px",
   }
 }));
 
