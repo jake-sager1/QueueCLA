@@ -8,8 +8,9 @@ class Restaurant extends React.Component {
 
     restaurant = {
         name: "Bruin Plate",
-        tags: ["Vegetarian", "Gluten-Free"],
+        chips: ["Vegetarian", "Gluten-Free"],
         description: "A fun new restaurant for the fittest of Bruins!",
+        hours: "9:00am - 6:00pm",
         id: 1,
     }
     
