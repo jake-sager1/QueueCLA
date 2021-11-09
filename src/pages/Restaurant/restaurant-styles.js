@@ -31,10 +31,14 @@ const useStyles = makeStyles((theme) => ({
       bottom: "-60px",
   },
   mainSection: {
-      backgroundColor: "white",
+      backgroundColor: "#f7f7f7",
       paddingTop: "1em",
       paddingBottom: "6em",
-  }
+  },
+  linePaper: {
+      padding: "2em",
+  },
+  
 }));
 
 export default useStyles;
