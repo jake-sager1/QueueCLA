@@ -5,6 +5,7 @@ import useStyles from '../style'
 import { useLocation } from 'react-router-dom'
 
 
+
 function CardPage() {
 
     const classes = useStyles();
