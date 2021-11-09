@@ -29,11 +29,11 @@ const useStyles = makeStyles((theme) => ({
         display: "block",
         marginLeft: "auto",
         marginRight: "auto",
-        maxHeight: "500px"
+        maxHeight: "500px",
+        border: "none"
     },
     mainbackground: {
-        // backgroundColor: "#5d93a4"
-        backgroundColor: "#5d93a4"
+        backgroundColor: "#5794A7"
     }
 }));
 

@@ -16,6 +16,9 @@ function Header() {
                                 QueueCLA
                             </Typography>
                         </Link>
+                        <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
+                            <Link to="/" style={{textDecoration: "none"}}><Button variant="contained" color="primary" href="/">Return to Home</Button></Link>
+                        </Stack>
                     </Stack>
                 </Container>
             </Toolbar>
