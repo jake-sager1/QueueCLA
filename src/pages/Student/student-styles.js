@@ -37,10 +37,12 @@ const useStyles = makeStyles((theme) => ({
       width: "250px",
   },
   card: {
-      minHeight: "280px",
   },
   cardActionArea: {
-      minHeight: "280px",
+  },
+  chips: {
+    padding: "9px"
+
   }
 }));
 
