@@ -20,30 +20,25 @@ const useStyles = makeStyles((theme) => ({
   logo: {
       color: "black",
   },
-  footer: {
-      backgroundColor: "#3d3d3d",
-      color:"white",
-      width:"100%",
+  mainImage: {
+      paddingTop: "15em",
+      backgroundSize: "100%",
+      backgroundPosition: "center",
+      boxShadow: "inset 0 -50px 100px black",
   },
-  contained: {
-      paddingTop: "75px",
-      paddingBottom: "75px",
+  avatar: {
+      position: "relative",
+      bottom: "-60px",
   },
-  middletext: {
-      align: "center"
+  mainSection: {
+      backgroundColor: "#f7f7f7",
+      paddingTop: "1em",
+      paddingBottom: "6em",
   },
-  searchBar: {
-      marginLeft: "20px",
-      width: "250px",
+  linePaper: {
+      padding: "2em",
   },
-  card: {
-  },
-  cardActionArea: {
-  },
-  chips: {
-    padding: "9px"
-
-  }
+  
 }));
 
 export default useStyles;
