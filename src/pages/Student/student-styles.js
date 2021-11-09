@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
   },
   chips: {
     padding: "9px"
-
   }
 }));
 
