@@ -28,7 +28,12 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
       position: "relative",
-      bottom: "-60px",
+      [theme.breakpoints.up('xs')]: {
+        bottom: "-1.5em",
+      },
+    [theme.breakpoints.up('sm')]: {
+        bottom: "-3em",
+    },
   },
   mainSection: {
       backgroundColor: "#f7f7f7",
