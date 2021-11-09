@@ -13,7 +13,6 @@ class Student extends React.Component {
     }
 
     updateSearch(value) {
-        console.log(value);
         this.setState({searchValue: value});
     }
 
