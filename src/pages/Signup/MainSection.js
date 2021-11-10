@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 import BasicCard from '../BasicCard';
 import image1 from '../../images/dining.jpeg'
 import image2 from '../../images/background.jpeg'
-
-
+import {signInWithGoogle} from '../../service/firebase';
 
 function MainSection() {
 
@@ -39,7 +38,7 @@ function MainSection() {
                             </CardContent>
                             <CardActions style={{padding: "15px"}}>
                                 <Link style={{textDecoration: 'none'}} to={{pathname: "/student", state: {card: {text: "This is a card!", image: "https://source.unsplash.com/random"}, hasValue: true}}}>
-                                    <Button size="small" variant="contained" color="primary" className={classes.cardButtons}>Login with Google</Button>
+                                    <Button size="small" variant="contained" color="primary" className={classes.cardButtons} onClick={signInWithGoogle}>Login with Google</Button>
                                 </Link>
                             </CardActions>
                         </Card>
@@ -47,7 +46,7 @@ function MainSection() {
                         <Card className={classes.card}>
                             <CardMedia className={classes.cardMedia} image={image1} title="Image Title"></CardMedia>
                             <CardContent className={classes.cardContent}>
-                                <Typography className={classes.middletext} gutterBottom variant="h5">
+                                <Typography className={classes.middletext} gutterBottom variant="h5" onClick={signInWithGoogle}>
                                     I am a resturant
                                 </Typography>
                                 <Typography color="textSecondary">
@@ -56,7 +55,7 @@ function MainSection() {
                             </CardContent>
                             <CardActions style={{padding: "15px"}}>
                                 <Link style={{textDecoration: 'none'}} to={{pathname: "/card", state: {card: {text: "This is a card!", image: "https://source.unsplash.com/random"}, hasValue: true}}}>
-                                    <Button size="small" variant="contained" color="primary" className={classes.cardButtons}>Login with Google</Button>
+                                    <Button size="small" variant="contained" color="primary" className={classes.cardButtons} onClick={signInWithGoogle}>Login with Google</Button>
                                 </Link>
                             </CardActions>
                         </Card>
