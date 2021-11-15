@@ -12,7 +12,7 @@ function BannerSection(props) {
 
   return (
 
-      <div className={classes.mainImage} style={{backgroundImage: "url(https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg)"}}>
+      <div className={classes.mainImage} style={{backgroundImage: "url(" + props.restaurant.bannerImage + ")"}}>
           <Container maxWidth="md">
                <Box style={{padding: "0px 15px",}}>
                     <Stack direction="row" alignItems="flex-end" justify-content="flex-start">
@@ -25,7 +25,7 @@ function BannerSection(props) {
                             width: "120px", height: "120px",
                             marginRight: "1.5em",
                         }
-                        }} src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"/>
+                        }} src={props.restaurant.profileImage}/>
                         <Typography variant="h3" component="h1" style={{color: "white", paddingBottom: "5px",}}>
                             {props.restaurant.name}
                         </Typography>
