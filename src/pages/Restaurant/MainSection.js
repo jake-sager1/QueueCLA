@@ -1,11 +1,12 @@
 import React from 'react'
 import useStyles from './restaurant-styles'
-import { Typography, Stack, Box, Chip, Paper, Button, Container, Avatar } from '@mui/material'
+import { Typography, Stack, Box, Chip, Paper, Button, Container, Avatar, Divider } from '@mui/material'
 import { DinnerDiningSharpIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import DinnerDiningSharp from '@mui/icons-material/DinnerDiningSharp';
 import theme from '../../theme';
-
+import JoinLineSection from './JoinLineSection';
+import ContactSection from './ContactSection';
 
 function MainSection(props) {
 
@@ -32,7 +33,7 @@ function MainSection(props) {
                                 </Typography>
                                     
                                 <Typography style={{fontWeight: "bold"}}>
-                                    Hours: {props.restaurant.hours}
+                                    Today's Hours: {props.restaurant.hours.Thursday}
                                 </Typography>
 
                                 <Stack className={classes.chips} direction="row" alignItems="center" spacing={1}>
@@ -46,21 +47,13 @@ function MainSection(props) {
                             </Stack>
                         </Stack>
                     </Box>
-                    <Stack direction="column">
-                        <Paper className={classes.linePaper}>
-                            <Stack direction="column" spacing={2}>
-                                <Typography variant="h4">
-                                    Join the Line
-                                </Typography>
-                                <Typography>
-                                    {"There are currently "} 
-                                    <Box component="span" display="inline" style={{fontWeight: "bold"}}>55</Box> 
-                                    {" people in line right now."}
-                                </Typography>
-                                <Button variant="contained" style={{padding: "20px"}}>Get in Line</Button>
-                            </Stack>
-                        </Paper>
-                    </Stack>
+                    <Paper className={classes.linePaper}>
+                        <Stack direction="column" spacing={4}>
+                            <JoinLineSection restaurant={props.restaurant}/>
+                            <Divider/>
+                            <ContactSection restaurant={props.restaurant}/>
+                        </Stack>
+                    </Paper>
                 </Stack>
           </Container>
       </div>
