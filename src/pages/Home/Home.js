@@ -10,9 +10,18 @@ function Home() {
 
     const classes = useStyles();
 
+    let user = {
+      name: "Jakub",
+      email: "jakubhojsan@g.ucla.edu",
+      year: "2024",
+      inLine: false,
+      resturantID: 1,
+      UUID: "901329021",
+    }
+
     return (
         <div className={classes.page}>
-            <GlobalHeader isLoggedIn={true} />
+            <GlobalHeader isLoggedIn={true} username={user.name}/>
             {/* We need to adjust the prop isLoggedIn based on GoogleAuth from backend */}
             <MainSection />
             <Footer />

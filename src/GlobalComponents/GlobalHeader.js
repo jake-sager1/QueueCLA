@@ -14,9 +14,10 @@ function StackLogin() {
   )
 }
 
-function StackProfile() {
+function StackProfile(props) {
   return (
     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
+      <Typography>Welcome {props.username}!</Typography>
       <AccountBoxIcon fontSize='large'/>
     </Stack>
   )
@@ -26,13 +27,14 @@ function GlobalHeader(props) {
 
     const classes = useStyles();
     const isLoggedIn = props.isLoggedIn;
+    const userName = props.username
 
     let stackRight;
 
     if(!isLoggedIn) {
       stackRight = <StackLogin/>;
     } else {
-      stackRight = <StackProfile/>;
+      stackRight = <StackProfile username={userName}/>;
     }
 
     return (
