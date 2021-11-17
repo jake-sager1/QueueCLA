@@ -8,6 +8,10 @@ const useStyles = makeStyles((theme) => ({
     },
     logo: {
       color: "black",
+    },
+    center: {
+      
+
     }
 }));
 

@@ -12,8 +12,8 @@ function Home(props) {
 
     return (
         <div className={classes.page}>
-            <GlobalHeader isLoggedIn={true} username={props.user.name}/>
-            {/* We need to adjust the prop isLoggedIn based on GoogleAuth from backend */}
+            <GlobalHeader isLoggedIn={false} inline={true} username={props.user.name}/>
+            {/* We need to adjust the prop isLoggedIn and inline based on GoogleAuth from backend */}
             <MainSection />
             <Footer />
         </div>

@@ -23,11 +23,25 @@ function StackProfile(props) {
   )
 }
 
+function Ribbon(props) {
+  return (
+    <AppBar position="sticky" style={{backgroundColor: "#2774AE", color: "white", height: "5vh", alignItems: 'center', }} elevation={1}>
+      <Toolbar>
+      <div className="center">
+        <Typography style={{paddingBottom: '1.3vh' }}>You are currently #NULL{props.linenumber} in line at NULL{props.resturantID}</Typography>
+      </div>
+      </Toolbar>
+    </AppBar>
+
+  )
+}
+
 function GlobalHeader(props) {
 
     const classes = useStyles();
-    const isLoggedIn = props.isLoggedIn;
+    const isLoggedIn = props.isLoggedIn
     const userName = props.username
+    const inline = props.inline
 
     let stackRight;
 
@@ -37,7 +51,16 @@ function GlobalHeader(props) {
       stackRight = <StackProfile username={userName}/>;
     }
 
+    let ribbon;
+
+    if(inline) {
+      ribbon = <Ribbon/>
+    } else {
+      ribbon = <div/>
+    }
+
     return (
+      <div>
         <AppBar position="sticky" style={{backgroundColor: "white", color: "black"}} elevation={2}>
             <Toolbar>
                 <Container className={classes.homeNavBar} maxWidth="md">
@@ -52,6 +75,9 @@ function GlobalHeader(props) {
                 </Container>
             </Toolbar>
         </AppBar>
+        {ribbon}
+      </div>
+
     );
 }
 
