@@ -4,6 +4,8 @@ import { Typography, Button, Container, AppBar, Toolbar } from '@mui/material';
 import { Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import Box from '@mui/material/Box';
+
 
 function StackLogin() {
   return (
@@ -25,10 +27,10 @@ function StackProfile(props) {
 
 function Ribbon(props) {
   return (
-    <AppBar position="sticky" style={{backgroundColor: "#2774AE", color: "white", height: "5vh", alignItems: 'center', }} elevation={1}>
+    <AppBar position="sticky" style={{backgroundColor: "#2774AE", color: "white", alignItems: 'center', }} elevation={1}>
       <Toolbar>
       <div className="center">
-        <Typography style={{paddingBottom: '1.3vh' }}>You are currently #NULL{props.linenumber} in line at NULL{props.resturantID}</Typography>
+      <Typography style={{ }}>You are currently #NULL{props.linenumber} in line at NULL{props.resturantID}</Typography>
       </div>
       </Toolbar>
     </AppBar>
@@ -74,8 +76,8 @@ function GlobalHeader(props) {
                     </Stack>
                 </Container>
             </Toolbar>
+              {ribbon}
         </AppBar>
-        {ribbon}
       </div>
 
     );
