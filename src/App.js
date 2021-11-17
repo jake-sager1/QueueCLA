@@ -13,6 +13,7 @@ import Restaurant from './pages/Restaurant/Restaurant';
 import LineManagement from './pages/RestaurantManagement/LineManagement/LineManagement';
 import RestaurantManagement from './pages/RestaurantManagement/RestaurantManagement';
 import RestaurantSettings from './pages/RestaurantManagement/RestaurantSettings/RestaurantSettings';
+import { Redirect } from 'react-router';
 
 class App extends React.Component {
 
@@ -69,7 +70,8 @@ class App extends React.Component {
               <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurant}/></Route>
               <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurant}/></Route>
               <Route path="/manage"><RestaurantManagement restaurant={this.restaurant}/></Route>
-              <Route component={NotFound}></Route>
+              <Route path="/404" component={NotFound}></Route>
+              <Redirect to="/404"/>
             </Switch>
           </Router>
         </ThemeProvider>
