@@ -16,51 +16,6 @@ class Restaurants extends React.Component {
         this.setState({searchValue: value});
     }
 
-    // cards = [
-    //     {id: 1,
-    //         heading: "Bruin Cafe",
-    //         text: "Soups, salads, and sandwiches!",
-    //         image: "https://source.unsplash.com/random",
-    //         chip1: "Vegan",
-    //         chip2: "Good sandwiches"
-    //         },
-    //     {id: 2,
-    //         heading: "Bruin Bowl",
-    //         text: "A takeout place to grab a variety of bowls!",
-    //         image: "https://source.unsplash.com/random",
-    //         chip1: "Healthy",
-    //         chip2: "Mediterranean"
-    //         },
-    //     {id: 3,
-    //         heading: "Bruin Plate",
-    //         text: "Organics...",
-    //         image: "https://source.unsplash.com/random",
-    //         chip1: "Vegetarian",
-    //         chip2: "Vegan"
-    //      },
-    //     {id: 4,
-    //         heading: "De Neve",
-    //         text: "Unhealthy as hell.",
-    //         image: "https://source.unsplash.com/random",
-    //         chip1: "Unhealthy",
-    //         chip2: "Tastes good"
-    //     },
-    //     {id: 5,
-    //         heading: "De Neve",
-    //         text: "Unhealthy as hell.",
-    //         image: "https://source.unsplash.com/random",
-    //         chip1: "Unhealthy",
-    //         chip2: "Tastes good"
-    //     },
-    //     {id: 6,
-    //         heading: "Epicuria",
-    //         text: "Mediterranean food!",
-    //         image: "https://source.unsplash.com/random",
-    //         chip1: "Vegan",
-    //         chip2: "Mediterranean"
-    //     }
-    // ]
-
     render() {
 
         return (

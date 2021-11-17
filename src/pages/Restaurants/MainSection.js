@@ -51,10 +51,6 @@ function MainSection(props) {
                                         {restaurant.description}
                                     </Typography>
                                 </CardContent>
-                                {/* <CardActions>
-                                    <Link to={{pathname: "/card", state: {card: card, hasValue: true}}}><Button size="small" color="primary" className={classes.cardButtons}>View</Button></Link>
-                                    <Button size="small" color="primary" className={classes.cardButtons}>Edit</Button>
-                                </CardActions> */}
 
                                 <Stack className={classes.chips} direction="row" spacing={1}>
                                   <Chip
