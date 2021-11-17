@@ -34,7 +34,71 @@ class App extends React.Component {
     } 
   }
 
-  restaurant = {
+  restaurants = {
+    1: {
+        name: "Bruin Plate",
+        chips: ["Vegetarian", "Gluten-Free"],
+        description: "A fun new restaurant for the fittest of Bruins!",
+        hours: {
+            "Monday": "9:00am - 6:00pm",
+            "Tuesday": "9:00am - 6:00pm",
+            "Wednesday": "9:00am - 6:00pm",
+            "Thursday": "5:00am - 8:00pm",
+            "Friday": "9:00am - 6:00pm",
+            "Saturday": "6:00am - 9:00pm",
+            "Sunday": "9:00am - 6:00pm",
+        },
+        waitEnabled: true,
+        avgTimePerCustomer: 3,
+        phone: "(760) 123-4567",
+        profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+        bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
+        id: 1,
+        waitlist: ["901329021", "205488283"],
+    },
+    2: {
+      name: "De Neve",
+      chips: ["Gross", "Yucky"],
+      description: "A restaurant that prides itself on being mediocre.",
+      hours: {
+          "Monday": "9:00am - 6:00pm",
+          "Tuesday": "9:00am - 6:00pm",
+          "Wednesday": "9:00am - 6:00pm",
+          "Thursday": "5:00am - 8:00pm",
+          "Friday": "9:00am - 6:00pm",
+          "Saturday": "6:00am - 9:00pm",
+          "Sunday": "9:00am - 6:00pm",
+      },
+      waitEnabled: false,
+      avgTimePerCustomer: 3,
+      phone: "(760) 123-4123",
+      profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+      bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
+      id: 2,
+      waitlist: [],
+    },
+    3: {
+      name: "Rendezvous West",
+      chips: ["Mexican", "Create-Your-Own"],
+      description: "We have really good burritos. We don't give enough guac.",
+      hours: {
+          "Monday": "9:00am - 6:00pm",
+          "Tuesday": "9:00am - 6:00pm",
+          "Wednesday": "9:00am - 6:00pm",
+          "Thursday": "5:00am - 8:00pm",
+          "Friday": "9:00am - 6:00pm",
+          "Saturday": "6:00am - 9:00pm",
+          "Sunday": "9:00am - 6:00pm",
+      },
+      waitEnabled: true,
+      avgTimePerCustomer: 3,
+      phone: "(760) 123-4567",
+      profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+      bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
+      id: 3,
+      waitlist: ["901329021", "205488283"],
+    },
+    4: {
       name: "Bruin Plate",
       chips: ["Vegetarian", "Gluten-Free"],
       description: "A fun new restaurant for the fittest of Bruins!",
@@ -52,9 +116,52 @@ class App extends React.Component {
       phone: "(760) 123-4567",
       profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
-      id: 1,
+      id: 4,
       waitlist: ["901329021", "205488283"],
-  }
+    },
+    5: {
+      name: "Bruin Plate",
+      chips: ["Vegetarian", "Gluten-Free"],
+      description: "A fun new restaurant for the fittest of Bruins!",
+      hours: {
+          "Monday": "9:00am - 6:00pm",
+          "Tuesday": "9:00am - 6:00pm",
+          "Wednesday": "9:00am - 6:00pm",
+          "Thursday": "5:00am - 8:00pm",
+          "Friday": "9:00am - 6:00pm",
+          "Saturday": "6:00am - 9:00pm",
+          "Sunday": "9:00am - 6:00pm",
+      },
+      waitEnabled: true,
+      avgTimePerCustomer: 3,
+      phone: "(760) 123-4567",
+      profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+      bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
+      id: 5,
+      waitlist: ["901329021", "205488283"],
+    },
+    6: {
+    name: "Bruin Plate",
+    chips: ["Vegetarian", "Gluten-Free"],
+    description: "A fun new restaurant for the fittest of Bruins!",
+    hours: {
+        "Monday": "9:00am - 6:00pm",
+        "Tuesday": "9:00am - 6:00pm",
+        "Wednesday": "9:00am - 6:00pm",
+        "Thursday": "5:00am - 8:00pm",
+        "Friday": "9:00am - 6:00pm",
+        "Saturday": "6:00am - 9:00pm",
+        "Sunday": "9:00am - 6:00pm",
+    },
+    waitEnabled: true,
+    avgTimePerCustomer: 3,
+    phone: "(760) 123-4567",
+    profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+    bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
+    id: 6,
+    waitlist: ["901329021", "205488283"],
+    },
+}   
 
   render() {
     return (
@@ -65,11 +172,11 @@ class App extends React.Component {
               <Route path="/card"><CardPage /></Route>
               <Route path="/login"><App /></Route>
               <Route path="/signup"><Signup /></Route>
-              <Route path="/restaurants/:id" render={(props) => <Restaurant {...props}/>}></Route>
-              <Route path="/restaurants"><Restaurants /></Route>
-              <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurant}/></Route>
-              <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurant}/></Route>
-              <Route path="/manage"><RestaurantManagement restaurant={this.restaurant}/></Route>
+              <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} restaurants={this.restaurants}/>}></Route>
+              <Route path="/restaurants"><Restaurants restaurants={this.restaurants}/></Route>
+              <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]}/></Route>
+              <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]}/></Route>
+              <Route path="/manage"><RestaurantManagement restaurant={this.restaurants[1]}/></Route>
               <Route path="/404" component={NotFound}></Route>
               <Redirect to="/404"/>
             </Switch>

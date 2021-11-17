@@ -6,6 +6,10 @@ import MainSection from './MainSection';
 
 class Restaurant extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
+
     restaurant = {
         name: "Bruin Plate",
         chips: ["Vegetarian", "Gluten-Free"],
@@ -33,8 +37,8 @@ class Restaurant extends React.Component {
             <div style={{backgroundColor: "#3d3d3d",
             height: "100vh"}}>
                 <Header />
-                <BannerSection restaurant={this.restaurant}/>
-                <MainSection restaurant={this.restaurant}/>
+                <BannerSection restaurant={this.props.restaurants[this.props.match.params.id]}/>
+                <MainSection restaurant={this.props.restaurants[this.props.match.params.id]}/>
                 <Footer />
             </div>
         );

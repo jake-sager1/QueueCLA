@@ -21,13 +21,13 @@ function MainSection(props) {
 
   const classes = useStyles();
 
-  let searchCards = [];
+  let searchRestaurants = [];
 
-  for(let i = 0; i < 6; i++) {
-    const card = props.cards[i];
-    if(card.heading.toLowerCase().includes(props.searchValue.toLowerCase()) ||
-       card.text.toLowerCase().includes(props.searchValue.toLowerCase())) {
-        searchCards.push(card);
+  for(let i = 1; i <= 6; i++) {
+    const restaurant = props.restaurants[i];
+    if(restaurant.name.toLowerCase().includes(props.searchValue.toLowerCase()) ||
+       restaurant.description.toLowerCase().includes(props.searchValue.toLowerCase())) {
+        searchRestaurants.push(restaurant);
     }
   }
 
@@ -37,18 +37,18 @@ function MainSection(props) {
           <Container maxWidth="md">
 
             <Grid container spacing={2} alignItems="stretch">
-                {searchCards.map(card => (
+                {searchRestaurants.map(restaurant => (
 
-                    <Grid item key={card} xs={12} sm={6} md={4}>
+                    <Grid item key={restaurant} xs={12} sm={6} md={4}>
                         <Card className={classes.card}>
-                            <CardActionArea component={Link} to={"/restaurants/" + card.id} className={classes.cardActionArea}>
-                                <CardMedia className={classes.cardMedia} image={card.image} title="Image Title"></CardMedia>
+                            <CardActionArea component={Link} to={"/restaurants/" + restaurant.id} className={classes.cardActionArea}>
+                                <CardMedia className={classes.cardMedia} image={restaurant.bannerImage} title="Image Title"></CardMedia>
                                 <CardContent className={classes.cardContent}>
                                     <Typography gutterBottom variant="h5">
-                                        {card.heading}
+                                        {restaurant.name}
                                     </Typography>
                                     <Typography color="textSecondary">
-                                        {card.text}
+                                        {restaurant.description}
                                     </Typography>
                                 </CardContent>
                                 {/* <CardActions>
@@ -58,11 +58,11 @@ function MainSection(props) {
 
                                 <Stack className={classes.chips} direction="row" spacing={1}>
                                   <Chip
-                                    label={card.chip1}
+                                    label={restaurant.chips[0]}
                                     icon={<DinnerDiningSharpIcon fontSize="small"/>}
                                   />
                                   <Chip
-                                    label={card.chip2}
+                                    label={restaurant.chips[1]}
                                     icon={<LocalDiningSharpIcon fontSize="small"/>}
                                     variant="outlined"
                                   />
