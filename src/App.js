@@ -12,6 +12,7 @@ import NotFound from './pages/ErrorPages/NotFound'
 import Restaurant from './pages/Restaurant/Restaurant';
 import LineManagement from './pages/RestaurantManagement/LineManagement/LineManagement';
 import RestaurantManagement from './pages/RestaurantManagement/RestaurantManagement';
+import RestaurantSettings from './pages/RestaurantManagement/RestaurantSettings/RestaurantSettings';
 
 class App extends React.Component {
 
@@ -66,7 +67,8 @@ class App extends React.Component {
               <Route path="/student"><Student /></Route>
               <Route path="/restaurants/:id" render={(props) => <Restaurant {...props}/>}></Route>
               <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurant}/></Route>
-              <Route path="/manage"><RestaurantManagement/></Route>
+              <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurant}/></Route>
+              <Route path="/manage"><RestaurantManagement restaurant={this.restaurant}/></Route>
               <Route component={NotFound}></Route>
             </Switch>
           </Router>
