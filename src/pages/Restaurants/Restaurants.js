@@ -3,7 +3,7 @@ import Header from './Header';
 import Footer from '../../GlobalComponents/Footer';
 import MainSection from './MainSection';
 
-class Student extends React.Component {
+class Restaurants extends React.Component {
 
     constructor(props) {
         super(props);
@@ -74,4 +74,4 @@ class Student extends React.Component {
     }
 }
 
-export default Student;
+export default Restaurants;

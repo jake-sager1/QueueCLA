@@ -7,7 +7,7 @@ import CardPage from './pages/Card';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import Signup from './pages/Signup/Signup'
-import Student from './pages/Student/Student'
+import Restaurants from './pages/Restaurants/Restaurants'
 import NotFound from './pages/ErrorPages/NotFound'
 import Restaurant from './pages/Restaurant/Restaurant';
 import LineManagement from './pages/RestaurantManagement/LineManagement/LineManagement';
@@ -65,8 +65,8 @@ class App extends React.Component {
               <Route path="/card"><CardPage /></Route>
               <Route path="/login"><App /></Route>
               <Route path="/signup"><Signup /></Route>
-              <Route path="/student"><Student /></Route>
               <Route path="/restaurants/:id" render={(props) => <Restaurant {...props}/>}></Route>
+              <Route path="/restaurants"><Restaurants /></Route>
               <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurant}/></Route>
               <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurant}/></Route>
               <Route path="/manage"><RestaurantManagement restaurant={this.restaurant}/></Route>

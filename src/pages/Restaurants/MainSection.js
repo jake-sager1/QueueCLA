@@ -1,5 +1,5 @@
 import React from 'react'
-import useStyles from './student-styles'
+import useStyles from './restaurants-styles'
 import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, Container, CardActionArea } from '@mui/material'
 import { PhotoCamera } from '@mui/icons-material'
 import { Link } from 'react-router-dom';

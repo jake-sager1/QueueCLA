@@ -1,5 +1,5 @@
 import React from 'react'
-import useStyles from './student-styles'
+import useStyles from './restaurants-styles'
 import { Typography, Button, Container, AppBar, Toolbar } from '@mui/material';
 import { Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
