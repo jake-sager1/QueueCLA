@@ -6,6 +6,9 @@ const useStyles = makeStyles((theme) => ({
         color:"white",
         width:"100%",
     },
+    logo: {
+      color: "black",
+    }
 }));
 
 export default useStyles;
