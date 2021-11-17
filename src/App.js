@@ -10,16 +10,26 @@ import Signup from './pages/Signup/Signup'
 import Student from './pages/Student/Student'
 import NotFound from './pages/ErrorPages/NotFound'
 import Restaurant from './pages/Restaurant/Restaurant';
+import LineManagement from './pages/RestaurantManagement/LineManagement/LineManagement';
+import RestaurantManagement from './pages/RestaurantManagement/RestaurantManagement';
 
 class App extends React.Component {
 
-  user = {
-    name: "Jakub Hojsan",
-    email: "jakubhojsan@g.ucla.edu",
-    year: "2024",
-    inLine: false,
-    resturantID: 1,
-    UUID: "901329021",
+  users = {
+    "901329021": {
+      name: "Jakub Hojsan",
+      email: "jakubhojsan@g.ucla.edu",
+      year: "2024",
+      inLine: false,
+      resturantID: 1,
+    },
+    "205488283": {
+      name: "Jake Sager",
+      email: "jakesager@g.ucla.edu",
+      year: "2024",
+      inLine: true,
+      resturantID: 1,
+    } 
   }
 
   restaurant = {
@@ -35,15 +45,13 @@ class App extends React.Component {
           "Saturday": "6:00am - 9:00pm",
           "Sunday": "9:00am - 6:00pm",
       },
-      waitEnabled: false,
+      waitEnabled: true,
       avgTimePerCustomer: 3,
       phone: "(760) 123-4567",
       profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
       id: 1,
-      waitlist: {
-
-      }
+      waitlist: ["901329021", "205488283"],
   }
 
   render() {
@@ -51,12 +59,14 @@ class App extends React.Component {
       <ThemeProvider theme={theme}>
           <Router>
             <Switch>
-              <Route exact path="/"><Home /></Route>
+              <Route exact path="/"><Home user={this.users["901329021"]}/></Route>
               <Route path="/card"><CardPage /></Route>
               <Route path="/login"><App /></Route>
               <Route path="/signup"><Signup /></Route>
               <Route path="/student"><Student /></Route>
               <Route path="/restaurants/:id" render={(props) => <Restaurant {...props}/>}></Route>
+              <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurant}/></Route>
+              <Route path="/manage"><RestaurantManagement/></Route>
               <Route component={NotFound}></Route>
             </Switch>
           </Router>
