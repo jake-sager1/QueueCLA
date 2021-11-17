@@ -1,5 +1,5 @@
 import React from "react";
-import { Paper, Container, Stack, Typography, Box, Button } from "@mui/material";
+import { Paper, Container, Stack, Typography, Box, Button, Avatar } from "@mui/material";
 import useStyles from '../restaurant-styles';
 
 function LineStatus(props) {
@@ -9,7 +9,15 @@ function LineStatus(props) {
     return (
         <div className={classes.mainPage}>
             <Container maxWidth="md">
-                <Stack direction="column" spacing={2}>
+                <Stack direction="column" spacing={3}>
+                    <Stack direction="row" alignItems="center" spacing={3}>
+                        <Avatar className={classes.avatar} 
+                            sx={{width: 100, height: 100}}
+                            src={props.restaurant.profileImage}/>
+                        <Typography variant="h3">
+                            {props.restaurant.name} Line
+                        </Typography>
+                    </Stack>
                     <Paper className={classes.lineStatusHeader}>
                         <Stack direction="row" justifyContent="space-between">
                             <Typography variant="h4" style={{fontWeight: "bold"}}>

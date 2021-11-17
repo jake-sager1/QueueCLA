@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
     },
     mainPage: {
         backgroundColor: "#f7f7f7",
-        paddingTop: "50px",
-        paddingBottom: "50px",
+        paddingTop: "40px",
+        paddingBottom: "40px",
     },
     lineStatusHeader: {
         padding: "15px",
