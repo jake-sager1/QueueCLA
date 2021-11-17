@@ -6,22 +6,13 @@ import Footer from '../../GlobalComponents/Footer';
 import GlobalHeader from '../../GlobalComponents/GlobalHeader';
 import MainSection from './MainSection';
 
-function Home() {
+function Home(props) {
 
     const classes = useStyles();
 
-    let user = {
-      name: "Jakub",
-      email: "jakubhojsan@g.ucla.edu",
-      year: "2024",
-      inLine: false,
-      resturantID: 1,
-      UUID: "901329021",
-    }
-
     return (
         <div className={classes.page}>
-            <GlobalHeader isLoggedIn={true} username={user.name}/>
+            <GlobalHeader isLoggedIn={true} username={props.user.name}/>
             {/* We need to adjust the prop isLoggedIn based on GoogleAuth from backend */}
             <MainSection />
             <Footer />
