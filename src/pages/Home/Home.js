@@ -3,6 +3,7 @@ import React from 'react'
 import useStyles from './home-styles';
 import Header from './Header';
 import Footer from '../../GlobalComponents/Footer';
+import GlobalHeader from '../../GlobalComponents/GlobalHeader';
 import MainSection from './MainSection';
 
 function Home() {
@@ -11,7 +12,8 @@ function Home() {
 
     return (
         <div className={classes.page}>
-            <Header />
+            <GlobalHeader isLoggedIn={true} />
+            {/* We need to adjust the prop isLoggedIn based on GoogleAuth from backend */}
             <MainSection />
             <Footer />
         </div>
