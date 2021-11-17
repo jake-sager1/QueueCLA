@@ -35,7 +35,10 @@ const useStyles = makeStyles((theme) => ({
     },
     lineEntry: {
         backgroundColor: "red",
-        padding: "10px",
+        padding: "15px",
+    },
+    settingsPaper: {
+        padding: "15px",
     }
 }));
 
