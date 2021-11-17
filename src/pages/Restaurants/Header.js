@@ -24,7 +24,7 @@ function Header(props) {
                             </Typography>
                         </Link>
                         <div className={classes.searchBar}>
-                            <SearchBar updateSearch={(value) => props.updateSearch(value)} options={props.cards.map((card) => card.heading)}/>
+                            <SearchBar updateSearch={(value) => props.updateSearch(value)} options={Object.entries(props.restaurants).map(([id, restaurant]) => restaurant.name)}/>
                         </div>
                     </Stack>
                 </Container>
