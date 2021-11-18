@@ -5,14 +5,14 @@ import Header from './Header';
 import Footer from '../../GlobalComponents/Footer';
 import GlobalHeader from '../../GlobalComponents/GlobalHeader';
 import MainSection from './MainSection';
+import {auth} from '../../service/firebase'
 
 function Home(props) {
 
     const classes = useStyles();
-
     return (
         <div className={classes.page}>
-            <GlobalHeader isLoggedIn={false} inline={true} username={props.user.name}/>
+            <GlobalHeader isLoggedIn={auth.currentUser != null} inline={true} username={auth.currentUser != null? auth.currentUser.displayName : ''}/>
             {/* We need to adjust the prop isLoggedIn and inline based on GoogleAuth from backend */}
             <MainSection />
             <Footer />

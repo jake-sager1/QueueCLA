@@ -19,3 +19,7 @@ export const provider = new GoogleAuthProvider();
 export const auth = getAuth();
 
 export const signInWithGoogle = () => signInWithRedirect(auth, provider);
+
+// const admin = require('firebase-admin');
+// const db = admin.firestore();
+// export const usersDb = db.collection("users");

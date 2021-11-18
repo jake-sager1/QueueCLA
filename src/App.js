@@ -14,8 +14,32 @@ import LineManagement from './pages/RestaurantManagement/LineManagement/LineMana
 import RestaurantManagement from './pages/RestaurantManagement/RestaurantManagement';
 import RestaurantSettings from './pages/RestaurantManagement/RestaurantSettings/RestaurantSettings';
 import { Redirect } from 'react-router';
+import {auth} from './service/firebase'
 
 class App extends React.Component {
+
+  constructor(){
+    super()
+    this.state = {
+      user: null
+    }
+  }
+
+  componentDidMount(){
+    auth.onAuthStateChanged(user => {
+      if (user != null){
+        this.setState({
+          user: user
+        })
+        // auth.usersDb.doc("user1").set({
+        //   "username": user.displayName,
+        //   "email": user.email,
+        // });
+      } else {
+        console.log("no user")
+      }
+    })
+  }
 
   users = {
     "901329021": {
@@ -168,7 +192,7 @@ class App extends React.Component {
       <ThemeProvider theme={theme}>
           <Router>
             <Switch>
-              <Route exact path="/"><Home user={this.users["901329021"]}/></Route>
+              <Route exact path="/"><Home user={this.state}/></Route>
               <Route path="/card"><CardPage /></Route>
               <Route path="/login"><App /></Route>
               <Route path="/signup"><Signup /></Route>
