@@ -35,22 +35,22 @@ function Header(props) {
                             )
                             }
 
-                            {   
+                            {
                                 !isLoggedIn ? (
                                     <Link to="../signup" style={{textDecoration: "none"}}>
                                         <Button variant="contained" color="primary" href="../restaurantlogin">Sign In</Button>
                                     </Link>
-                                ) : 
+                                ) :
                                 (
-                                    
+
                                     <Tooltip title="Account settings">
                                         <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-                                            <Avatar className={classes.avatar} 
+                                            <Avatar className={classes.avatar}
                                                 sx={{width: 50, height: 50}}
                                                src={props.restaurant.profileImage}/>
                                          </IconButton>
                                     </Tooltip>
-                                    
+
                             )}
                             <Menu
                                 anchorEl={anchorEl}
@@ -103,7 +103,7 @@ function Header(props) {
                                     </MenuItem>
                                 </Link>
                             </Menu>
-                            
+
                         </Stack>
                     </Stack>
                 </Container>
