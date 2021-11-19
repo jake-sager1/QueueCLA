@@ -14,14 +14,15 @@ import LineManagement from './pages/RestaurantManagement/LineManagement/LineMana
 import RestaurantManagement from './pages/RestaurantManagement/RestaurantManagement';
 import RestaurantSettings from './pages/RestaurantManagement/RestaurantSettings/RestaurantSettings';
 import { Redirect } from 'react-router';
-import {auth} from './service/firebase'
+import {auth, usersDb} from './service/firebase'
 
 class App extends React.Component {
 
   constructor(){
     super()
     this.state = {
-      user: null
+      user: null,
+      userType: null
     }
   }
 
@@ -31,10 +32,14 @@ class App extends React.Component {
         this.setState({
           user: user
         })
-        // auth.usersDb.doc("user1").set({
-        //   "username": user.displayName,
-        //   "email": user.email,
-        // });
+        //add user to database
+
+        usersDb.get('/test_firestore', (req, res) => {
+          usersDb.doc(user.uid).set({
+            "username": user.displayName,
+            "email": user.email
+          });
+        })
       } else {
         console.log("no user")
       }
