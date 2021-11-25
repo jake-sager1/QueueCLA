@@ -22,15 +22,17 @@ class App extends React.Component {
       name: "Jakub Hojsan",
       email: "jakubhojsan@g.ucla.edu",
       year: "2024",
-      inLine: false,
-      resturantID: 1,
+      inLine: true,
+      restaurantID: 1,
+      id: "901329021",
     },
     "205488283": {
       name: "Jake Sager",
       email: "jakesager@g.ucla.edu",
       year: "2024",
       inLine: true,
-      resturantID: 1,
+      restaurantID: 1,
+      id: "205488283",
     } 
   }
 
@@ -54,7 +56,7 @@ class App extends React.Component {
         profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
         bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
         id: 1,
-        waitlist: ["901329021", "205488283"],
+        waitlist: ["205488283", "901329021"],
         email: "bplate@dining.ucla.edu",
     },
     2: {
@@ -98,7 +100,7 @@ class App extends React.Component {
       profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
       id: 3,
-      waitlist: ["901329021", "205488283"],
+      waitlist: [],
       email: "rendewest@dining.ucla.edu",
     },
     4: {
@@ -120,7 +122,7 @@ class App extends React.Component {
       profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
       id: 4,
-      waitlist: ["901329021", "205488283"],
+      waitlist: [],
       email: "bplateagain@dining.ucla.edu",
     },
     5: {
@@ -142,7 +144,7 @@ class App extends React.Component {
       profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
       bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
       id: 5,
-      waitlist: ["901329021", "205488283"],
+      waitlist: [],
       email: "morebplate@dining.ucla.edu",
     },
     6: {
@@ -164,7 +166,7 @@ class App extends React.Component {
     profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
     bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
     id: 6,
-    waitlist: ["901329021", "205488283"],
+    waitlist: [],
     email: "againbplate@dining.ucla.edu",
     },
 }   
@@ -178,7 +180,7 @@ class App extends React.Component {
               <Route path="/card"><CardPage /></Route>
               <Route path="/login"><App /></Route>
               <Route path="/signup"><Signup /></Route>
-              <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} restaurants={this.restaurants}/>}></Route>
+              <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} restaurants={this.restaurants} user={this.users["901329021"]}/>}></Route>
               <Route path="/restaurants"><Restaurants restaurants={this.restaurants}/></Route>
               <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]}/></Route>
               <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]}/></Route>

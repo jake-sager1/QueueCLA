@@ -53,7 +53,7 @@ function MainSection(props) {
                     </Box>
                     <Paper className={classes.linePaper}>
                         <Stack direction="column" spacing={4}>
-                            <JoinLineSection restaurant={props.restaurant}/>
+                            <JoinLineSection restaurant={props.restaurant} user={props.user}/>
                             <Divider/>
                             <ContactSection restaurant={props.restaurant}/>
                         </Stack>
