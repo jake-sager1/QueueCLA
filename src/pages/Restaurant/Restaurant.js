@@ -17,7 +17,7 @@ class Restaurant extends React.Component {
             height: "100vh"}}>
                 <Header />
                 <BannerSection restaurant={this.props.restaurants[this.props.match.params.id]}/>
-                <MainSection restaurant={this.props.restaurants[this.props.match.params.id]}/>
+                <MainSection restaurant={this.props.restaurants[this.props.match.params.id]} user={this.props.user}/>
                 <Footer />
             </div>
         );
