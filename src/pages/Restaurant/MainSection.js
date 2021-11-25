@@ -33,7 +33,11 @@ function MainSection(props) {
                                 </Typography>
                                     
                                 <Typography style={{fontWeight: "bold"}}>
-                                    Today's Hours: {props.restaurant.hours.Thursday}
+                                    Today's Hours: {props.restaurant.hours.Thursday.open + 
+                                                    props.restaurant.hours.Thursday.openHalf + 
+                                                    " - " + 
+                                                    props.restaurant.hours.Thursday.close +
+                                                    props.restaurant.hours.Thursday.closeHalf}
                                 </Typography>
 
                                 <Stack className={classes.chips} direction="row" alignItems="center" spacing={1}>
