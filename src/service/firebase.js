@@ -26,6 +26,20 @@ export const signInWithGoogle = async () => {
     const token = credential.accessToken;
     // The signed-in user info.
     const user = result.user;
+
+    //now send this user to backend
+    let body = {
+      email: user.email,
+      uid: user.uid
+    };
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    };
+    fetch('http://localhost:5000/create_user', requestOptions)
+      .then(response => response.json())
+      .then(data => { console.log(data) });
   }).catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;
