@@ -1,11 +1,6 @@
-//import { initializeApp, applicationDefault, cert} from "firebase-admin/app";
-// Follow this pattern to import other Firebase services
-// import { } from 'firebase/<service>';
-//import { GoogleAuthProvider, getAuth, signInWithRedirect, getRedirectResult } from "firebase/auth";
-//import { getFirestore } from 'firebase-admin/firestore';
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
-const { GoogleAuthProvider, getAuth, signInWithRedirect, getRedirectResult } = require("firebase/auth");
+import { initializeApp, applicationDefault, cert } from "firebase/app";
+import { GoogleAuthProvider, getAuth, signInWithRedirect, getRedirectResult, signInWithPopup } from "firebase/auth";
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAoUIuI8-MB_Ok6Xt6M9fu8jq_vjUVe43k",
@@ -17,32 +12,28 @@ const firebaseConfig = {
   measurementId: "G-BX8EFJK2V7"
 };
 
-//create database stuff
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 5000; //use port 5000
-const admin = require('firebase-admin');
-const serviceAccount = require('./queuecla-firebase-adminsdk-dcsra-ae14b81ebf.json');
-
-initializeApp({
-  credential: cert(serviceAccount)
-});
-
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 const db = getFirestore();
+export const provider = new GoogleAuthProvider();
+export const auth = getAuth();
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
 
-app.get('/express_backend', (req, res) => {
-  res.send({ express: 'Hello, World' });
-});
-
-app.post('/create-user')
-
-// export const usersDb = db.collection("users");
-
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// export const provider = new GoogleAuthProvider();
-// export const auth = getAuth();
-
-// export const signInWithGoogle = () => (signInWithRedirect(auth, provider));
+export const signInWithGoogle = async () => {
+  signInWithPopup(auth, provider).then((result) => {
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    // The signed-in user info.
+    const user = result.user;
+  }).catch((error) => {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+  });
+};
