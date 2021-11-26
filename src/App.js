@@ -39,7 +39,7 @@ class App extends React.Component {
   restaurants = {
     1: {
         name: "Bruin Plate",
-        chips: ["Vegetarian", "Gluten-Free"],
+        chips: ["vegetarian", "gluten-free"],
         description: "A fun new restaurant for the fittest of Bruins!",
         hours: {
           "Monday": {open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm",},
@@ -61,7 +61,7 @@ class App extends React.Component {
     },
     2: {
       name: "De Neve",
-      chips: ["Gross", "Yucky"],
+      chips: ["vegetarian", "vegan"],
       description: "A restaurant that prides itself on being mediocre.",
       hours: {
         "Monday": {open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm",},
@@ -83,7 +83,7 @@ class App extends React.Component {
     },
     3: {
       name: "Rendezvous West",
-      chips: ["Mexican", "Create-Your-Own"],
+      chips: ["takeout", "fast-food"],
       description: "We have really good burritos. We don't give enough guac.",
       hours: {
         "Monday": {open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm",},
@@ -105,7 +105,7 @@ class App extends React.Component {
     },
     4: {
       name: "Bruin Plate",
-      chips: ["Vegetarian", "Gluten-Free"],
+      chips: ["vegetarian", "gluten-free"],
       description: "A fun new restaurant for the fittest of Bruins!",
       hours: {
         "Monday": {open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm",},
@@ -127,7 +127,7 @@ class App extends React.Component {
     },
     5: {
       name: "Bruin Plate",
-      chips: ["Vegetarian", "Gluten-Free"],
+      chips: ["vegetarian", "gluten-free"],
       description: "A fun new restaurant for the fittest of Bruins!",
       hours: {
         "Monday": {open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm",},
@@ -149,7 +149,7 @@ class App extends React.Component {
     },
     6: {
     name: "Bruin Plate",
-    chips: ["Vegetarian", "Gluten-Free"],
+    chips: ["vegetarian", "gluten-free"],
     description: "A fun new restaurant for the fittest of Bruins!",
     hours: {
         "Monday": {open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm",},

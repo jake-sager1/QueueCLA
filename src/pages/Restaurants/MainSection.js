@@ -13,6 +13,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DiningIcon from '@mui/icons-material/Dining';
 import LocalDiningSharpIcon from '@mui/icons-material/LocalDiningSharp';
 import DinnerDiningSharpIcon from '@mui/icons-material/DinnerDiningSharp';
+import MenuChip from '../../GlobalComponents/Chips';
 
 
 
@@ -53,15 +54,11 @@ function MainSection(props) {
                                 </CardContent>
 
                                 <Stack className={classes.chips} direction="row" spacing={1}>
-                                  <Chip
-                                    label={restaurant.chips[0]}
-                                    icon={<DinnerDiningSharpIcon fontSize="small"/>}
-                                  />
-                                  <Chip
-                                    label={restaurant.chips[1]}
-                                    icon={<LocalDiningSharpIcon fontSize="small"/>}
-                                    variant="outlined"
-                                  />
+                                    {restaurant.chips.map((name) => 
+                                        <MenuChip name={name} 
+                                        onClick={null}
+                                        variant="outlined"/>
+                                    )}
                                 </Stack>
 
                             </CardActionArea>
