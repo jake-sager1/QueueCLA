@@ -37,7 +37,7 @@ export const signInWithGoogle = async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     };
-    fetch('http://localhost:5000/create_user', requestOptions)
+    fetch('http://localhost:5000/user/create', requestOptions)
       .then(response => response.json())
       .then(data => { console.log(data) });
   }).catch((error) => {
@@ -48,6 +48,5 @@ export const signInWithGoogle = async () => {
     const email = error.email;
     // The AuthCredential type that was used.
     const credential = GoogleAuthProvider.credentialFromError(error);
-    // ...
   });
 };

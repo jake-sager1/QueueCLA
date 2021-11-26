@@ -32,14 +32,6 @@ class App extends React.Component {
   //       this.setState({
   //         user: user
   //       })
-  //       //add user to database
-
-  //       usersDb.get('/test_firestore', (req, res) => {
-  //         usersDb.doc(user.uid).set({
-  //           "username": user.displayName,
-  //           "email": user.email
-  //         });
-  //       })
   //     } else {
   //       console.log("no user")
   //     }
