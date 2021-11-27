@@ -5,6 +5,7 @@ import Header from './Header';
 import Footer from '../../GlobalComponents/Footer';
 import GlobalHeader from '../../GlobalComponents/GlobalHeader';
 import MainSection from './MainSection';
+import { Redirect } from 'react-router';
 
 function Home(props) {
 
@@ -12,7 +13,11 @@ function Home(props) {
 
     return (
         <div className={classes.page}>
-            <GlobalHeader isLoggedIn={false} inline={true} username={props.user.name}/>
+            {props.isLoggedIn &&
+                <Redirect to="/restaurants"></Redirect>
+            }
+
+            <GlobalHeader isLoggedIn={props.isLoggedIn} user={props.user} restaurants={props.restaurants}/>
             {/* We need to adjust the prop isLoggedIn and inline based on GoogleAuth from backend */}
             <MainSection />
             <Footer />

@@ -4,6 +4,7 @@ import { Avatar, AppBar, Toolbar, Container, Stack, Typography, Button, Menu, Me
 import { Settings, Logout } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import SearchBar from './SearchBar';
 
 function StackLogin() {
   return (
@@ -12,6 +13,17 @@ function StackLogin() {
         <Link to="../signup" style={{textDecoration: "none"}}><Button variant="contained" color="primary" href="../signup">Sign Up</Button></Link>
     </Stack>
   )
+}
+
+function SearchArea(props) {
+
+  const classes = useStyles();
+
+    return (
+      <div className={classes.searchBar}>
+        <SearchBar options={Object.keys(props.restaurants).map((id) => props.restaurants[id].name)}/>
+     </div>
+    );
 }
 
 function StackProfile(props) {
@@ -33,7 +45,7 @@ function StackProfile(props) {
 
 
     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-      <Typography>Welcome {props.username}!</Typography>
+      {/* <Typography>Welcome {props.username}!</Typography> */}
 
       {
           !isLoggedIn ? (
@@ -45,9 +57,8 @@ function StackProfile(props) {
 
               <Tooltip title="Account settings">
                   <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
-                  <Avatar className={classes.avatar}
-                      sx={{width: 40, height: 40}}
-                     />
+                      <Typography style={{height: "44px", width: "44px", borderRadius: "100%", display: "flex", alignItems: "center", justifyContent: "space-around",
+                      color: "white", backgroundColor: "#FFD100"}} variant="h4">{props.user.name[0]}</Typography>
                    </IconButton>
               </Tooltip>
 
@@ -74,7 +85,7 @@ function StackProfile(props) {
               display: 'block',
               position: 'absolute',
               top: 0,
-              right: 14,
+              right: 22,
               width: 10,
               height: 10,
               bgcolor: 'background.paper',
@@ -109,14 +120,27 @@ function StackProfile(props) {
 }
 
 function Ribbon(props) {
+
+  let spotInLine;
+
+  if(props.user.inLine) {
+    for(var i = 0; i < props.restaurants[props.user.restaurantID].waitlist.length; i++) {
+      if(props.restaurants[props.user.restaurantID].waitlist[i] == props.user.id)
+      {
+        spotInLine = i + 1;
+      }
+    }
+  }
+
   return (
-    <AppBar position="sticky" style={{backgroundColor: "#2774AE", color: "white", height: "5vh", alignItems: 'center', }} elevation={1}>
-      <Toolbar>
-      <div className="center">
-        <Typography style={{paddingBottom: '1.3vh' }}>You are currently #NULL{props.linenumber} in line at NULL{props.resturantID}</Typography>
-      </div>
-      </Toolbar>
-    </AppBar>
+    <div style={{backgroundColor: "#2774AE", display: "flex", alignItems: "center", color: "white", padding: "5px"}} elevation={1}>
+        <Container>
+          <Stack direction="column" alignItems="center">
+            <Typography>You are currently #{spotInLine} in line at&nbsp; 
+            <a style={{color: "white"}}href={"/restaurants/" + props.user.restaurantID}>{props.restaurants[props.user.restaurantID].name}</a>.</Typography>
+          </Stack>
+        </Container>
+    </div>
 
   )
 }
@@ -125,43 +149,46 @@ function GlobalHeader(props) {
 
     const classes = useStyles();
     const isLoggedIn = props.isLoggedIn
-    const userName = props.username
-    const inline = props.inline
+    const userName = props.user.name;
+    const inline = props.user.inLine;
 
     let stackRight;
 
     if(!isLoggedIn) {
       stackRight = <StackLogin/>;
     } else {
-      stackRight = <StackProfile username={userName}/>;
+      stackRight = <StackProfile user={props.user}/>;
     }
 
     let ribbon;
 
     if(inline) {
-      ribbon = <Ribbon/>
+      ribbon = <Ribbon user={props.user} restaurants={props.restaurants}/>
     } else {
       ribbon = <div/>
     }
 
     return (
-      <div>
-        <AppBar position="sticky" style={{backgroundColor: "white", color: "black"}} elevation={2}>
-            <Toolbar>
-                <Container className={classes.homeNavBar} maxWidth="md">
-                    <Stack direction="row" justifyContent="space-between" alignItems="center">
-                        <Link to="/" style={{textDecoration: "none"}}>
-                            <Typography variant="h4" component="h1" className={classes.logo}>
-                                QueueCLA
-                            </Typography>
-                        </Link>
-                        {stackRight}
-                    </Stack>
-                </Container>
-            </Toolbar>
-        </AppBar>
-        {ribbon}
-      </div>
+          <AppBar position="sticky" style={{backgroundColor: "white", color: "black"}} elevation={2}>
+              <Toolbar>
+                  <Container className={classes.homeNavBar} maxWidth="md">
+                      <Stack direction="row" justifyContent="space-between" alignItems="center">
+                          <Link to="/" style={{textDecoration: "none"}}>
+                              <Typography variant="h4" component="h1" className={classes.logo}>
+                                  QueueCLA
+                              </Typography>
+                          </Link>
+                          <Stack direction="row" spacing={1} alignItems="center">
+                            {isLoggedIn && 
+                              <SearchArea restaurants={props.restaurants}/>
+                            }
+                            {stackRight}
+                          </Stack>
+                      </Stack>
+                  </Container>
+              </Toolbar>
+              {ribbon}
+          </AppBar>
 
     );
 }

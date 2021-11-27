@@ -13,9 +13,15 @@ function ContactSection(props) {
             </Typography>
             <Typography>
                 <Box component="span" display="inline" style={{fontWeight: "bold"}}>
-                    Phone:
+                    Phone:&nbsp;
                 </Box>
-                {" " + props.restaurant.phone}
+                {props.restaurant.phone}
+            </Typography>
+            <Typography>
+                <Box component="span" display="inline" style={{fontWeight: "bold"}}>
+                    Website:&nbsp;
+                </Box>
+                <a style={{color: "black"}} href={props.restaurant.url}>{props.restaurant.url}</a>
             </Typography>
         </Stack>
     )

@@ -8,6 +8,7 @@ import theme from '../../theme';
 import JoinLineSection from './JoinLineSection';
 import ContactSection from './ContactSection';
 import MenuChip from '../../GlobalComponents/Chips';
+import HoursSection from './HoursSection';
 
 function MainSection(props) {
 
@@ -32,14 +33,8 @@ function MainSection(props) {
                                 <Typography>
                                     {props.restaurant.description}
                                 </Typography>
-                                    
-                                <Typography style={{fontWeight: "bold"}}>
-                                    Today's Hours: {props.restaurant.hours.Thursday.open + 
-                                                    props.restaurant.hours.Thursday.openHalf + 
-                                                    " - " + 
-                                                    props.restaurant.hours.Thursday.close +
-                                                    props.restaurant.hours.Thursday.closeHalf}
-                                </Typography>
+                                
+                               <HoursSection restaurant={props.restaurant}/>
 
                                 <Stack className={classes.chips} direction="row" alignItems="center" spacing={1}>
                                     {props.restaurant.chips.map((chip) => (
