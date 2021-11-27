@@ -36,7 +36,7 @@ function MainSection() {
                             </Typography>
                         </CardContent>
                         <CardActions style={{ padding: "15px" }}>
-                            <Link style={{ textDecoration: 'none' }} to={{ pathname: "/student", state: { card: { text: "This is a card!", image: "https://source.unsplash.com/random" }, hasValue: true } }}>
+                            <Link style={{ textDecoration: 'none' }} to={{ pathname: "/restaurants", state: { card: { text: "This is a card!", image: "https://source.unsplash.com/random" }, hasValue: true } }}>
                                 <Button size="small" variant="contained" color="primary" className={classes.cardButtons} onClick={signInWithGoogle}>Login with Google</Button>
                             </Link>
                         </CardActions>

@@ -2,7 +2,7 @@ import React from 'react'
 import useStyles from './global-styles'
 import { Avatar, AppBar, Toolbar, Container, Stack, Typography, Button, Menu, MenuItem, ListItemIcon, Tooltip, IconButton } from '@mui/material';
 import { Settings, Logout } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SearchBar from './SearchBar';
 import { signOutWithGoogle } from '../service/firebase';
@@ -109,14 +109,14 @@ function StackProfile(props) {
             Settings
           </MenuItem>
         </Link>
-        <Link to="/404" onClick={signOutWithGoogle} style={{ textDecoration: "none", color: "black" }}>
+        <NavLink exact to="/" onClick={signOutWithGoogle} style={{ textDecoration: "none", color: "black" }}>
           <MenuItem>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
             Logout
           </MenuItem>
-        </Link>
+        </NavLink>
       </Menu>
 
     </Stack>
