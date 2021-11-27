@@ -37,7 +37,7 @@ export const signInWithGoogle = async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     };
-    fetch('http://localhost:5000/user/create', requestOptions)
+    fetch('http://localhost:5001/user/create', requestOptions)
       .then(response => response.json())
       .then(data => { console.log(data) });
   }).catch((error) => {
