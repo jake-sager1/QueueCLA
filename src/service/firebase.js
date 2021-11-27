@@ -1,5 +1,5 @@
 import { initializeApp, applicationDefault, cert } from "firebase/app";
-import { GoogleAuthProvider, getAuth, signInWithRedirect, getRedirectResult, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithPopup, getRedirectResult, signOut } from "firebase/auth";
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -37,7 +37,7 @@ export const signInWithGoogle = async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     };
-    fetch('http://localhost:5000/user/create', requestOptions)
+    fetch('http://localhost:5001/user/create', requestOptions)
       .then(response => response.json())
       .then(data => { console.log(data) });
   }).catch((error) => {
@@ -49,4 +49,12 @@ export const signInWithGoogle = async () => {
     // The AuthCredential type that was used.
     const credential = GoogleAuthProvider.credentialFromError(error);
   });
+};
+
+export const signOutWithGoogle = async () => {
+  signOut(auth).then(() => {
+    console.log("Signed out user");
+  }).catch((error) => {
+    console.log(error);
+  })
 };

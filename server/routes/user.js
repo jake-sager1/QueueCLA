@@ -23,6 +23,7 @@ router.route("/create").post(async (req, res, next) => {
         console.log(`Creating user with uid ${uid}, email ${email}`);
         const userData = {
             email: email,
+            inLine: false
         };
         //create the user
         await userRef.set(userData);
