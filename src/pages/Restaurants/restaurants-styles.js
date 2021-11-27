@@ -32,10 +32,6 @@ const useStyles = makeStyles((theme) => ({
   middletext: {
       align: "center"
   },
-  searchBar: {
-      marginLeft: "20px",
-      width: "250px",
-  },
   card: {
   },
   cardActionArea: {

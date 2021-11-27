@@ -2,6 +2,7 @@ import React from 'react'
 import { Typography, Grid, Container} from '@mui/material';
 import { Stack } from '@mui/material';
 import useStyles from './global-styles'
+import { Link } from 'react-router-dom';
 
 
 function Footer() {
@@ -14,12 +15,13 @@ function Footer() {
                 <Grid container spacing={2}>
                     <Grid item spacing={5} xs={12} md={4}>
                         <Stack spacing={1} justifyContent="left">
-                            <Typography style={{fontWeight: "bold"}}>Quick Links</Typography>
-                            <Typography>Become a Partner</Typography>
-                            <Typography>Contact Us</Typography>
-                            <Typography>About Us</Typography>
-                            <Typography>Privacy Policy</Typography>
-                            <Typography>Terms of Service</Typography>
+                            <Typography style={{fontWeight: "bold"}}>Our Partners</Typography>
+                            <Link to="/manage" style={{color: "white", textDecoration: "none"}}>
+                                <Typography>Manage Your Restaurant</Typography>
+                            </Link>
+                            <Link to="/manage" style={{color: "white", textDecoration: "none"}}>
+                                <Typography>Become a Partner</Typography>
+                            </Link>
                         </Stack>
                     </Grid>
                     <Grid item spacing={5} xs={12} md={4}>
@@ -32,8 +34,10 @@ function Footer() {
                     </Grid>
                     <Grid item spacing={5} xs={12} md={4}>
                         <Stack spacing={1} justifyContent="left">
-                            <Typography style={{fontWeight: "bold"}}>Get Help</Typography>
-                            <Typography>Find a Restaurant</Typography>
+                            <Typography style={{fontWeight: "bold"}}>Information</Typography>
+                            <Typography>About Us</Typography>
+                            <Typography>Privacy Policy</Typography>
+                            <Typography>Terms of Service</Typography>
                         </Stack>
                     </Grid>
                 </Grid>

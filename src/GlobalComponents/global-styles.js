@@ -12,7 +12,11 @@ const useStyles = makeStyles((theme) => ({
     center: {
       
 
-    }
+    },
+    searchBar: {
+      marginLeft: "20px",
+      width: "250px",
+  },
 }));
 
 export default useStyles;

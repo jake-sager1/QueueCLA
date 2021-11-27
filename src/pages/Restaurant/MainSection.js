@@ -7,6 +7,8 @@ import DinnerDiningSharp from '@mui/icons-material/DinnerDiningSharp';
 import theme from '../../theme';
 import JoinLineSection from './JoinLineSection';
 import ContactSection from './ContactSection';
+import MenuChip from '../../GlobalComponents/Chips';
+import HoursSection from './HoursSection';
 
 function MainSection(props) {
 
@@ -31,17 +33,15 @@ function MainSection(props) {
                                 <Typography>
                                     {props.restaurant.description}
                                 </Typography>
-                                    
-                                <Typography style={{fontWeight: "bold"}}>
-                                    Today's Hours: {props.restaurant.hours.Thursday}
-                                </Typography>
+                                
+                               <HoursSection restaurant={props.restaurant}/>
 
                                 <Stack className={classes.chips} direction="row" alignItems="center" spacing={1}>
                                     {props.restaurant.chips.map((chip) => (
-                                        <Chip
-                                            label={chip}
-                                            icon={<DinnerDiningSharp fontSize="small"/>}
-                                            />
+                                        
+                                        <MenuChip name={chip} 
+                                        onClick={null}
+                                        variant="filled"/>
                                     ))}
                                 </Stack>
                             </Stack>
@@ -49,7 +49,7 @@ function MainSection(props) {
                     </Box>
                     <Paper className={classes.linePaper}>
                         <Stack direction="column" spacing={4}>
-                            <JoinLineSection restaurant={props.restaurant}/>
+                            <JoinLineSection restaurant={props.restaurant} user={props.user}/>
                             <Divider/>
                             <ContactSection restaurant={props.restaurant}/>
                         </Stack>
