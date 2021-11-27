@@ -13,6 +13,7 @@ import Restaurant from './pages/Restaurant/Restaurant';
 import LineManagement from './pages/RestaurantManagement/LineManagement/LineManagement';
 import RestaurantManagement from './pages/RestaurantManagement/RestaurantManagement';
 import RestaurantSettings from './pages/RestaurantManagement/RestaurantSettings/RestaurantSettings';
+import UserSettings from './pages/User/UserSettings/UserSettings.js'
 import { Redirect } from 'react-router';
 
 class App extends React.Component {
@@ -33,7 +34,7 @@ class App extends React.Component {
       inLine: true,
       restaurantID: 1,
       id: "205488283",
-    } 
+    }
   }
 
   restaurants = {
@@ -175,7 +176,7 @@ class App extends React.Component {
     email: "againbplate@dining.ucla.edu",
     url: "http://uhhuh.com",
     },
-}   
+}
 
 isLoggedIn = true;
 
@@ -192,6 +193,7 @@ isLoggedIn = true;
               <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]}/></Route>
               <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]}/></Route>
               <Route path="/manage"><RestaurantManagement restaurant={this.restaurants[1]}/></Route>
+              <Route path = "/user/"><UserSettings user = {this.users[901329021]} restaurants={this.restaurants}/></Route>
               <Route path="/404" component={NotFound}></Route>
               <Redirect to="/404"/>
             </Switch>
