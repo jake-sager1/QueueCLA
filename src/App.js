@@ -14,8 +14,29 @@ import LineManagement from './pages/RestaurantManagement/LineManagement/LineMana
 import RestaurantManagement from './pages/RestaurantManagement/RestaurantManagement';
 import RestaurantSettings from './pages/RestaurantManagement/RestaurantSettings/RestaurantSettings';
 import { Redirect } from 'react-router';
+import { auth } from './service/firebase'
 
 class App extends React.Component {
+
+  constructor() {
+    super()
+    this.state = {
+      user: null,
+      userType: null
+    }
+  }
+
+  // componentDidMount() {
+  //   auth.onAuthStateChanged(user => {
+  //     if (user != null) {
+  //       this.setState({
+  //         user: user
+  //       })
+  //     } else {
+  //       console.log("no user")
+  //     }
+  //   })
+  // }
 
   users = {
     "901329021": {
