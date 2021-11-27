@@ -162,7 +162,7 @@ function GlobalHeader(props) {
 
     let ribbon;
 
-    if(inline) {
+    if(isLoggedIn && inline) {
       ribbon = <Ribbon user={props.user} restaurants={props.restaurants}/>
     } else {
       ribbon = <div/>
