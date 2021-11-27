@@ -76,6 +76,78 @@ class UserName extends React.Component {
     }
 }
 
+class Identification extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            editable: false,
+            nameFieldValue: props.user.id,
+        }
+    }
+
+    toggleEdit() {
+        if(this.state.editable)
+        {
+            this.setState({
+                editable: false,
+            });
+        } else {
+            this.setState({
+                editable: true,
+            });
+        }
+    }
+
+    handleCancel() {
+        this.toggleEdit();
+        this.setState({
+            nameFieldValue: this.props.user.id,
+        })
+    }
+
+    handleSave() {
+        this.toggleEdit();
+    }
+
+    render() {
+        return (
+            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+                <Stack direction="column" spacing={1}>
+                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                        UID:
+                    </Typography>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                        {!this.state.editable &&
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Typography variant="p">
+                                    {this.props.user.id}
+                                </Typography>
+                                <IconButton onClick={this.toggleEdit.bind(this)}>
+                                    <EditIcon style={{fontSize: "medium"}}/>
+                                </IconButton>
+                            </Stack>
+                        }
+                        {this.state.editable &&
+                            <Stack direction="row" spacing={1}>
+                                <TextField value={this.state.nameFieldValue}
+                                    variant="outlined"
+                                    size="small"
+                                    label="Name"
+                                    onChange={(e) => {this.setState({nameFieldValue: e.target.value,})}}
+                                    />
+                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button variant="contained" style={{backgroundColor: "darkRed"}}
+                                        onClick={this.handleCancel.bind(this)}>Cancel</Button>
+                            </Stack>
+                        }
+                    </Stack>
+                </Stack>
+            </Paper>
+        );
+    }
+}
+
 function UserDisplay(props) {
 
     const classes = useStyles();
@@ -90,6 +162,7 @@ function UserDisplay(props) {
                     <Paper className={classes.settingsPaper}>
                         <Stack direction="column" spacing={2}>
                             <UserName user={props.user} classes={classes}/>
+                            <Identification user={props.user} classes={classes}/>
                         </Stack>
                     </Paper>
                 </Stack>
