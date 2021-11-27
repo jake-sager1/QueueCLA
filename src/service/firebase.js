@@ -1,5 +1,5 @@
 import { initializeApp, applicationDefault, cert } from "firebase/app";
-import { GoogleAuthProvider, getAuth, signInWithRedirect, getRedirectResult, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithPopup, getRedirectResult, signOut } from "firebase/auth";
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -49,4 +49,12 @@ export const signInWithGoogle = async () => {
     // The AuthCredential type that was used.
     const credential = GoogleAuthProvider.credentialFromError(error);
   });
+};
+
+export const signOutWithGoogle = async () => {
+  signOut(auth).then(() => {
+    console.log("Signed out user");
+  }).catch((error) => {
+    console.log(error);
+  })
 };
