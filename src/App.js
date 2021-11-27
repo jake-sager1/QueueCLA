@@ -58,6 +58,7 @@ class App extends React.Component {
         id: 1,
         waitlist: ["205488283", "901329021"],
         email: "bplate@dining.ucla.edu",
+        url: "http://bplate.com",
     },
     2: {
       name: "De Neve",
@@ -80,6 +81,7 @@ class App extends React.Component {
       id: 2,
       waitlist: [],
       email: "deneve@dining.ucla.edu",
+      url: "http://deneve.com",
     },
     3: {
       name: "Rendezvous West",
@@ -102,6 +104,7 @@ class App extends React.Component {
       id: 3,
       waitlist: [],
       email: "rendewest@dining.ucla.edu",
+      url: "http://rendewest.com",
     },
     4: {
       name: "Bruin Plate",
@@ -124,6 +127,7 @@ class App extends React.Component {
       id: 4,
       waitlist: [],
       email: "bplateagain@dining.ucla.edu",
+      url: "http://anotherrestaurant.com",
     },
     5: {
       name: "Bruin Plate",
@@ -146,6 +150,7 @@ class App extends React.Component {
       id: 5,
       waitlist: [],
       email: "morebplate@dining.ucla.edu",
+      url: "http://yeehaw.com",
     },
     6: {
     name: "Bruin Plate",
@@ -168,20 +173,22 @@ class App extends React.Component {
     id: 6,
     waitlist: [],
     email: "againbplate@dining.ucla.edu",
+    url: "http://uhhuh.com",
     },
 }   
+
+isLoggedIn = true;
 
   render() {
     return (
       <ThemeProvider theme={theme}>
           <Router>
             <Switch>
-              <Route exact path="/"><Home user={this.users["901329021"]}/></Route>
+              <Route exact path="/"><Home isLoggedIn={this.isLoggedIn} user={this.users["901329021"]} restaurants={this.restaurants}/></Route>
               <Route path="/card"><CardPage /></Route>
-              <Route path="/login"><App /></Route>
               <Route path="/signup"><Signup /></Route>
-              <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} restaurants={this.restaurants} user={this.users["901329021"]}/>}></Route>
-              <Route path="/restaurants"><Restaurants restaurants={this.restaurants}/></Route>
+              <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.isLoggedIn} restaurants={this.restaurants} user={this.users["901329021"]}/>}></Route>
+              <Route path="/restaurants"><Restaurants isLoggedIn={this.isLoggedIn} user={this.users["901329021"]} restaurants={this.restaurants}/></Route>
               <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]}/></Route>
               <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]}/></Route>
               <Route path="/manage"><RestaurantManagement restaurant={this.restaurants[1]}/></Route>

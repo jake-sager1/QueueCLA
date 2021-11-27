@@ -3,7 +3,7 @@ import useStyles from './restaurants-styles'
 import { Typography, Button, Container, AppBar, Toolbar } from '@mui/material';
 import { Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
-import SearchBar from "./SearchBar"
+//import SearchBar from "../../GlobalComponents/SearchBar"
 /*
 To learn about arrow functions assosciated with the search bar, look at docs.
 https://www.npmjs.com/package/material-ui-search-bar
@@ -23,9 +23,6 @@ function Header(props) {
                                 QueueCLA
                             </Typography>
                         </Link>
-                        <div className={classes.searchBar}>
-                            <SearchBar updateSearch={(value) => props.updateSearch(value)} options={Object.entries(props.restaurants).map(([id, restaurant]) => restaurant.name)}/>
-                        </div>
                     </Stack>
                 </Container>
             </Toolbar>
