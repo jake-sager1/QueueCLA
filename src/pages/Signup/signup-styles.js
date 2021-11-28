@@ -45,7 +45,12 @@ const useStyles = makeStyles((theme) => ({
     middletext: {
         align: "center"
 
-    }
+    },
+    mainPage: {
+        backgroundColor: "#f7f7f7",
+        paddingTop: "40px",
+        paddingBottom: "40px",
+    },
 
 
 }));

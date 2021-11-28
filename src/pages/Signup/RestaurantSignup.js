@@ -1,6 +1,6 @@
 import { Typography, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem } from '@mui/material';
 import React from 'react';
-import useStyles from '../Restaurant/restaurant-styles';
+import useStyles from './signup-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box'
 import MenuChip from '../../../src/GlobalComponents/Chips';
@@ -44,16 +44,15 @@ class RestaurantRegister extends React.Component {
 
     render() {
         return (
-            <Paper style={{backgroundColor: "#FFF"}}>
-                <Stack direction="column" spacing={3}>
-                    <TextField sx={{'& .MuiTextField-root': { m: 1, width: '25ch' }, }} id="outlined-error" label="Restaurant Name" variant="outlined" />
-                    <TextField spacing={3} id="outlined-multiline-static" rows={2} label="Description" variant="outlined"/>
-                    <RestaurantHours restaurant={this.props.restaurant} classes={this.classes}/>
-                    <RestaurantWaitTime restaurant={this.props.restaurant} classes={this.classes}/>
-                    <RestaurantTags restaurant={this.props.restaurant} classes={this.classes}/>
-                </Stack>
+            <Stack direction="column" spacing={3}>
+                <TextField sx={{'& .MuiTextField-root': { m: 1, width: '25ch' }, }} id="outlined-error" label="Restaurant Name" variant="outlined" />
+                <TextField spacing={3} id="outlined-multiline-static" rows={2} label="Description" variant="outlined"/>
+                <RestaurantHours restaurant={this.props.restaurant} classes={this.classes}/>
+                <RestaurantWaitTime restaurant={this.props.restaurant} classes={this.classes}/>
+                <RestaurantTags restaurant={this.props.restaurant} classes={this.classes}/>
                 <Button align="center" variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
-            </Paper>
+            </Stack>
+            
         );
     }
 }
@@ -188,24 +187,22 @@ class HourEntry extends React.Component {
 class RestaurantHours extends React.Component {
     render() {
         return (
-            <Paper style={{backgroundColor: "#FFF"}}>
-                <Stack direction="column" spacing={1}>  
-                    <Typography variant="h6" style={{fontWeight: "bold"}}>
-                        Hours
-                    </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
-                        <Stack direction="column" spacing={1}>
-                            <HourEntry day={'Monday'}/>
-                            <HourEntry day={'Tuesday'}/>
-                            <HourEntry day={'Wednesday'}/>
-                            <HourEntry day={'Thursday'}/>
-                            <HourEntry day={'Friday'}/>
-                            <HourEntry day={'Saturday'}/>
-                            <HourEntry day={'Sunday'}/>
-                        </Stack>
+            <Stack direction="column" spacing={1}>  
+                <Typography variant="h6" style={{fontWeight: "bold"}}>
+                    Hours
+                </Typography>
+                <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                    <Stack direction="column" spacing={1}>
+                        <HourEntry day={'Monday'}/>
+                        <HourEntry day={'Tuesday'}/>
+                        <HourEntry day={'Wednesday'}/>
+                        <HourEntry day={'Thursday'}/>
+                        <HourEntry day={'Friday'}/>
+                        <HourEntry day={'Saturday'}/>
+                        <HourEntry day={'Sunday'}/>
                     </Stack>
                 </Stack>
-            </Paper>
+            </Stack>
         );
     }
 }
@@ -242,8 +239,8 @@ class RestaurantWaitTime extends React.Component {
     render() {
         return (
             <div>
-                <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
-                <Typography spacing={3} variant="p">Average Wait Time per Customer</Typography>
+                <Stack direction="column" spacing={1} alignItems="left">
+                    <Typography variant="h6" style={{fontWeight: "bold"}}>Average Wait Time Per Customer</Typography>
                     <Select value={this.state.avgWaitSelection} 
                         variant="outlined" 
                         size="small" 
@@ -277,7 +274,7 @@ class RestaurantTags extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedChips: "vegan",
+            selectedChips: [],
         }
     }
 
@@ -302,6 +299,9 @@ class RestaurantTags extends React.Component {
     render() {
         return (
             <Stack direction="column" spacing={1}>
+                <Typography variant="h6" style={{fontWeight: "bold"}}>
+                    Tags
+                </Typography>
                 <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
                     <Stack spacing={1} alignItems="center" direction="row" justifyContent="flex-start"
                         style={{overflow: "scroll"}}>
@@ -324,20 +324,22 @@ function RestaurantSignup(props) {
     let editName = false;
     
     return (
-        <div class={classes.mainPage}>
+        <div class={classes.page}>
             <Header/>
-            <Container maxWidth="md">
-                <Stack direction="column" spacing={2}>
-                    <Paper className={classes.settingsPaper}>
-                        <Box m={2} pt={3}>
-                            <Typography spacing="5" variant="h5" style={{fontWeight: "bold"}}>Register Your Restaurant</Typography>
-                            <Stack direction="column" spacing={5} sx={{ mb: 3 }}>
-                                <RestaurantRegister restaurant={props.restaurant} classes={classes}/>
+            <div class={classes.mainPage}>
+                <Container maxWidth="md">
+                    <Stack direction="column" spacing={2}>
+                        <Paper className={classes.settingsPaper} style={{padding: "20px"}}>
+                            <Stack spacing={2} direction="column">
+                                <Typography spacing="5" variant="h5" style={{fontWeight: "bold"}}>Register Your Restaurant</Typography>
+                                <Stack direction="column" spacing={5} sx={{ mb: 3 }}>
+                                    <RestaurantRegister restaurant={props.restaurant} classes={classes}/>
+                                </Stack>
                             </Stack>
-                        </Box>
-                    </Paper>
-                </Stack>
-            </Container>
+                        </Paper>
+                    </Stack>
+                </Container>
+            </div>
             <Footer/>
         </div>
     )
