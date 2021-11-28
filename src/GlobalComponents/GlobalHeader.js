@@ -11,7 +11,7 @@ import { signOutWithGoogle } from '../service/firebase';
 function StackLogin() {
   return (
     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-        <Link to="../signup" style={{textDecoration: "none"}}><Button variant="contained" color="primary" href="../signup" onClick={signInWithGoogle('user')}>Sign In With Google</Button></Link>
+        <Button variant="contained" color="primary" onClick={() => {signInWithGoogle('user')}}>Sign In With Google</Button>
     </Stack>
   )
 }
