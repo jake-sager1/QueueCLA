@@ -16,15 +16,15 @@ class Restaurants extends React.Component {
     }
 
     render() {
-
+        if (!this.props.isLoggedIn) {
+            return <Redirect exact to="/"></Redirect>;
+        }
         return (
             <div style={{
                 backgroundColor: "#3d3d3d",
                 height: "100vh"
             }}>
-                {!this.props.isLoggedIn &&
-                    <Redirect exact to="/"></Redirect>
-                }
+
                 <GlobalHeader restaurants={this.props.restaurants}
                     isLoggedIn={this.props.isLoggedIn} user={this.props.user}
                 />

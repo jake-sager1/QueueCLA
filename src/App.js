@@ -15,34 +15,60 @@ import RestaurantManagement from './pages/RestaurantManagement/RestaurantManagem
 import RestaurantSettings from './pages/RestaurantManagement/RestaurantSettings/RestaurantSettings';
 import UserSettings from './pages/User/UserSettings/UserSettings.js'
 import { Redirect } from 'react-router';
-import { auth } from './service/firebase'
+import { auth } from './service/firebase';
+import Loader from "react-loader-spinner";
+
 
 class App extends React.Component {
 
   constructor() {
     super()
     this.state = {
-      user: null,
       userType: null,
-      userLoggedIn: false
+      userLoggedIn: false,
+      signOutClicked: false,
+      user: null,
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     auth.onAuthStateChanged(user => {
-      if (user != null) {
-        this.setState({
-          user: user,
-          userLoggedIn: true
-        })
+      if (user !== null) {
+        let body = {
+          id: user.uid
+        };
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        };
+        setTimeout(() => {
+          fetch('http://localhost:5001/user/get', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+              let userState = data.data.user;
+              userState.id = user.uid;
+              this.setState({
+                user: userState,
+                userLoggedIn: true,
+                signOutClicked: false
+              });
+            });
+        }, 2000);
       } else {
         this.setState({
           user: null,
-          userLoggedIn: false
+          userLoggedIn: false,
+          signOutClicked: true
         });
-        console.log("no user")
+        console.log("no user");
       }
     })
+  }
+
+  changeUserData = (changes) => {
+    let changedUser = Object.assign({}, this.state.user, changes);
+    this.setState({ user: changedUser });
   }
 
   users = {
@@ -52,8 +78,9 @@ class App extends React.Component {
       year: "2024",
       inLine: true,
       restaurantID: 1,
-      id: "901329021",
+      uid: "901329021",
       favorites: [1, 2],
+      id: "abcdef"
     },
     "205488283": {
       name: "Jake Sager",
@@ -61,8 +88,19 @@ class App extends React.Component {
       year: "2024",
       inLine: true,
       restaurantID: 1,
-      id: "205488283",
+      uid: "205488283",
       favorites: [1],
+      id: "abcdef"
+    },
+    "305531276": {
+      name: "Avii Ahuja",
+      email: "avii.ahuja@gmail.com",
+      year: "2024",
+      inLine: true,
+      restaurantID: 1,
+      uid: "305531276",
+      favorites: [1, 2],
+      id: "aGakoB5JznQl3AvqWpB0fU56hdu2"
     }
   }
 
@@ -205,20 +243,34 @@ class App extends React.Component {
       email: "againbplate@dining.ucla.edu",
       url: "http://uhhuh.com",
     },
-}
+  }
 
 
   render() {
+    if (this.state.user === null && !this.state.signOutClicked) return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Loader
+          type="ThreeDots"
+          color="#00BFFF"
+          height={100}
+          width={100}
+        />
+      </div>
+    );
     return (
       <ThemeProvider theme={theme}>
         <Router>
           <Switch>
-            <Route exact path="/"><Home isLoggedIn={this.state.userLoggedIn} user={this.users["901329021"]} restaurants={this.restaurants} /></Route>
+            <Route exact path="/"><Home isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} /></Route>
             <Route path="/card"><CardPage /></Route>
             <Route path="/signup"><Signup /></Route>
-            <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.userLoggedIn} restaurants={this.restaurants} user={this.users["901329021"]} />}></Route>
-            <Route path="/restaurants"><Restaurants isLoggedIn={this.state.userLoggedIn} user={this.users["901329021"]} restaurants={this.restaurants} /></Route>
-            <Route path = "/user/"><UserSettings isLoggedIn={this.state.userLoggedIn} user={this.users[901329021]} restaurants={this.restaurants}/></Route>
+            <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.userLoggedIn} restaurants={this.restaurants} user={this.state.user} />}></Route>
+            <Route path="/restaurants"><Restaurants isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} /></Route>
+            <Route path="/user"><UserSettings isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} changeUserData={this.changeUserData} /></Route>
             <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]} /></Route>
             <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]} /></Route>
             <Route path="/manage"><RestaurantManagement restaurant={this.restaurants[1]} /></Route>

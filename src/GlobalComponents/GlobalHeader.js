@@ -7,7 +7,6 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SearchBar from './SearchBar';
 import { signOutWithGoogle } from '../service/firebase';
 
-
 function StackLogin() {
   return (
     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
@@ -101,7 +100,7 @@ function StackProfile(props) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <Link to="/404" style={{ textDecoration: "none", color: "black" }}>
+        <Link to="/user" style={{ textDecoration: "none", color: "black" }}>
           <MenuItem>
             <ListItemIcon>
               <Settings fontSize="small" />
@@ -152,8 +151,8 @@ function GlobalHeader(props) {
 
   const classes = useStyles();
   const isLoggedIn = props.isLoggedIn
-  const userName = props.user.name;
-  const inline = props.user.inLine;
+  // const userName = props.user.name;
+  const inline = props.isLoggedIn ? props.user.inLine : false;
 
   let stackRight;
 

@@ -17,8 +17,7 @@ class UserName extends React.Component {
     }
 
     toggleEdit() {
-        if(this.state.editable)
-        {
+        if (this.state.editable) {
             this.setState({
                 editable: false,
             });
@@ -37,24 +36,31 @@ class UserName extends React.Component {
     }
 
     handleSave() {
-        this.toggleEdit();
+        console.log(this.state);
+        //edit user
+        let change = { "name": this.state.nameFieldValue };
+        editUser(this.props.user.id, change)
+            .then(() => {
+                this.props.changeUserData(change);
+                this.toggleEdit();
+            });
     }
 
     render() {
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         Name:
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         {!this.state.editable &&
                             <Stack direction="row" spacing={1} alignItems="center">
                                 <Typography variant="p">
-                                    {this.props.user.name}
+                                    {this.state.nameFieldValue}
                                 </Typography>
                                 <IconButton onClick={this.toggleEdit.bind(this)}>
-                                    <EditIcon style={{fontSize: "medium"}}/>
+                                    <EditIcon style={{ fontSize: "medium" }} />
                                 </IconButton>
                             </Stack>
                         }
@@ -64,11 +70,11 @@ class UserName extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Name"
-                                    onChange={(e) => {this.setState({nameFieldValue: e.target.value,})}}
-                                    />
+                                    onChange={(e) => { this.setState({ nameFieldValue: e.target.value }) }}
+                                />
                                 <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
-                                <Button variant="contained" style={{backgroundColor: "darkRed"}}
-                                        onClick={this.handleCancel.bind(this)}>Cancel</Button>
+                                <Button variant="contained" style={{ backgroundColor: "darkRed" }}
+                                    onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
                         }
                     </Stack>
@@ -84,13 +90,12 @@ class Identification extends React.Component {
         super(props);
         this.state = {
             editable: false,
-            nameFieldValue: props.user.id,
+            nameFieldValue: props.user.uid,
         }
     }
 
     toggleEdit() {
-        if(this.state.editable)
-        {
+        if (this.state.editable) {
             this.setState({
                 editable: false,
             });
@@ -104,29 +109,34 @@ class Identification extends React.Component {
     handleCancel() {
         this.toggleEdit();
         this.setState({
-            nameFieldValue: this.props.user.id,
+            nameFieldValue: this.props.user.uid,
         })
     }
 
     handleSave() {
-        this.toggleEdit();
+        let change = { "uid": this.state.nameFieldValue };
+        editUser(this.props.user.id, change)
+            .then(() => {
+                this.toggleEdit();
+                this.props.changeUserData(change);
+            });
     }
 
     render() {
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         UID:
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         {!this.state.editable &&
                             <Stack direction="row" spacing={1} alignItems="center">
                                 <Typography variant="p">
-                                    {this.props.user.id}
+                                    {this.state.nameFieldValue}
                                 </Typography>
                                 <IconButton onClick={this.toggleEdit.bind(this)}>
-                                    <EditIcon style={{fontSize: "medium"}}/>
+                                    <EditIcon style={{ fontSize: "medium" }} />
                                 </IconButton>
                             </Stack>
                         }
@@ -136,11 +146,13 @@ class Identification extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="UID"
-                                    onChange={(e) => {this.setState({nameFieldValue: e.target.value,})}}
-                                    />
+                                    onChange={(e) => {
+                                        this.setState({ nameFieldValue: e.target.value });
+                                    }}
+                                />
                                 <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
-                                <Button variant="contained" style={{backgroundColor: "darkRed"}}
-                                        onClick={this.handleCancel.bind(this)}>Cancel</Button>
+                                <Button variant="contained" style={{ backgroundColor: "darkRed" }}
+                                    onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
                         }
                     </Stack>
@@ -154,17 +166,17 @@ class Email extends React.Component {
 
     render() {
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         Email:
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
-                            <Stack direction="row" spacing={1} alignItems="center">
-                                <Typography variant="p">
-                                    {this.props.user.email}
-                                </Typography>
-                            </Stack>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
+                        <Stack direction="row" spacing={1} alignItems="center">
+                            <Typography variant="p">
+                                {this.props.user.email}
+                            </Typography>
+                        </Stack>
                     </Stack>
                 </Stack>
             </Paper>
@@ -174,65 +186,65 @@ class Email extends React.Component {
 
 function CardRender(props) {
 
-  const classes = useStyles();
+    const classes = useStyles();
 
     return (
-    <Card className={classes.card}>
-        <CardActionArea component={Link} to={"/restaurants/" + props.id} className={classes.cardActionArea}>
-            <CardMedia className={classes.cardMedia} image={props.restaurants[props.id].bannerImage} title="Image Title"></CardMedia>
-            <CardContent className={classes.cardContent}>
-                <Typography gutterBottom variant="h5">
-                    {props.restaurants[ props.id].name}
-                </Typography>
-                <Typography color="textSecondary">
-                    {props.restaurants[ props.id].description}
-                </Typography>
-            </CardContent>
+        <Card className={classes.card}>
+            <CardActionArea component={Link} to={"/restaurants/" + props.id} className={classes.cardActionArea}>
+                <CardMedia className={classes.cardMedia} image={props.restaurants[props.id].bannerImage} title="Image Title"></CardMedia>
+                <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5">
+                        {props.restaurants[props.id].name}
+                    </Typography>
+                    <Typography color="textSecondary">
+                        {props.restaurants[props.id].description}
+                    </Typography>
+                </CardContent>
 
-            <Stack className={classes.chips} direction="row" spacing={1}>
-                {props.restaurants[ props.id].chips.map((name) =>
-                    <MenuChip name={name}
-                    onClick={null}
-                    variant="outlined"/>
-                )}
-            </Stack>
+                <Stack className={classes.chips} direction="row" spacing={1}>
+                    {props.restaurants[props.id].chips.map((name) =>
+                        <MenuChip name={name}
+                            onClick={null}
+                            variant="outlined" />
+                    )}
+                </Stack>
 
-        </CardActionArea>
+            </CardActionArea>
 
-    </Card>
+        </Card>
     );
 
 }
 
 class Favorites extends React.Component {
 
-  constructor(props) {
-      super(props);
-  }
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         Favorite Restaurants:
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
-                            <Stack direction="row" spacing={1} alignItems="center">
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
+                        <Stack direction="row" spacing={1} alignItems="center">
 
 
                             <Grid container spacing={2} alignItems="stretch">
                                 {this.props.user.favorites.map((id) => (
                                     <Grid item key={id} xs={12} sm={6} md={4}>
 
-                                    <CardRender id = {id} restaurants = {this.props.restaurants}/>
+                                        <CardRender id={id} restaurants={this.props.restaurants} />
 
                                     </Grid>
                                 ))}
                             </Grid>
 
 
-                            </Stack>
+                        </Stack>
                     </Stack>
                 </Stack>
             </Paper>
@@ -253,16 +265,31 @@ function UserDisplay(props) {
                     <Typography variant="h3">{props.user.name}'s Profile</Typography>
                     <Paper className={classes.settingsPaper}>
                         <Stack direction="column" spacing={2}>
-                            <UserName user={props.user} classes={classes}/>
-                            <Identification user={props.user} classes={classes}/>
-                            <Email user={props.user} classes={classes}/>
-                            <Favorites user={props.user} restaurants={props.restaurants} classes={classes}/>
+                            <UserName user={props.user} classes={classes} changeUserData={props.changeUserData} />
+                            <Identification user={props.user} classes={classes} changeUserData={props.changeUserData} />
+                            <Email user={props.user} classes={classes} />
+                            <Favorites user={props.user} restaurants={props.restaurants} classes={classes} />
                         </Stack>
                     </Paper>
                 </Stack>
             </Container>
         </div>
     )
+}
+
+async function editUser(id, editProps) {
+    const body = {
+        data: editProps,
+        id: id
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    };
+    fetch('http://localhost:5001/user/edit', requestOptions)
+        .then(response => response.json())
+        .then(data => { console.log(data) });
 }
 
 export default UserDisplay;
