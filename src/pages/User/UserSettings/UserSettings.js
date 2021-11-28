@@ -11,7 +11,7 @@ function UserSettings(props) {
     return (
         <div className={classes.page}>
             <Header isLoggedIn={props.isLoggedIn} user={props.user} restaurants={props.restaurants}/>
-            <UserDisplay user={props.user}/>
+            <UserDisplay user={props.user} restaurants={props.restaurants}/>
             <Footer/>
         </div>
     );

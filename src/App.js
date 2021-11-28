@@ -26,6 +26,7 @@ class App extends React.Component {
       inLine: true,
       restaurantID: 1,
       id: "901329021",
+      favorites: [1, 2],
     },
     "205488283": {
       name: "Jake Sager",
@@ -34,6 +35,7 @@ class App extends React.Component {
       inLine: true,
       restaurantID: 1,
       id: "205488283",
+      favorites: [1],
     }
   }
 

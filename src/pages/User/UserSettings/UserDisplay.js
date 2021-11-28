@@ -1,4 +1,4 @@
-import { Typography, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem } from '@mui/material';
+import { Typography, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem, Card, CardActionArea, Link, CardMedia, CardContent } from '@mui/material';
 import React from 'react';
 import useStyles from '../user-styles';
 import EditIcon from '@mui/icons-material/Edit';
@@ -148,6 +148,98 @@ class Identification extends React.Component {
     }
 }
 
+class Email extends React.Component {
+
+    render() {
+        return (
+            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+                <Stack direction="column" spacing={1}>
+                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                        Email:
+                    </Typography>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Typography variant="p">
+                                    {this.props.user.email}
+                                </Typography>
+                            </Stack>
+                    </Stack>
+                </Stack>
+            </Paper>
+        );
+    }
+}
+
+function CardRender(props) {
+
+  const classes = useStyles();
+
+  <Card className={classes.card}>
+      <CardActionArea component={Link} to={"/restaurants/" + props.id} className={classes.cardActionArea}>
+          <CardMedia className={classes.cardMedia} image={props.restaurants[props.id].bannerImage} title="Image Title"></CardMedia>
+          <CardContent className={classes.cardContent}>
+              <Typography gutterBottom variant="h5">
+                  {props.restaurants[ props.id].name}
+              </Typography>
+              <Typography color="textSecondary">
+                  {props.restaurants[ props.id].description}
+              </Typography>
+          </CardContent>
+
+          <Stack className={classes.chips} direction="row" spacing={1}>
+              {props.restaurants[ props.id].chips.map((name) =>
+                  <MenuChip name={name}
+                  onClick={null}
+                  variant="outlined"/>
+              )}
+          </Stack>
+
+      </CardActionArea>
+
+  </Card>
+
+}
+
+class Favorites extends React.Component {
+
+  constructor(props) {
+      super(props);
+      this.state = {
+          favorites: props.user.favorites,
+          resturants: props.restaurants,
+      }
+  }
+
+    render() {
+        return (
+            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+                <Stack direction="column" spacing={1}>
+                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                        Favorite Restaurants:
+                    </Typography>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                            <Stack direction="row" spacing={1} alignItems="center">
+
+
+                            <Grid container spacing={2} alignItems="stretch">
+                                {this.state.favorites.map((id) => (
+                                    <Grid item key={id} xs={12} sm={6} md={4}>
+
+                                    <CardRender id = {id} restaurants = {this.state.restaurants}/>
+
+                                    </Grid>
+                                ))}
+                            </Grid>
+
+
+                            </Stack>
+                    </Stack>
+                </Stack>
+            </Paper>
+        );
+    }
+}
+
 function UserDisplay(props) {
 
     const classes = useStyles();
@@ -163,6 +255,8 @@ function UserDisplay(props) {
                         <Stack direction="column" spacing={2}>
                             <UserName user={props.user} classes={classes}/>
                             <Identification user={props.user} classes={classes}/>
+                            <Email user={props.user} classes={classes}/>
+                            <Favorites user={props.user} classes={classes}/>
                         </Stack>
                     </Paper>
                 </Stack>

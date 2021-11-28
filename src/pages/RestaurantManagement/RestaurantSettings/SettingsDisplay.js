@@ -58,9 +58,9 @@ class RestaurantName extends React.Component {
                         }
                         {this.state.editable &&
                             <Stack direction="row" spacing={1}>
-                                <TextField value={this.state.nameFieldValue} 
-                                    variant="outlined" 
-                                    size="small" 
+                                <TextField value={this.state.nameFieldValue}
+                                    variant="outlined"
+                                    size="small"
                                     label="Name"
                                     onChange={(e) => {this.setState({nameFieldValue: e.target.value,})}}
                                     />
@@ -130,9 +130,9 @@ class RestaurantDescription extends React.Component {
                         }
                         {this.state.editable &&
                             <Stack direction="row" spacing={1}>
-                                <TextField value={this.state.descriptionFieldValue} 
-                                    variant="outlined" 
-                                    size="small" 
+                                <TextField value={this.state.descriptionFieldValue}
+                                    variant="outlined"
+                                    size="small"
                                     label="Description"
                                     style={{width: "400px",}}
                                     onChange={(e) => {this.setState({descriptionFieldValue: e.target.value,})}}
@@ -222,7 +222,7 @@ class HourEntry extends React.Component {
             openTimeHalf: val,
         })
     }
-    
+
     handleCloseChange(val) {
         this.setState({
             closeTimeSelection: val,
@@ -237,16 +237,16 @@ class HourEntry extends React.Component {
 
     render() {
         return (
-            <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={1}> 
+            <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={1}>
                 <Typography variant="p" style={{width: "110px"}}>
                     {this.props.day + ":"}
                 </Typography>
                 {!this.state.editable &&
                     <Stack direction="row" spacing={1} alignItems="center">
                         <Typography variant="p">
-                            {this.props.restaurant.hours[this.props.day].open + 
-                            this.props.restaurant.hours[this.props.day].openHalf + 
-                            " - " + 
+                            {this.props.restaurant.hours[this.props.day].open +
+                            this.props.restaurant.hours[this.props.day].openHalf +
+                            " - " +
                             this.props.restaurant.hours[this.props.day].close +
                             this.props.restaurant.hours[this.props.day].closeHalf}
                         </Typography>
@@ -254,7 +254,7 @@ class HourEntry extends React.Component {
                             <EditIcon style={{fontSize: "medium"}}/>
                         </IconButton>
                     </Stack>
-                }  
+                }
                 {this.state.editable &&
                 <Stack direction="column" spacing={1}>
                     <Stack direction="row" alignItems="center" spacing={1}>
@@ -290,7 +290,7 @@ class HourEntry extends React.Component {
                     </Stack>
                 </Stack>
                 }
-            </Stack> 
+            </Stack>
         );
     }
 }
@@ -299,14 +299,14 @@ class RestaurantHours extends React.Component {
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
-                <Stack direction="column" spacing={1}>  
+                <Stack direction="column" spacing={1}>
                     <Typography variant="h5" style={{fontWeight: "bold"}}>
                         Hours:
                     </Typography>
                     <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
                         <Stack direction="column" spacing={1}>
                             {Object.keys(this.props.restaurant.hours).map((day) => (
-                                <HourEntry key={day} day={day} restaurant={this.props.restaurant}/> 
+                                <HourEntry key={day} day={day} restaurant={this.props.restaurant}/>
                             ))}
                         </Stack>
                     </Stack>
@@ -348,7 +348,7 @@ class RestaurantWaitTime extends React.Component {
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
-                <Stack direction="column" spacing={1}>  
+                <Stack direction="column" spacing={1}>
                     <Typography variant="h5" style={{fontWeight: "bold"}}>
                         Average wait time per customer:
                     </Typography>
@@ -364,9 +364,9 @@ class RestaurantWaitTime extends React.Component {
                     }
                     {this.state.editable &&
                         <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
-                            <Select value={this.state.avgWaitSelection} 
-                                variant="outlined" 
-                                size="small" 
+                            <Select value={this.state.avgWaitSelection}
+                                variant="outlined"
+                                size="small"
                                 label="Description"
                                 style={{width: "150px",}}
                                 onChange={(e) => {this.setState({avgWaitSelection: e.target.value,})}}
@@ -391,7 +391,7 @@ class RestaurantWaitTime extends React.Component {
                                     onClick={this.handleCancel.bind(this)}>Cancel</Button>
                         </Stack>
                     }
-                </Stack> 
+                </Stack>
             </Paper>
         );
     }
@@ -405,7 +405,6 @@ class RestaurantTags extends React.Component {
             selectedChips: this.props.restaurant.chips,
         }
     }
-
 
     chips = [
         "vegetarian", "vegan", "gluten-free", "breakfast", "lunch", "dinner",
@@ -434,8 +433,8 @@ class RestaurantTags extends React.Component {
                     <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
                         <Stack spacing={1} alignItems="center" direction="row" justifyContent="flex-start"
                             style={{overflow: "scroll"}}>
-                            {this.chips.map((name) => 
-                                    <MenuChip name={name} 
+                            {this.chips.map((name) =>
+                                    <MenuChip name={name}
                                     onClick={() => this.handleClick(name)}
                                     variant={this.state.selectedChips.includes(name) ? "filled" : "outlined"}/>
                             )}
@@ -450,9 +449,9 @@ class RestaurantTags extends React.Component {
 function SettingsDisplay(props) {
 
     const classes = useStyles();
-    
+
     let editName = false;
-    
+
     return (
         <div class={classes.mainPage}>
             <Container maxWidth="md">
