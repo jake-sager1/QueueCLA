@@ -1,8 +1,10 @@
-import { Typography, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem, Card, CardActionArea, Link, CardMedia, CardContent } from '@mui/material';
+import { Typography, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem, Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
 import React from 'react';
 import useStyles from '../user-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
+import { Link } from 'react-router-dom';
+
 
 class UserName extends React.Component {
 
