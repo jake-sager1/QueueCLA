@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
   linePaper: {
       padding: "2em",
   },
-  
 }));
 
 export default useStyles;
