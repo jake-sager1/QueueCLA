@@ -149,6 +149,177 @@ class RestaurantDescription extends React.Component {
     }
 }
 
+class RestaurantEmail extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+                <Stack direction="column" spacing={1}>
+                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                        Email:
+                    </Typography>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                        <Stack direction="row" spacing={1} alignItems="center">
+                            <Typography variant="p">
+                                {this.props.restaurant.email}
+                            </Typography>
+                        </Stack>
+                    </Stack>
+                </Stack>
+            </Paper>
+        );
+    }
+}
+
+class RestaurantPhone extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            editable: false,
+            phoneValue: props.restaurant.name,
+        }
+    }
+
+    toggleEdit() {
+        if(this.state.editable)
+        {
+            this.setState({
+                editable: false,
+            });
+        } else {
+            this.setState({
+                editable: true,
+            });
+        }
+    }
+
+    handleCancel() {
+        this.toggleEdit();
+        this.setState({
+            phoneValue: this.props.restaurant.phone,
+        })
+    }
+
+    handleSave() {
+        this.toggleEdit();
+    }
+
+    render() {
+        return (
+            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+                <Stack direction="column" spacing={1}>
+                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                        Phone:
+                    </Typography>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                        {!this.state.editable &&
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Typography variant="p">
+                                    {this.props.restaurant.phone}
+                                </Typography>
+                                <IconButton onClick={this.toggleEdit.bind(this)}>
+                                    <EditIcon style={{fontSize: "medium"}}/>
+                                </IconButton>
+                            </Stack>
+                        }
+                        {this.state.editable &&
+                            <Stack direction="row" spacing={1}>
+                                <TextField value={this.state.phoneValue}
+                                    variant="outlined"
+                                    size="small"
+                                    label="Phone Number"
+                                    onChange={(e) => {this.setState({phoneValue: e.target.value,})}}
+                                    />
+                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button variant="contained" style={{backgroundColor: "darkRed"}}
+                                        onClick={this.handleCancel.bind(this)}>Cancel</Button>
+                            </Stack>
+                        }
+                    </Stack>
+                </Stack>
+            </Paper>
+        );
+    }
+}
+
+
+class RestaurantWebsite extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            editable: false,
+            websiteValue: props.restaurant.url,
+        }
+    }
+
+    toggleEdit() {
+        if(this.state.editable)
+        {
+            this.setState({
+                editable: false,
+            });
+        } else {
+            this.setState({
+                editable: true,
+            });
+        }
+    }
+
+    handleCancel() {
+        this.toggleEdit();
+        this.setState({
+            websiteValue: this.props.restaurant.url,
+        })
+    }
+
+    handleSave() {
+        this.toggleEdit();
+    }
+
+    render() {
+        return (
+            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+                <Stack direction="column" spacing={1}>
+                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                        Website:
+                    </Typography>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                        {!this.state.editable &&
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Typography variant="p">
+                                    {this.props.restaurant.url}
+                                </Typography>
+                                <IconButton onClick={this.toggleEdit.bind(this)}>
+                                    <EditIcon style={{fontSize: "medium"}}/>
+                                </IconButton>
+                            </Stack>
+                        }
+                        {this.state.editable &&
+                            <Stack direction="row" spacing={1}>
+                                <TextField value={this.state.websiteValue}
+                                    variant="outlined"
+                                    size="small"
+                                    label="Website URL"
+                                    onChange={(e) => {this.setState({websiteValue: e.target.value,})}}
+                                    />
+                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button variant="contained" style={{backgroundColor: "darkRed"}}
+                                        onClick={this.handleCancel.bind(this)}>Cancel</Button>
+                            </Stack>
+                        }
+                    </Stack>
+                </Stack>
+            </Paper>
+        );
+    }
+}
+
 class HourEntry extends React.Component {
 
     constructor(props) {
@@ -446,6 +617,80 @@ class RestaurantTags extends React.Component {
     }
 }
 
+class RestaurantMenu extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            editable: false,
+            menuValue: this.props.restaurant.menu,
+        }
+    }
+
+    toggleEdit() {
+        if(this.state.editable)
+        {
+            this.setState({
+                editable: false,
+            });
+        } else {
+            this.setState({
+                editable: true,
+            });
+        }
+    }
+
+    handleCancel() {
+        this.toggleEdit();
+        this.setState({
+            menuValue: this.props.restaurant.menu,
+        })
+    }
+
+    handleSave() {
+        this.toggleEdit();
+    }
+
+    render() {
+        return (
+            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+                <Stack direction="column" spacing={1}>
+                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                        Menu:
+                    </Typography>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                        {!this.state.editable &&
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Typography variant="p">
+                                    <pre style={{fontFamily: "Roboto"}}>{this.state.menuValue}</pre>
+                                </Typography>
+                                <IconButton onClick={this.toggleEdit.bind(this)}>
+                                    <EditIcon style={{fontSize: "medium"}}/>
+                                </IconButton>
+                            </Stack>
+                        }
+                        {this.state.editable &&
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <TextField value={this.state.menuValue}
+                                    variant="outlined"
+                                    multiline
+                                    size="large"
+                                    label="Menu"
+                                    style={{width: "600px"}}
+                                    onChange={(e) => {this.setState({menuValue: e.target.value,})}}
+                                    />
+                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button variant="contained" style={{backgroundColor: "darkRed"}}
+                                        onClick={this.handleCancel.bind(this)}>Cancel</Button>
+                            </Stack>
+                        }
+                    </Stack>
+                </Stack>
+            </Paper>
+        );
+    }
+}
+
 function SettingsDisplay(props) {
 
     const classes = useStyles();
@@ -461,9 +706,13 @@ function SettingsDisplay(props) {
                         <Stack direction="column" spacing={2}>
                             <RestaurantName restaurant={props.restaurant} classes={classes}/>
                             <RestaurantDescription restaurant={props.restaurant} classes={classes}/>
+                            <RestaurantEmail classes={classes} restaurant={props.restaurant}/>
+                            <RestaurantPhone classes={classes} restaurant={props.restaurant}/>
+                            <RestaurantWebsite classes={classes} restaurant={props.restaurant}/>
                             <RestaurantHours restaurant={props.restaurant} classes={classes}/>
                             <RestaurantWaitTime restaurant={props.restaurant} classes={classes}/>
                             <RestaurantTags restaurant={props.restaurant} classes={classes}/>
+                            <RestaurantMenu restaurant={props.restaurant} classes={classes}/>
                         </Stack>
                     </Paper>
                 </Stack>
