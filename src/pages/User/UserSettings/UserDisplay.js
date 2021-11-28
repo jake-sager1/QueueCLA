@@ -233,14 +233,16 @@ class Favorites extends React.Component {
                         <Stack direction="row" spacing={1} alignItems="center">
 
 
-                            <Grid container spacing={2} alignItems="stretch">
+                            <Grid container spacing={1} alignItems="stretch" style={{width: "100%"}}>
                                 {this.props.user.favorites.map((id) => (
                                     <Grid item key={id} xs={12} sm={6} md={4}>
 
                                         <CardRender id={id} restaurants={this.props.restaurants} />
+                                        
 
                                     </Grid>
                                 ))}
+                                
                             </Grid>
 
 
