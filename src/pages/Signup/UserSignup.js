@@ -12,7 +12,7 @@ class UserRegister extends React.Component {
         return(
             <Stack direction="column" spacing={3}>
                 <Typography spacing={5}></Typography>
-                <Typography spacing={3} variant="h5" style={{fontWeight: "bold"}}>Welcome, {auth.currentUser.displayName}!</Typography>
+                <Typography spacing={3} variant="h5" style={{fontWeight: "bold"}}>Welcome, USER NAME!</Typography>
                 <Typography spacing={3} variant="h7">We just need a little more information before you get started...</Typography>
                 <TextField sx={{'& .MuiTextField-root': { m: 1, width: '25ch' }, }} id="outlined-error" label="UCLA UID" input="number" variant="outlined" />
                 <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
