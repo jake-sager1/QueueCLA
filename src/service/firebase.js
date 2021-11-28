@@ -1,5 +1,5 @@
 import { initializeApp, applicationDefault, cert } from "firebase/app";
-import { GoogleAuthProvider, getAuth, signInWithRedirect, getRedirectResult, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithRedirect, getRedirectResult, signOut } from "firebase/auth";
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -18,35 +18,45 @@ const db = getFirestore();
 export const provider = new GoogleAuthProvider();
 export const auth = getAuth();
 
+getRedirectResult(auth).then((result) => {
+  // This gives you a Google Access Token. You can use it to access the Google API.
+  const credential = GoogleAuthProvider.credentialFromResult(result);
+  const token = credential.accessToken;
+  // The signed-in user info.
+  const user = result.user;
+
+  //now send this user to backend
+  let body = {
+    email: user.email,
+    id: user.uid,
+    name: user.displayName
+  };
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  };
+  fetch('http://localhost:5001/user/create', requestOptions)
+    .then(response => response.json())
+    .then(data => { console.log(data) });
+}).catch((error) => {
+  // Handle Errors here.
+  const errorCode = error.code;
+  const errorMessage = error.message;
+  // The email of the user's account used.
+  const email = error.email;
+  // The AuthCredential type that was used.
+  const credential = GoogleAuthProvider.credentialFromError(error);
+});
 
 export const signInWithGoogle = async () => {
-  signInWithPopup(auth, provider).then((result) => {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    // The signed-in user info.
-    const user = result.user;
+  signInWithRedirect(auth, provider);
+}
 
-    //now send this user to backend
-    let body = {
-      email: user.email,
-      uid: user.uid
-    };
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    };
-    fetch('http://localhost:5000/user/create', requestOptions)
-      .then(response => response.json())
-      .then(data => { console.log(data) });
+export const signOutWithGoogle = async () => {
+  signOut(auth).then(() => {
+    console.log("Signed out user");
   }).catch((error) => {
-    // Handle Errors here.
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.email;
-    // The AuthCredential type that was used.
-    const credential = GoogleAuthProvider.credentialFromError(error);
-  });
+    console.log(error);
+  })
 };
