@@ -148,6 +148,7 @@ class App extends React.Component {
       waitlist: ["205488283", "901329021"],
       email: "bplate@dining.ucla.edu",
       url: "http://bplate.com",
+      menu: "Taquitos\nA great dish for friends and family!\n\nNachos\nBest for the doggies.",
     },
     2: {
       name: "De Neve",
@@ -171,6 +172,7 @@ class App extends React.Component {
       waitlist: [],
       email: "deneve@dining.ucla.edu",
       url: "http://deneve.com",
+      menu: "Taquitos\nA great dish for friends and family!\n\nNachos\nBest for the doggies.",
     },
     3: {
       name: "Rendezvous West",
@@ -194,6 +196,7 @@ class App extends React.Component {
       waitlist: [],
       email: "rendewest@dining.ucla.edu",
       url: "http://rendewest.com",
+      menu: "Taquitos\nA great dish for friends and family!\n\nNachos\nBest for the doggies.",
     },
     4: {
       name: "Bruin Plate",
@@ -217,6 +220,7 @@ class App extends React.Component {
       waitlist: [],
       email: "bplateagain@dining.ucla.edu",
       url: "http://anotherrestaurant.com",
+      menu: "Taquitos\nA great dish for friends and family!\n\nNachos\nBest for the doggies.",
     },
     5: {
       name: "Bruin Plate",
@@ -240,6 +244,7 @@ class App extends React.Component {
       waitlist: [],
       email: "morebplate@dining.ucla.edu",
       url: "http://yeehaw.com",
+      menu: "Taquitos\nA great dish for friends and family!\n\nNachos\nBest for the doggies.",
     },
     6: {
       name: "Bruin Plate",
@@ -263,6 +268,7 @@ class App extends React.Component {
       waitlist: [],
       email: "againbplate@dining.ucla.edu",
       url: "http://uhhuh.com",
+      menu: "Taquitos\nA great dish for friends and family!\n\nNachos\nBest for the doggies.",
     },
   }
 
