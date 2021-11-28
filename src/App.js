@@ -15,7 +15,9 @@ import RestaurantManagement from './pages/RestaurantManagement/RestaurantManagem
 import RestaurantSettings from './pages/RestaurantManagement/RestaurantSettings/RestaurantSettings';
 import UserSettings from './pages/User/UserSettings/UserSettings.js'
 import { Redirect } from 'react-router';
-import { auth } from './service/firebase'
+import { auth } from './service/firebase';
+import Loader from "react-loader-spinner";
+
 
 class App extends React.Component {
 
@@ -24,14 +26,14 @@ class App extends React.Component {
     this.state = {
       userType: null,
       userLoggedIn: false,
-      user: null
+      userLoggedOut: false,
+      user: null,
     }
   }
 
   async componentDidMount() {
     auth.onAuthStateChanged(user => {
-      if (user != null) {
-
+      if (user !== null) {
         let body = {
           id: user.uid
         };
@@ -40,23 +42,33 @@ class App extends React.Component {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body)
         };
-        fetch('http://localhost:5001/user/get', requestOptions)
+        setTimeout(() => {
+          fetch('http://localhost:5001/user/get', requestOptions)
           .then(response => response.json())
           .then(data => {
-            console.log(data);
+            let userState = data.data.user;
+            userState.id = user.uid;
             this.setState({
-              user: data.data.user,
-              userLoggedIn: true
+              user: userState,
+              userLoggedIn: true,
+              userLoggedOut: false
             });
           });
+        }, 2000);
       } else {
         this.setState({
           user: null,
-          userLoggedIn: false
+          userLoggedIn: false,
+          userLoggedOut: true
         });
-        console.log("no user")
+        console.log("no user");
       }
     })
+  }
+
+  changeUserData = (changes) => {
+    let changedUser = Object.assign({}, this.state.user, changes);
+    this.setState({ user: changedUser });
   }
 
   users = {
@@ -235,6 +247,13 @@ class App extends React.Component {
 
 
   render() {
+    if (this.state.user === null && !this.state.userLoggedOut) return <Loader
+      type="Puff"
+      color="#00BFFF"
+      height={100}
+      width={100}
+    // timeout={3000} //3 secs
+    />;
     return (
       <ThemeProvider theme={theme}>
         <Router>
@@ -242,9 +261,9 @@ class App extends React.Component {
             <Route exact path="/"><Home isLoggedIn={this.state.userLoggedIn} user={this.users["901329021"]} restaurants={this.restaurants} /></Route>
             <Route path="/card"><CardPage /></Route>
             <Route path="/signup"><Signup /></Route>
-            <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.userLoggedIn} restaurants={this.restaurants} user={this.users["901329021"]} />}></Route>
+            <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.userLoggedIn} restaurants={this.restaurants} user={this.state.user} />}></Route>
             <Route path="/restaurants"><Restaurants isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} /></Route>
-            <Route path="/user/"><UserSettings isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} /></Route>
+            <Route path="/user"><UserSettings isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} changeUserData={this.changeUserData} /></Route>
             <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]} /></Route>
             <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]} /></Route>
             <Route path="/manage"><RestaurantManagement restaurant={this.restaurants[1]} /></Route>

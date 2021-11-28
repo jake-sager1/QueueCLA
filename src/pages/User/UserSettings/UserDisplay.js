@@ -38,10 +38,11 @@ class UserName extends React.Component {
     handleSave() {
         console.log(this.state);
         //edit user
-        editUser(this.props.user.id, { "name": this.state.nameFieldValue })
+        let change = { "name": this.state.nameFieldValue };
+        editUser(this.props.user.id, change)
             .then(() => {
+                this.props.changeUserData(change);
                 this.toggleEdit();
-                this.props.user.name = this.state.nameFieldValue;
             });
     }
 
@@ -113,10 +114,11 @@ class Identification extends React.Component {
     }
 
     handleSave() {
-        console.log(this.state);
-        editUser(this.props.user.id, { "uid": this.state.nameFieldValue })
+        let change = { "uid": this.state.nameFieldValue };
+        editUser(this.props.user.id, change)
             .then(() => {
                 this.toggleEdit();
+                this.props.changeUserData(change);
             });
     }
 
@@ -263,8 +265,8 @@ function UserDisplay(props) {
                     <Typography variant="h3">{props.user.name}'s Profile</Typography>
                     <Paper className={classes.settingsPaper}>
                         <Stack direction="column" spacing={2}>
-                            <UserName user={props.user} classes={classes} />
-                            <Identification user={props.user} classes={classes} />
+                            <UserName user={props.user} classes={classes} changeUserData={props.changeUserData} />
+                            <Identification user={props.user} classes={classes} changeUserData={props.changeUserData} />
                             <Email user={props.user} classes={classes} />
                             <Favorites user={props.user} restaurants={props.restaurants} classes={classes} />
                         </Stack>

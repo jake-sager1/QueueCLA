@@ -10,7 +10,6 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
-const usersDb = db.collection("users");
 
 router.route("/create").post(async (req, res, next) => {
     const email = req.body.email;
@@ -22,9 +21,12 @@ router.route("/create").post(async (req, res, next) => {
     if (!userDoc.exists) {
         console.log("No such user");
         console.log(`Creating user with id ${id}, email ${email}`);
+        //TODO:need to change this when user account page is created
         const userData = {
             email: email,
-            inLine: false
+            inLine: false,
+            name: req.body.name,
+            favorites: [2]
         };
         //create the user
         await userRef.set(userData);
@@ -53,6 +55,8 @@ router.route("/edit").post(async (req, res, next) => {
     let userRef = db.collection("users").doc(id);
     let userDoc = await userRef.get();
 
+    console.log(req.body);
+
     if (!userDoc.exists) {
         console.log("No such user");
         const response = {
@@ -69,18 +73,25 @@ router.route("/edit").post(async (req, res, next) => {
         for (let field of Object.keys(fieldsToModify)) {
             user[field] = fieldsToModify[field];
         }
-        await userRef.set(user, { merge: true }).catch((e) => { console.log(e) });
+        userRef.set(user, { merge: true })
+            .then((data) => {
+                const response = {
+                    message: `User with id ${id} edited`,
+                    statusCode: 200
+                };
+                res.status(response.statusCode).send(response);
+            })
+            .catch((e) => { console.log(e) });
 
-        const response = {
-            message: `User with id ${id} edited`,
-            statusCode: 200
-        };
-        res.status(response.statusCode).send(response);
+        // const response = {
+        //     message: `User with id ${id} edited`,
+        //     statusCode: 200
+        // };
+        // res.status(response.statusCode).send(response);
     }
 });
 
 router.route("/get").post(async (req, res, next) => {
-    console.log("hey");
     const body = req.body;
     const id = body.id;
     //check if id in user database

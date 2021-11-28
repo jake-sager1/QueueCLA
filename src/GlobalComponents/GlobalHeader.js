@@ -7,7 +7,6 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SearchBar from './SearchBar';
 import { signOutWithGoogle } from '../service/firebase';
 
-
 function StackLogin() {
   return (
     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
