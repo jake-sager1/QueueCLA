@@ -5,12 +5,12 @@ import Header from './Header';
 import Footer from '../../GlobalComponents/Footer';
 import GlobalHeader from '../../GlobalComponents/GlobalHeader';
 import MainSection from './MainSection';
+import {auth} from '../../service/firebase'
 import { Redirect } from 'react-router';
 
 function Home(props) {
 
     const classes = useStyles();
-
     return (
         <div className={classes.page}>
             {props.isLoggedIn &&
