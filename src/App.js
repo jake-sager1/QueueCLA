@@ -7,6 +7,8 @@ import CardPage from './pages/Card';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import Signup from './pages/Signup/Signup'
+import UserSignup from './pages/Signup/UserSignup'
+import RestaurantSignup from './pages/Signup/RestaurantSignup'
 import Restaurants from './pages/Restaurants/Restaurants'
 import NotFound from './pages/ErrorPages/NotFound'
 import Restaurant from './pages/Restaurant/Restaurant';
@@ -282,22 +284,23 @@ class App extends React.Component {
     );
     return (
       <ThemeProvider theme={theme}>
-        <Router>
-          <Switch>
-            <PublicRoute exact path="/" isLoggedIn={this.state.userLoggedIn} component={<Home isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants}/>} />
-            <Route path="/card"><CardPage /></Route>
-            <PublicRoute path="/signup" isLoggedIn={this.state.userLoggedIn} component={<Signup />}/>
-            <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.userLoggedIn} restaurants={this.restaurants} user={this.state.user} />}></Route>
-            <PrivateRoute path="/restaurants" isLoggedIn={this.state.userLoggedIn} component={<Restaurants isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} />} />
-            <PrivateRoute path="/user" isLoggedIn={this.state.userLoggedIn} component={<UserSettings isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} changeUserData={this.changeUserData} />}/>
-            <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]} /></Route>
-            <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]} /></Route>
-            <Route path="/manage"><RestaurantManagement restaurant={this.restaurants[1]} /></Route>
-            <Route path="/404" component={NotFound}></Route>
-            <Redirect to="/404" />
-          </Switch>
-        </Router>
-      </ThemeProvider>
+          <Router>
+            <Switch>
+              <Route exact path="/"><Home isLoggedIn={this.isLoggedIn} user={this.users["901329021"]} restaurants={this.restaurants}/></Route>
+              <Route path="/card"><CardPage /></Route>
+              <Route path="/signup"><Signup /></Route>
+              <Route path="/usersignup"><UserSignup /></Route>
+              <Route path="/manage/create"><RestaurantSignup restaurant={this.restaurants[1]}/></Route>
+              <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.isLoggedIn} restaurants={this.restaurants} user={this.users["901329021"]}/>}></Route>
+              <Route path="/restaurants"><Restaurants isLoggedIn={this.isLoggedIn} user={this.users["901329021"]} restaurants={this.restaurants}/></Route>
+              <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]}/></Route>
+              <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]}/></Route>
+              <Route path="/manage"><RestaurantManagement restaurant={this.restaurants[1]}/></Route>
+              <Route path="/404" component={NotFound}></Route>
+              <Redirect to="/404"/>
+            </Switch>
+          </Router>
+        </ThemeProvider>
     );
   }
 }
