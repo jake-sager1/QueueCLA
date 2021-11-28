@@ -5,14 +5,13 @@ import Footer from "../../../GlobalComponents/Footer";
 import useStyles from "../user-styles";
 
 function UserSettings(props) {
-
     const classes = useStyles();
 
     return (
         <div className={classes.page}>
-            <Header isLoggedIn={props.isLoggedIn} user={props.user} restaurants={props.restaurants}/>
-            <UserDisplay user={props.user} restaurants={props.restaurants}/>
-            <Footer/>
+            <Header isLoggedIn={props.isLoggedIn} user={props.user} restaurants={props.restaurants} />
+            <UserDisplay user={props.user} restaurants={props.restaurants} />
+            <Footer />
         </div>
     );
 }
