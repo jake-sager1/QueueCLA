@@ -8,6 +8,9 @@ const useStyles = makeStyles((theme) => ({
     cardContent: {
         flexGrow: 1,
     },
+    chips: {
+        padding: "10px",
+    },
     homeNavBar: {
         padding: "20px",
     },

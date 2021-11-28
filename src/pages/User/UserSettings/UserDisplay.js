@@ -133,7 +133,7 @@ class Identification extends React.Component {
                                 <TextField value={this.state.nameFieldValue}
                                     variant="outlined"
                                     size="small"
-                                    label="Name"
+                                    label="UID"
                                     onChange={(e) => {this.setState({nameFieldValue: e.target.value,})}}
                                     />
                                 <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
@@ -174,29 +174,31 @@ function CardRender(props) {
 
   const classes = useStyles();
 
-  <Card className={classes.card}>
-      <CardActionArea component={Link} to={"/restaurants/" + props.id} className={classes.cardActionArea}>
-          <CardMedia className={classes.cardMedia} image={props.restaurants[props.id].bannerImage} title="Image Title"></CardMedia>
-          <CardContent className={classes.cardContent}>
-              <Typography gutterBottom variant="h5">
-                  {props.restaurants[ props.id].name}
-              </Typography>
-              <Typography color="textSecondary">
-                  {props.restaurants[ props.id].description}
-              </Typography>
-          </CardContent>
+    return (
+    <Card className={classes.card}>
+        <CardActionArea component={Link} to={"/restaurants/" + props.id} className={classes.cardActionArea}>
+            <CardMedia className={classes.cardMedia} image={props.restaurants[props.id].bannerImage} title="Image Title"></CardMedia>
+            <CardContent className={classes.cardContent}>
+                <Typography gutterBottom variant="h5">
+                    {props.restaurants[ props.id].name}
+                </Typography>
+                <Typography color="textSecondary">
+                    {props.restaurants[ props.id].description}
+                </Typography>
+            </CardContent>
 
-          <Stack className={classes.chips} direction="row" spacing={1}>
-              {props.restaurants[ props.id].chips.map((name) =>
-                  <MenuChip name={name}
-                  onClick={null}
-                  variant="outlined"/>
-              )}
-          </Stack>
+            <Stack className={classes.chips} direction="row" spacing={1}>
+                {props.restaurants[ props.id].chips.map((name) =>
+                    <MenuChip name={name}
+                    onClick={null}
+                    variant="outlined"/>
+                )}
+            </Stack>
 
-      </CardActionArea>
+        </CardActionArea>
 
-  </Card>
+    </Card>
+    );
 
 }
 
@@ -204,10 +206,6 @@ class Favorites extends React.Component {
 
   constructor(props) {
       super(props);
-      this.state = {
-          favorites: props.user.favorites,
-          resturants: props.restaurants,
-      }
   }
 
     render() {
@@ -222,10 +220,10 @@ class Favorites extends React.Component {
 
 
                             <Grid container spacing={2} alignItems="stretch">
-                                {this.state.favorites.map((id) => (
+                                {this.props.user.favorites.map((id) => (
                                     <Grid item key={id} xs={12} sm={6} md={4}>
 
-                                    <CardRender id = {id} restaurants = {this.state.restaurants}/>
+                                    <CardRender id = {id} restaurants = {this.props.restaurants}/>
 
                                     </Grid>
                                 ))}
@@ -256,7 +254,7 @@ function UserDisplay(props) {
                             <UserName user={props.user} classes={classes}/>
                             <Identification user={props.user} classes={classes}/>
                             <Email user={props.user} classes={classes}/>
-                            <Favorites user={props.user} classes={classes}/>
+                            <Favorites user={props.user} restaurants={props.restaurants} classes={classes}/>
                         </Stack>
                     </Paper>
                 </Stack>
