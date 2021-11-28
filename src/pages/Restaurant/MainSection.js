@@ -9,6 +9,21 @@ import ContactSection from './ContactSection';
 import MenuChip from '../../GlobalComponents/Chips';
 import HoursSection from './HoursSection';
 
+function MenuSection(props) {
+
+    const classes = useStyles();
+
+    return (
+        <Stack direction="column" spacing={2}>
+            <Typography variant="h5">
+                Menu
+            </Typography>
+            <Typography style={{marginLeft: "10px"}}>
+                <pre style={{fontFamily: "roboto", color:"#555"}}>{props.restaurant.menu}</pre>
+            </Typography>
+        </Stack>
+    )
+}
 
 class FavoriteStar extends React.Component {
     constructor(props) {
@@ -86,6 +101,8 @@ function MainSection(props) {
                     <Paper className={classes.linePaper}>
                         <Stack direction="column" spacing={4}>
                             <JoinLineSection restaurant={props.restaurant} user={props.user}/>
+                            <Divider/>
+                            <MenuSection restaurant={props.restaurant}/>
                             <Divider/>
                             <ContactSection restaurant={props.restaurant}/>
                         </Stack>
