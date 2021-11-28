@@ -13,6 +13,7 @@ import Restaurant from './pages/Restaurant/Restaurant';
 import LineManagement from './pages/RestaurantManagement/LineManagement/LineManagement';
 import RestaurantManagement from './pages/RestaurantManagement/RestaurantManagement';
 import RestaurantSettings from './pages/RestaurantManagement/RestaurantSettings/RestaurantSettings';
+import UserSettings from './pages/User/UserSettings/UserSettings.js'
 import { Redirect } from 'react-router';
 import { auth } from './service/firebase'
 
@@ -52,6 +53,7 @@ class App extends React.Component {
       inLine: true,
       restaurantID: 1,
       id: "901329021",
+      favorites: [1, 2],
     },
     "205488283": {
       name: "Jake Sager",
@@ -60,6 +62,7 @@ class App extends React.Component {
       inLine: true,
       restaurantID: 1,
       id: "205488283",
+      favorites: [1],
     }
   }
 
@@ -202,7 +205,7 @@ class App extends React.Component {
       email: "againbplate@dining.ucla.edu",
       url: "http://uhhuh.com",
     },
-  }
+}
 
 
   render() {
@@ -215,6 +218,7 @@ class App extends React.Component {
             <Route path="/signup"><Signup /></Route>
             <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.userLoggedIn} restaurants={this.restaurants} user={this.users["901329021"]} />}></Route>
             <Route path="/restaurants"><Restaurants isLoggedIn={this.state.userLoggedIn} user={this.users["901329021"]} restaurants={this.restaurants} /></Route>
+            <Route path = "/user/"><UserSettings isLoggedIn={this.state.userLoggedIn} user={this.users[901329021]} restaurants={this.restaurants}/></Route>
             <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]} /></Route>
             <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]} /></Route>
             <Route path="/manage"><RestaurantManagement restaurant={this.restaurants[1]} /></Route>
