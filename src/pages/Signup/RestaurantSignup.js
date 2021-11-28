@@ -17,11 +17,30 @@ class RestaurantRegister extends React.Component {
             descVal: null,
             phoneVal: null,
             websiteVal: null,
+            avgWaitSelection: 3,
+            selectedChips: [],
+        }
+    }
+
+    chips = [
+        "vegetarian", "vegan", "gluten-free", "breakfast", "lunch", "dinner",
+        "fast-food", "takeout"
+    ]
+
+    handleClick(chip) {
+        if(this.state.selectedChips.includes(chip)) {
+            this.setState({
+                selectedChips: this.state.selectedChips.filter(function (value, index, arr) {return arr.includes(value) && value != chip}),
+            });
+        } else {
+            this.setState({
+                selectedChips: this.state.selectedChips.concat([chip]),
+            });
         }
     }
 
     handleSave() {
-        this.toggleEdit();
+        // does nothing yet
     }
 
     render() {
@@ -35,47 +54,6 @@ class RestaurantRegister extends React.Component {
                 />
                 <TextField label="Phone Number" variant="outlined" onChange={(e) => {this.setState({phoneVal: e.target.value,})}}/>
                 <TextField label="Website URL" variant="outlined" onChange={(e) => {this.setState({websiteVal: e.target.value,})}}/>
-                <RestaurantWaitTime restaurant={this.props.restaurant} classes={this.classes}/>
-                <RestaurantTags restaurant={this.props.restaurant} classes={this.classes}/>
-                <Button align="center" variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
-            </Stack>
-            
-        );
-    }
-}
-
-class RestaurantWaitTime extends React.Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            editable: true,
-            avgWaitSelection: '3',
-        }
-    }
-
-    toggleEdit() {
-        if(!this.state.editable) {
-            this.setState({editable: true});
-        } else {
-            this.setState({editable: false});
-        }
-    }
-
-    handleSave() {
-        this.toggleEdit();
-    }
-
-    handleCancel() {
-        this.toggleEdit();
-        this.setState({
-            avgWaitSelection: this.props.restaurant.avgTimePerCustomer,
-        });
-    }
-
-    render() {
-        return (
-            <div>
                 <Stack direction="column" spacing={1} alignItems="left">
                     <Typography variant="h6" style={{fontWeight: "bold"}}>Average Wait Time Per Customer</Typography>
                     <Select value={this.state.avgWaitSelection} 
@@ -101,58 +79,28 @@ class RestaurantWaitTime extends React.Component {
                         <MenuItem value={60}>1 hour</MenuItem>
                     </Select>
                 </Stack>
-            </div>
-        );
-    }
-}
-
-class RestaurantTags extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedChips: [],
-        }
-    }
-
-
-    chips = [
-        "vegetarian", "vegan", "gluten-free", "breakfast", "lunch", "dinner",
-        "fast-food", "takeout"
-    ]
-
-    handleClick(chip) {
-        if(this.state.selectedChips.includes(chip)) {
-            this.setState({
-                selectedChips: this.state.selectedChips.filter(function (value, index, arr) {return arr.includes(value) && value != chip}),
-            });
-        } else {
-            this.setState({
-                selectedChips: this.state.selectedChips.concat([chip]),
-            });
-        }
-    }
-
-    render() {
-        return (
-            <Stack direction="column" spacing={1}>
-                <Typography variant="h6" style={{fontWeight: "bold"}}>
-                    Tags
-                </Typography>
-                <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
-                    <Stack spacing={1} alignItems="center" direction="row" justifyContent="flex-start"
-                        style={{overflow: "scroll"}}>
-                        {this.chips.map((name) => 
-                                <MenuChip name={name} 
-                                onClick={() => this.handleClick(name)}
-                                variant={this.state.selectedChips.includes(name) ? "filled" : "outlined"}/>
-                        )}
+                <Stack direction="column" spacing={1}>
+                    <Typography variant="h6" style={{fontWeight: "bold"}}>
+                        Tags
+                    </Typography>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                        <Stack spacing={1} alignItems="center" direction="row" justifyContent="flex-start"
+                            style={{overflow: "scroll"}}>
+                            {this.chips.map((name) => 
+                                    <MenuChip name={name} 
+                                    onClick={() => this.handleClick(name)}
+                                    variant={this.state.selectedChips.includes(name) ? "filled" : "outlined"}/>
+                            )}
+                        </Stack>
                     </Stack>
                 </Stack>
+                <Button align="center" variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
             </Stack>
+            
         );
     }
 }
+
 
 function RestaurantSignup(props) {
 
