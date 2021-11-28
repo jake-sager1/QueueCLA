@@ -152,7 +152,7 @@ function GlobalHeader(props) {
   const classes = useStyles();
   const isLoggedIn = props.isLoggedIn
   // const userName = props.user.name;
-  const inline = props.user.inLine;
+  const inline = props.isLoggedIn ? props.user.inLine : false;
 
   let stackRight;
 

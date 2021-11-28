@@ -26,7 +26,7 @@ class App extends React.Component {
     this.state = {
       userType: null,
       userLoggedIn: false,
-      userLoggedOut: false,
+      signOutClicked: false,
       user: null,
     }
   }
@@ -44,22 +44,22 @@ class App extends React.Component {
         };
         setTimeout(() => {
           fetch('http://localhost:5001/user/get', requestOptions)
-          .then(response => response.json())
-          .then(data => {
-            let userState = data.data.user;
-            userState.id = user.uid;
-            this.setState({
-              user: userState,
-              userLoggedIn: true,
-              userLoggedOut: false
+            .then(response => response.json())
+            .then(data => {
+              let userState = data.data.user;
+              userState.id = user.uid;
+              this.setState({
+                user: userState,
+                userLoggedIn: true,
+                signOutClicked: false
+              });
             });
-          });
         }, 2000);
       } else {
         this.setState({
           user: null,
           userLoggedIn: false,
-          userLoggedOut: true
+          signOutClicked: true
         });
         console.log("no user");
       }
@@ -247,18 +247,25 @@ class App extends React.Component {
 
 
   render() {
-    if (this.state.user === null && !this.state.userLoggedOut) return <Loader
-      type="Puff"
-      color="#00BFFF"
-      height={100}
-      width={100}
-    // timeout={3000} //3 secs
-    />;
+    if (this.state.user === null && !this.state.signOutClicked) return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Loader
+          type="ThreeDots"
+          color="#00BFFF"
+          height={100}
+          width={100}
+        />
+      </div>
+    );
     return (
       <ThemeProvider theme={theme}>
         <Router>
           <Switch>
-            <Route exact path="/"><Home isLoggedIn={this.state.userLoggedIn} user={this.users["901329021"]} restaurants={this.restaurants} /></Route>
+            <Route exact path="/"><Home isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} /></Route>
             <Route path="/card"><CardPage /></Route>
             <Route path="/signup"><Signup /></Route>
             <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.userLoggedIn} restaurants={this.restaurants} user={this.state.user} />}></Route>
