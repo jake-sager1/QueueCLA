@@ -45,7 +45,7 @@ class App extends React.Component {
           .then(data => {
             console.log(data);
             this.setState({
-              user: data.user,
+              user: data.data.user,
               userLoggedIn: true
             });
           });

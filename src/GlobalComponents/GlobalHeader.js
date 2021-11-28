@@ -101,7 +101,7 @@ function StackProfile(props) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <Link to="/404" style={{ textDecoration: "none", color: "black" }}>
+        <Link to="/user" style={{ textDecoration: "none", color: "black" }}>
           <MenuItem>
             <ListItemIcon>
               <Settings fontSize="small" />
