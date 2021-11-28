@@ -5,12 +5,13 @@ import { Settings, Logout } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SearchBar from './SearchBar';
+import { signInWithGoogle } from '../service/firebase'
 
 function StackLogin() {
   return (
     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
         <Link to="/login" style={{textDecoration: "none"}}><Button variant="text" color="primary">Log In</Button></Link>
-        <Link to="../signup" style={{textDecoration: "none"}}><Button variant="contained" color="primary" href="../signup">Sign Up</Button></Link>
+        <Link to="../signup" style={{textDecoration: "none"}}><Button variant="contained" color="primary" href="../signup" onClick={signInWithGoogle('user')}>Sign Up</Button></Link>
     </Stack>
   )
 }

@@ -13,11 +13,12 @@ function Home(props) {
     const classes = useStyles();
     return (
         <div className={classes.page}>
-            {props.isLoggedIn &&
+            {/* {props.isLoggedIn &&
                 <Redirect to="/restaurants"></Redirect>
-            }
+            } */}
 
-            <GlobalHeader isLoggedIn={props.isLoggedIn} user={props.user} restaurants={props.restaurants}/>
+            <GlobalHeader isLoggedIn={false} user={props.user} restaurants={props.restaurants}/>
+            {/* <GlobalHeader isLoggedIn={props.isLoggedIn} user={props.user} restaurants={props.restaurants}/> */}
             {/* We need to adjust the prop isLoggedIn and inline based on GoogleAuth from backend */}
             <MainSection />
             <Footer />

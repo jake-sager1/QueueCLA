@@ -7,6 +7,8 @@ import CardPage from './pages/Card';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import Signup from './pages/Signup/Signup'
+import UserSignup from './pages/Signup/UserSignup'
+import RestaurantSignup from './pages/Signup/RestaurantSignup'
 import Restaurants from './pages/Restaurants/Restaurants'
 import NotFound from './pages/ErrorPages/NotFound'
 import Restaurant from './pages/Restaurant/Restaurant';
@@ -198,7 +200,7 @@ class App extends React.Component {
     },
 }   
 
-isLoggedIn = true;
+isLoggedIn = false;
 
   render() {
     return (
@@ -208,6 +210,8 @@ isLoggedIn = true;
               <Route exact path="/"><Home isLoggedIn={this.isLoggedIn} user={this.users["901329021"]} restaurants={this.restaurants}/></Route>
               <Route path="/card"><CardPage /></Route>
               <Route path="/signup"><Signup /></Route>
+              <Route path="/usersignup"><UserSignup /></Route>
+              <Route path="/restaurantsignup"><RestaurantSignup restaurant={this.restaurants[1]}/></Route>
               <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.isLoggedIn} restaurants={this.restaurants} user={this.users["901329021"]}/>}></Route>
               <Route path="/restaurants"><Restaurants isLoggedIn={this.isLoggedIn} user={this.users["901329021"]} restaurants={this.restaurants}/></Route>
               <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]}/></Route>
