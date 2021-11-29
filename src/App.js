@@ -20,7 +20,6 @@ import { Redirect } from 'react-router';
 import { auth, signOutWithGoogle } from './service/firebase';
 import Loader from "react-loader-spinner";
 
-
 function PrivateRoute({component, isLoggedIn, ...rest}) {
   return (
     <Route {...rest} render={(props) => {
@@ -39,6 +38,20 @@ function PublicRoute({component, isLoggedIn, ...rest}) {
   )
 }
 
+function UserRedirectRoute({component, isLoggedIn, isSetup, ...rest}) {
+    return (
+        <Route {...rest} render={(props) => {
+            if (isLoggedIn && isSetup) {
+                return (<Redirect exact to="/restaurants"/>)
+            } else if (isLoggedIn && !isSetup) {
+                return (<Redirect exact to="user/create" />)
+            } else {
+                return (<Redirect exact to="/" />)
+            }
+        }}/>
+    )
+}
+
 
 class App extends React.Component {
 
@@ -47,9 +60,16 @@ class App extends React.Component {
     this.state = {
       userType: null,
       userLoggedIn: false,
+      userSetup: false,
       signOutClicked: false,
       user: null,
     }
+  }
+
+  setSetup() {
+      this.setState({
+          userSetup: true
+      })
   }
 
   async componentDidMount() {
@@ -72,6 +92,7 @@ class App extends React.Component {
               this.setState({
                 user: userState,
                 userLoggedIn: true,
+                userSetup: userState.setup,
                 signOutClicked: false
               });
             });
