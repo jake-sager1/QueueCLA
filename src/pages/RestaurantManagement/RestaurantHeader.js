@@ -3,7 +3,7 @@ import { Avatar, AppBar, Toolbar, Container, Stack, Typography, Button, Menu, Me
 import { Settings, Logout } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import useStyles from './restaurant-styles';
-import { signInWithGoogleRestaurant } from '../../service/firebase';
+import { signInWithGoogleRestaurant, signOutWithGoogle } from '../../service/firebase';
 
 function Header(props) {
 
@@ -98,7 +98,7 @@ function Header(props) {
                                         Settings
                                     </MenuItem>
                                 </Link>
-                                <Link to="/manage/logout" style={{ textDecoration: "none", color: "black" }}>
+                                <Link to="/manage" onClick={() => { signOutWithGoogle(); }} style={{ textDecoration: "none", color: "black" }}>
                                     <MenuItem>
                                         <ListItemIcon>
                                             <Logout fontSize="small" />
