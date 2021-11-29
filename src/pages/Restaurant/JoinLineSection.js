@@ -71,7 +71,7 @@ function JoinLineSection(props) {
                             </DialogTitle>
                             <DialogContent>
                             <DialogContentText id="alert-dialog-description">
-                                You are currently already in line at {props.restaurants[this.props.user.restaurantID]}. 
+                                You are currently already in line at {props.restaurants[props.user.restaurantID]}. 
                                 Please leave line to join another.
                             </DialogContentText>
                             </DialogContent>
