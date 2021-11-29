@@ -17,6 +17,26 @@ router.route("/create").post(async (req, res, next) => {
         //TODO:need to change this when restaurant account page is created
         const restaurantData = {
             email: email,
+            name: "Sample Name",
+            chips: ["vegetarian", "gluten-free"],
+            description: "Sample Desc",
+            hours: {
+                "Monday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
+                "Tuesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
+                "Wednesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
+                "Thursday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
+                "Friday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
+                "Saturday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
+                "Sunday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
+            },
+            waitEnabled: false,
+            avgTimePerCustomer: 3,
+            phone: "Sample phone",
+            profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+            bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
+            waitlist: [],
+            url: "https://ucla.edu",
+            menu: "Sample Item 1\n Sample Item 2\n",
         };
         //create the restaurant
         await restaurantRef.set(restaurantData);
@@ -36,4 +56,39 @@ router.route("/create").post(async (req, res, next) => {
         res.status(response.statusCode).send(response);
     }
 });
+
+router.route("/edit").post(async (req, res, next) => {
+    const body = req.body;
+    const id = body.id;
+    //need to check if restaurant already exists
+    let restaurantRef = db.collection("restaurants").doc(id);
+    let restaurantDoc = await restaurantRef.get();
+
+    if (!restaurantDoc.exists) {
+        console.log("No such restaurant");
+        const response = {
+            message: `Restaurant with ${id} not found`,
+            statusCode: 401
+        };
+        res.status(response.statusCode).send(response);
+    }
+    else {
+        //modify the fields that need to change
+        const fieldsToModify = body.data;
+        let restaurant = restaurantDoc.data();
+        for (let field of Object.keys(fieldsToModify)) {
+            restaurant[field] = fieldsToModify[field];
+        }
+        restaurantRef.set(restaurant, { merge: true })
+            .then((data) => {
+                const response = {
+                    message: `restaurant with id ${id} edited`,
+                    statusCode: 200
+                };
+                res.status(response.statusCode).send(response);
+            }).catch((e) => { console.log(e) });
+    }
+})
+
+
 module.exports = router;
