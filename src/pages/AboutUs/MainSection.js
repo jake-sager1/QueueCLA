@@ -8,7 +8,21 @@ function MainSection() {
     const classes = useStyles();
     return (
         <div className={classes.contained} style={{backgroundColor: "#f7f7f7"}}>
+            <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="text.primary"
+            gutterBottom
+            >
+                QueueCLA
+            </Typography>
             <Container maxWidth="md">
+                <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                    Something short and leading about the collection below—its contents,
+                    the creator, etc. Make it short and sweet, but not too short so folks
+                    don&apos;t simply skip over it entirely.
+                </Typography>
                 <Grid container spacing={2} alignItems="stretch">
                     <Person 
                         name="Jake Sager"

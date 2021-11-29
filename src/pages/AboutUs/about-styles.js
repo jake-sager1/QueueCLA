@@ -40,7 +40,11 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "50%",
         width: "75px",
         height: "75px"
-    }
+    },
+    contained: {
+        paddingTop: "75px",
+        paddingBottom: "75px",
+    },
 }));
 
 export default useStyles;
