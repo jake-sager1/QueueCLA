@@ -82,13 +82,39 @@ router.route("/edit").post(async (req, res, next) => {
         restaurantRef.set(restaurant, { merge: true })
             .then((data) => {
                 const response = {
-                    message: `restaurant with id ${id} edited`,
+                    message: `Restaurant with id ${id} edited`,
                     statusCode: 200
                 };
                 res.status(response.statusCode).send(response);
             }).catch((e) => { console.log(e) });
     }
 })
+
+router.route("/get").post(async (req, res, next) => {
+    const body = req.body;
+    const id = body.id;
+    //check if id in restaurant database
+    let restaurantRef = db.collection("restaurants").doc(id);
+    let restaurantDoc = await restaurantRef.get();
+
+    if (restaurantDoc.exists) {
+        const response = {
+            data: {
+                restaurant: restaurantDoc.data()
+            },
+            message: `Restaurant with id ${id} found`,
+            statusCode: 200
+        };
+        res.status(response.statusCode).send(response);
+    }
+    else {
+        const response = {
+            message: `Restaurant with id ${id} NOT found!`,
+            statusCode: 404
+        };
+        res.status(response.statusCode).send(response);
+    }
+});
 
 
 module.exports = router;
