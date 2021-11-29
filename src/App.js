@@ -445,7 +445,7 @@ class App extends React.Component {
               isSetup={this.state.user ? this.state.user.setup : false}
               component={<UserSignup user={this.state.user} changeUserData={this.changeUserData} />} />
             <SetupRestaurantRoute path="/manage/create" isLoggedIn={this.state.restaurantLoggedIn} isRestaurantSetup={this.state.restaurant ? this.state.restaurant.setup : false} component={<RestaurantSignup restaurant={this.state.restaurant} changeRestaurantData={this.changeRestaurantData}/>}/>
-            <PrivateRoute path="/restaurants/:id" isLoggedIn={this.state.userLoggedIn} isSetup={this.state.user ? this.state.user.setup : false} component={(props) => <Restaurant {...props} isLoggedIn={this.state.userLoggedIn} restaurants={this.restaurants} user={this.state.user} />} />
+            <Route path="/restaurants/:id" isLoggedIn={this.state.userLoggedIn} isSetup={this.state.user ? this.state.user.setup : false} render={(props) => <Restaurant {...props} isLoggedIn={this.state.userLoggedIn} restaurants={this.restaurants} user={this.state.user} />} />
             <PrivateRoute path="/restaurants"
               isLoggedIn={this.state.userLoggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
@@ -454,9 +454,9 @@ class App extends React.Component {
               isLoggedIn={this.state.userLoggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
               component={<UserSettings isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} changeUserData={this.changeUserData} />} />
-            <PrivateRestaurantRoute path="/manage/line" isRestaurantSetup={this.state.restaurant ? this.state.restaurant.setup : false} isLoggedIn={this.state.restaurantLoggedIn} component={<LineManagement users={this.users} restaurant={this.restaurants[1]} isLoggedIn={this.state.restaurantLoggedIn}/>}/>
-            <PrivateRestaurantRoute path="/manage/settings" isRestaurantSetup={this.state.restaurant ? this.state.restaurant.setup : false} isLoggedIn={this.state.restaurantLoggedIn} component={<RestaurantSettings restaurant={this.restaurants[1]} isLoggedIn={this.state.restaurantLoggedIn}/>}/>
-            <PublicRestaurantRoute path="/manage" isRestaurantSetup={this.state.restaurant ? this.state.restaurant.setup : false} isLoggedIn={this.state.restaurantLoggedIn} component={<RestaurantManagement restaurant={this.restaurants[1]} isLoggedIn={this.state.restaurantLoggedIn}/>}/>
+            <PrivateRestaurantRoute path="/manage/line" isRestaurantSetup={this.state.restaurant ? this.state.restaurant.setup : false} isLoggedIn={this.state.restaurantLoggedIn} component={<LineManagement users={this.users} restaurant={this.state.restaurant} isLoggedIn={this.state.restaurantLoggedIn}/>}/>
+            <PrivateRestaurantRoute path="/manage/settings" isRestaurantSetup={this.state.restaurant ? this.state.restaurant.setup : false} isLoggedIn={this.state.restaurantLoggedIn} component={<RestaurantSettings restaurant={this.state.restaurant} isLoggedIn={this.state.restaurantLoggedIn}/>}/>
+            <PublicRestaurantRoute path="/manage" isRestaurantSetup={this.state.restaurant ? this.state.restaurant.setup : false} isLoggedIn={this.state.restaurantLoggedIn} component={<RestaurantManagement restaurant={this.state.restaurant} isLoggedIn={this.state.restaurantLoggedIn}/>}/>
             <Route path="/about"><About /></Route>
             <Route path="/404" component={NotFound}></Route>
             <Redirect to="/404" />

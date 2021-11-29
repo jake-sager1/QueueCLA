@@ -10,7 +10,7 @@ function RestaurantSettings(props) {
 
     return (
         <div className={classes.page}>
-            <Header restaurant={props.restaurant}/>
+            <Header restaurant={props.restaurant} isLoggedIn={props.isLoggedIn}/>
             <SettingsDisplay restaurant={props.restaurant} users={props.users}/>
             <Footer/>
         </div> 
