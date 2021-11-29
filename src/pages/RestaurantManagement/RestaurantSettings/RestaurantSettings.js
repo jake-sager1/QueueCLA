@@ -11,7 +11,7 @@ function RestaurantSettings(props) {
     return (
         <div className={classes.page}>
             <Header restaurant={props.restaurant} isLoggedIn={props.isLoggedIn} />
-            <SettingsDisplay restaurant={props.restaurant} users={props.users} />
+            <SettingsDisplay restaurant={props.restaurant} users={props.users} changeUserData={props.changeUserData} />
             <Footer />
         </div>
     );

@@ -460,7 +460,7 @@ class App extends React.Component {
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
               userType={this.state.userType}
-              component={<RestaurantSettings restaurant={this.state.user} isLoggedIn={this.state.loggedIn} />} />
+              component={<RestaurantSettings restaurant={this.state.user} isLoggedIn={this.state.loggedIn} changeUserData={this.changeUserData} />} />
             <PublicRoute exact path="/manage"
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}

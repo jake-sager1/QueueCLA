@@ -15,8 +15,7 @@ class RestaurantName extends React.Component {
     }
 
     toggleEdit() {
-        if(this.state.editable)
-        {
+        if (this.state.editable) {
             this.setState({
                 editable: false,
             });
@@ -35,24 +34,29 @@ class RestaurantName extends React.Component {
     }
 
     handleSave() {
-        this.toggleEdit();
+        let change = { "name": this.state.nameFieldValue };
+        editUser(this.props.restaurant.id, change)
+            .then(() => {
+                this.toggleEdit();
+                this.props.changeUserData(change);
+            });
     }
 
     render() {
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         Name:
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         {!this.state.editable &&
                             <Stack direction="row" spacing={1} alignItems="center">
                                 <Typography variant="p">
                                     {this.props.restaurant.name}
                                 </Typography>
                                 <IconButton onClick={this.toggleEdit.bind(this)}>
-                                    <EditIcon style={{fontSize: "medium"}}/>
+                                    <EditIcon style={{ fontSize: "medium" }} />
                                 </IconButton>
                             </Stack>
                         }
@@ -62,11 +66,11 @@ class RestaurantName extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Name"
-                                    onChange={(e) => {this.setState({nameFieldValue: e.target.value,})}}
-                                    />
+                                    onChange={(e) => { this.setState({ nameFieldValue: e.target.value, }) }}
+                                />
                                 <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
-                                <Button variant="contained" style={{backgroundColor: "darkRed"}}
-                                        onClick={this.handleCancel.bind(this)}>Cancel</Button>
+                                <Button variant="contained" style={{ backgroundColor: "darkRed" }}
+                                    onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
                         }
                     </Stack>
@@ -87,8 +91,7 @@ class RestaurantDescription extends React.Component {
     }
 
     toggleEdit() {
-        if(this.state.editable)
-        {
+        if (this.state.editable) {
             this.setState({
                 editable: false,
             });
@@ -107,24 +110,29 @@ class RestaurantDescription extends React.Component {
     }
 
     handleSave() {
-        this.toggleEdit();
+        let change = { "description": this.state.descriptionFieldValue };
+        editUser(this.props.restaurant.id, change)
+            .then(() => {
+                this.toggleEdit();
+                this.props.changeUserData(change);
+            });
     }
 
     render() {
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         Description:
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         {!this.state.editable &&
                             <Stack direction="row" spacing={1} alignItems="center">
                                 <Typography variant="p">
                                     {this.props.restaurant.description}
                                 </Typography>
                                 <IconButton onClick={this.toggleEdit.bind(this)}>
-                                    <EditIcon style={{fontSize: "medium"}}/>
+                                    <EditIcon style={{ fontSize: "medium" }} />
                                 </IconButton>
                             </Stack>
                         }
@@ -134,12 +142,12 @@ class RestaurantDescription extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Description"
-                                    style={{width: "400px",}}
-                                    onChange={(e) => {this.setState({descriptionFieldValue: e.target.value,})}}
-                                    />
+                                    style={{ width: "400px", }}
+                                    onChange={(e) => { this.setState({ descriptionFieldValue: e.target.value, }) }}
+                                />
                                 <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
-                                <Button variant="contained" style={{backgroundColor: "darkRed"}}
-                                        onClick={this.handleCancel.bind(this)}>Cancel</Button>
+                                <Button variant="contained" style={{ backgroundColor: "darkRed" }}
+                                    onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
                         }
                     </Stack>
@@ -157,12 +165,12 @@ class RestaurantEmail extends React.Component {
 
     render() {
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         Email:
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         <Stack direction="row" spacing={1} alignItems="center">
                             <Typography variant="p">
                                 {this.props.restaurant.email}
@@ -181,13 +189,12 @@ class RestaurantPhone extends React.Component {
         super(props);
         this.state = {
             editable: false,
-            phoneValue: props.restaurant.name,
+            phoneValue: props.restaurant.phone,
         }
     }
 
     toggleEdit() {
-        if(this.state.editable)
-        {
+        if (this.state.editable) {
             this.setState({
                 editable: false,
             });
@@ -206,24 +213,29 @@ class RestaurantPhone extends React.Component {
     }
 
     handleSave() {
-        this.toggleEdit();
+        let change = { "phone": this.state.phoneValue };
+        editUser(this.props.restaurant.id, change)
+            .then(() => {
+                this.toggleEdit();
+                this.props.changeUserData(change);
+            });
     }
 
     render() {
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         Phone:
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         {!this.state.editable &&
                             <Stack direction="row" spacing={1} alignItems="center">
                                 <Typography variant="p">
                                     {this.props.restaurant.phone}
                                 </Typography>
                                 <IconButton onClick={this.toggleEdit.bind(this)}>
-                                    <EditIcon style={{fontSize: "medium"}}/>
+                                    <EditIcon style={{ fontSize: "medium" }} />
                                 </IconButton>
                             </Stack>
                         }
@@ -233,11 +245,11 @@ class RestaurantPhone extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Phone Number"
-                                    onChange={(e) => {this.setState({phoneValue: e.target.value,})}}
-                                    />
+                                    onChange={(e) => { this.setState({ phoneValue: e.target.value, }) }}
+                                />
                                 <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
-                                <Button variant="contained" style={{backgroundColor: "darkRed"}}
-                                        onClick={this.handleCancel.bind(this)}>Cancel</Button>
+                                <Button variant="contained" style={{ backgroundColor: "darkRed" }}
+                                    onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
                         }
                     </Stack>
@@ -259,8 +271,7 @@ class RestaurantWebsite extends React.Component {
     }
 
     toggleEdit() {
-        if(this.state.editable)
-        {
+        if (this.state.editable) {
             this.setState({
                 editable: false,
             });
@@ -279,24 +290,29 @@ class RestaurantWebsite extends React.Component {
     }
 
     handleSave() {
-        this.toggleEdit();
+        let change = { "url": this.state.websiteValue };
+        editUser(this.props.restaurant.id, change)
+            .then(() => {
+                this.toggleEdit();
+                this.props.changeUserData(change);
+            });
     }
 
     render() {
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         Website:
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         {!this.state.editable &&
                             <Stack direction="row" spacing={1} alignItems="center">
                                 <Typography variant="p">
                                     {this.props.restaurant.url}
                                 </Typography>
                                 <IconButton onClick={this.toggleEdit.bind(this)}>
-                                    <EditIcon style={{fontSize: "medium"}}/>
+                                    <EditIcon style={{ fontSize: "medium" }} />
                                 </IconButton>
                             </Stack>
                         }
@@ -306,11 +322,11 @@ class RestaurantWebsite extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Website URL"
-                                    onChange={(e) => {this.setState({websiteValue: e.target.value,})}}
-                                    />
+                                    onChange={(e) => { this.setState({ websiteValue: e.target.value, }) }}
+                                />
                                 <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
-                                <Button variant="contained" style={{backgroundColor: "darkRed"}}
-                                        onClick={this.handleCancel.bind(this)}>Cancel</Button>
+                                <Button variant="contained" style={{ backgroundColor: "darkRed" }}
+                                    onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
                         }
                     </Stack>
@@ -361,10 +377,10 @@ class HourEntry extends React.Component {
     ]
 
     toggleEdit() {
-        if(this.state.editable) {
-            this.setState({editable: false});
+        if (this.state.editable) {
+            this.setState({ editable: false });
         } else {
-            this.setState({editable: true});
+            this.setState({ editable: true });
         }
     }
 
@@ -379,7 +395,19 @@ class HourEntry extends React.Component {
     }
 
     handleSave() {
-        this.toggleEdit();
+        let hours = this.props.restaurant.hours;
+        hours[this.props.day].open = this.state.openTimeSelection;
+        hours[this.props.day].openHalf = this.state.openTimeHalf;
+        hours[this.props.day].close = this.state.closeTimeSelection;
+        hours[this.props.day].closeHalf = this.state.closeTimeHalf;
+        let change = {
+            "hours": hours
+        };
+        editUser(this.props.restaurant.id, change)
+            .then(() => {
+                this.toggleEdit();
+                this.props.changeUserData(change);
+            });
     }
 
     handleOpenChange(val) {
@@ -409,57 +437,57 @@ class HourEntry extends React.Component {
     render() {
         return (
             <Stack direction="row" alignItems="center" justifyContent="flex-start" spacing={1}>
-                <Typography variant="p" style={{width: "110px"}}>
+                <Typography variant="p" style={{ width: "110px" }}>
                     {this.props.day + ":"}
                 </Typography>
                 {!this.state.editable &&
                     <Stack direction="row" spacing={1} alignItems="center">
                         <Typography variant="p">
                             {this.props.restaurant.hours[this.props.day].open +
-                            this.props.restaurant.hours[this.props.day].openHalf +
-                            " - " +
-                            this.props.restaurant.hours[this.props.day].close +
-                            this.props.restaurant.hours[this.props.day].closeHalf}
+                                this.props.restaurant.hours[this.props.day].openHalf +
+                                " - " +
+                                this.props.restaurant.hours[this.props.day].close +
+                                this.props.restaurant.hours[this.props.day].closeHalf}
                         </Typography>
                         <IconButton onClick={this.toggleEdit.bind(this)}>
-                            <EditIcon style={{fontSize: "medium"}}/>
+                            <EditIcon style={{ fontSize: "medium" }} />
                         </IconButton>
                     </Stack>
                 }
                 {this.state.editable &&
-                <Stack direction="column" spacing={1}>
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                        <Typography>Open:</Typography>
-                        <Select size="small" value={this.state.openTimeSelection}
+                    <Stack direction="column" spacing={1}>
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                            <Typography>Open:</Typography>
+                            <Select size="small" value={this.state.openTimeSelection}
                                 onChange={(event) => this.handleOpenChange(event.target.value)}>
-                            {this.timeOptions.map((time) => (
-                                <MenuItem value={time}>{time}</MenuItem>
-                            ))}
-                        </Select>
-                        <Select size="small" value={this.state.openTimeHalf}
+                                {this.timeOptions.map((time) => (
+                                    <MenuItem value={time}>{time}</MenuItem>
+                                ))}
+                            </Select>
+                            <Select size="small" value={this.state.openTimeHalf}
                                 onChange={(event) => this.handleOpenHalfChange(event.target.value)}>
                                 <MenuItem value="am">am</MenuItem>
                                 <MenuItem value="pm">pm</MenuItem>
-                        </Select>
-                        <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
-                        <Button variant="contained" style={{backgroundColor: "darkRed"}}
+                            </Select>
+                            <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                            <Button variant="contained" style={{ backgroundColor: "darkRed" }}
                                 onClick={this.handleCancel.bind(this)}>Cancel</Button>
-                    </Stack>
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                        <Typography>Close:</Typography>
-                        <Select size="small" value={this.state.closeTimeSelection}
+                        </Stack>
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                            <Typography>Close:</Typography>
+                            <Select size="small" value={this.state.closeTimeSelection}
                                 onChange={(event) => this.handleCloseChange(event.target.value)}>
-                            {this.timeOptions.map((time) => (
-                                <MenuItem value={time}>{time}</MenuItem>
-                            ))}
-                        </Select>
-                        <Select size="small" value={this.state.closeTimeHalf}
+                                {this.timeOptions.map((time) => (
+                                    <MenuItem value={time}>{time}</MenuItem>
+                                ))}
+                            </Select>
+                            <Select size="small" value={this.state.closeTimeHalf}
                                 onChange={(event) => this.handleCloseHalfChange(event.target.value)}>
                                 <MenuItem value="am">am</MenuItem>
                                 <MenuItem value="pm">pm</MenuItem>
-                        </Select>
+                            </Select>
+                        </Stack>
                     </Stack>
-                </Stack>
                 }
             </Stack>
         );
@@ -467,17 +495,22 @@ class HourEntry extends React.Component {
 }
 
 class RestaurantHours extends React.Component {
+    constructor(props) {
+        super(props);
+    }
     render() {
+        let sortedDays = [...Object.keys(this.props.restaurant.hours)];
+        sortedDays.sort();
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         Hours:
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         <Stack direction="column" spacing={1}>
-                            {Object.keys(this.props.restaurant.hours).map((day) => (
-                                <HourEntry key={day} day={day} restaurant={this.props.restaurant}/>
+                            {sortedDays.map((day) => (
+                                <HourEntry key={day} day={day} restaurant={this.props.restaurant} changeUserData={this.props.changeUserData} />
                             ))}
                         </Stack>
                     </Stack>
@@ -498,15 +531,20 @@ class RestaurantWaitTime extends React.Component {
     }
 
     toggleEdit() {
-        if(!this.state.editable) {
-            this.setState({editable: true});
+        if (!this.state.editable) {
+            this.setState({ editable: true });
         } else {
-            this.setState({editable: false});
+            this.setState({ editable: false });
         }
     }
 
     handleSave() {
-        this.toggleEdit();
+        let change = { "avgTimePerCustomer": this.state.avgWaitSelection };
+        editUser(this.props.restaurant.id, change)
+            .then(() => {
+                this.toggleEdit();
+                this.props.changeUserData(change);
+            });
     }
 
     handleCancel() {
@@ -518,30 +556,30 @@ class RestaurantWaitTime extends React.Component {
 
     render() {
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         Average wait time per customer:
                     </Typography>
                     {!this.state.editable &&
-                        <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                        <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                             <Typography variant="p">
                                 {this.props.restaurant.avgTimePerCustomer + " minutes"}
                             </Typography>
                             <IconButton onClick={this.toggleEdit.bind(this)}>
-                                <EditIcon style={{fontSize: "medium"}}/>
+                                <EditIcon style={{ fontSize: "medium" }} />
                             </IconButton>
                         </Stack>
                     }
                     {this.state.editable &&
-                        <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                        <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                             <Select value={this.state.avgWaitSelection}
                                 variant="outlined"
                                 size="small"
                                 label="Description"
-                                style={{width: "150px",}}
-                                onChange={(e) => {this.setState({avgWaitSelection: e.target.value,})}}
-                                >
+                                style={{ width: "150px", }}
+                                onChange={(e) => { this.setState({ avgWaitSelection: e.target.value, }) }}
+                            >
                                 <MenuItem value={0.25}>15 seconds</MenuItem>
                                 <MenuItem value={0.5}>30 seconds</MenuItem>
                                 <MenuItem value={1}>1 minute</MenuItem>
@@ -558,8 +596,8 @@ class RestaurantWaitTime extends React.Component {
                                 <MenuItem value={60}>1 hour</MenuItem>
                             </Select>
                             <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
-                            <Button variant="contained" style={{backgroundColor: "darkRed"}}
-                                    onClick={this.handleCancel.bind(this)}>Cancel</Button>
+                            <Button variant="contained" style={{ backgroundColor: "darkRed" }}
+                                onClick={this.handleCancel.bind(this)}>Cancel</Button>
                         </Stack>
                     }
                 </Stack>
@@ -583,31 +621,43 @@ class RestaurantTags extends React.Component {
     ]
 
     handleClick(chip) {
-        if(this.state.selectedChips.includes(chip)) {
+        if (this.state.selectedChips.includes(chip)) {
+            let newChips = this.state.selectedChips.filter(function (value, index, arr) { return arr.includes(value) && value != chip });
             this.setState({
-                selectedChips: this.state.selectedChips.filter(function (value, index, arr) {return arr.includes(value) && value != chip}),
+                selectedChips: newChips,
             });
+            let change = { "chips": newChips };
+            editUser(this.props.restaurant.id, change)
+                .then(() => {
+                    this.props.changeUserData(change);
+                });
         } else {
+            let newChips = this.state.selectedChips.concat([chip]);
             this.setState({
-                selectedChips: this.state.selectedChips.concat([chip]),
+                selectedChips: newChips,
             });
+            let change = { "chips": newChips };
+            editUser(this.props.restaurant.id, change)
+                .then(() => {
+                    this.props.changeUserData(change);
+                });
         }
     }
 
     render() {
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         Restaurant Tags:
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         <Stack spacing={1} alignItems="center" direction="row" justifyContent="flex-start"
-                            style={{overflow: "scroll"}}>
+                            style={{ overflow: "scroll" }}>
                             {this.chips.map((name) =>
-                                    <MenuChip name={name}
+                                <MenuChip name={name}
                                     onClick={() => this.handleClick(name)}
-                                    variant={this.state.selectedChips.includes(name) ? "filled" : "outlined"}/>
+                                    variant={this.state.selectedChips.includes(name) ? "filled" : "outlined"} />
                             )}
                         </Stack>
                     </Stack>
@@ -628,8 +678,7 @@ class RestaurantMenu extends React.Component {
     }
 
     toggleEdit() {
-        if(this.state.editable)
-        {
+        if (this.state.editable) {
             this.setState({
                 editable: false,
             });
@@ -648,24 +697,29 @@ class RestaurantMenu extends React.Component {
     }
 
     handleSave() {
-        this.toggleEdit();
+        let change = { "menu": this.state.menuValue };
+        editUser(this.props.restaurant.id, change)
+            .then(() => {
+                this.toggleEdit();
+                this.props.changeUserData(change);
+            });
     }
 
     render() {
         return (
-            <Paper className={this.props.classes.lineEntry} style={{backgroundColor: "#eee"}}>
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h5" style={{fontWeight: "bold"}}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         Menu:
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         {!this.state.editable &&
                             <Stack direction="row" spacing={1} alignItems="center">
                                 <Typography variant="p">
-                                    <pre style={{fontFamily: "Roboto"}}>{this.state.menuValue}</pre>
+                                    <pre style={{ fontFamily: "Roboto" }}>{this.state.menuValue}</pre>
                                 </Typography>
                                 <IconButton onClick={this.toggleEdit.bind(this)}>
-                                    <EditIcon style={{fontSize: "medium"}}/>
+                                    <EditIcon style={{ fontSize: "medium" }} />
                                 </IconButton>
                             </Stack>
                         }
@@ -676,12 +730,12 @@ class RestaurantMenu extends React.Component {
                                     multiline
                                     size="large"
                                     label="Menu"
-                                    style={{width: "600px"}}
-                                    onChange={(e) => {this.setState({menuValue: e.target.value,})}}
-                                    />
+                                    style={{ width: "600px" }}
+                                    onChange={(e) => { this.setState({ menuValue: e.target.value, }) }}
+                                />
                                 <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
-                                <Button variant="contained" style={{backgroundColor: "darkRed"}}
-                                        onClick={this.handleCancel.bind(this)}>Cancel</Button>
+                                <Button variant="contained" style={{ backgroundColor: "darkRed" }}
+                                    onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
                         }
                     </Stack>
@@ -704,21 +758,36 @@ function SettingsDisplay(props) {
                     <Typography variant="h3">{props.restaurant.name} Settings</Typography>
                     <Paper className={classes.settingsPaper}>
                         <Stack direction="column" spacing={2}>
-                            <RestaurantName restaurant={props.restaurant} classes={classes}/>
-                            <RestaurantDescription restaurant={props.restaurant} classes={classes}/>
-                            <RestaurantEmail classes={classes} restaurant={props.restaurant}/>
-                            <RestaurantPhone classes={classes} restaurant={props.restaurant}/>
-                            <RestaurantWebsite classes={classes} restaurant={props.restaurant}/>
-                            <RestaurantHours restaurant={props.restaurant} classes={classes}/>
-                            <RestaurantWaitTime restaurant={props.restaurant} classes={classes}/>
-                            <RestaurantTags restaurant={props.restaurant} classes={classes}/>
-                            <RestaurantMenu restaurant={props.restaurant} classes={classes}/>
+                            <RestaurantName restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
+                            <RestaurantDescription restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
+                            <RestaurantEmail classes={classes} restaurant={props.restaurant} changeUserData={props.changeUserData} />
+                            <RestaurantPhone classes={classes} restaurant={props.restaurant} changeUserData={props.changeUserData} />
+                            <RestaurantWebsite classes={classes} restaurant={props.restaurant} changeUserData={props.changeUserData} />
+                            <RestaurantHours restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
+                            <RestaurantWaitTime restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
+                            <RestaurantTags restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
+                            <RestaurantMenu restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                         </Stack>
                     </Paper>
                 </Stack>
             </Container>
         </div>
     )
+}
+
+async function editUser(id, editProps) {
+    const body = {
+        data: editProps,
+        id: id
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    };
+    fetch('http://localhost:5001/restaurant/edit', requestOptions)
+        .then(response => response.json())
+        .then(data => { console.log(data) });
 }
 
 export default SettingsDisplay;
