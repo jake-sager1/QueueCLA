@@ -385,7 +385,7 @@ class App extends React.Component {
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
               component={<UserSignup user={this.state.user} changeUserData={this.changeUserData} />} />
-            <Route path="/manage/create"><RestaurantSignup restaurant={this.state.user} /></Route>
+            <Route path="/manage/create"><RestaurantSignup restaurant={this.state.user} changeUserData={this.changeUserData} /></Route>
             <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.loggedIn} restaurants={this.restaurants} user={this.state.user} />}></Route>
             <PrivateRoute path="/restaurants"
               isLoggedIn={this.state.loggedIn}

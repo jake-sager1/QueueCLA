@@ -41,6 +41,18 @@ class RestaurantRegister extends React.Component {
 
     handleSave() {
         console.log(this.state);
+        let change = {
+            "name": this.state.nameVal,
+            "avgTimePerCustomer": this.state.avgWaitSelection,
+            "description": this.state.descVal,
+            "phone": this.state.phoneVal,
+            "url": this.state.websiteVal,
+            "chips": this.state.selectedChips
+        }
+        editUser(this.props.restaurant.id, change)
+            .then(() => {
+                this.props.changeUserData(change);
+            });
     }
 
     render() {
@@ -106,8 +118,6 @@ function RestaurantSignup(props) {
 
     const classes = useStyles();
 
-    let editName = false;
-
     return (
         <div class={classes.page}>
             <Header />
@@ -118,7 +128,7 @@ function RestaurantSignup(props) {
                             <Stack spacing={2} direction="column">
                                 <Typography spacing="5" variant="h5" style={{ fontWeight: "bold" }}>Register Your Restaurant</Typography>
                                 <Stack direction="column" spacing={5} sx={{ mb: 3 }}>
-                                    <RestaurantRegister restaurant={props.restaurant} classes={classes} />
+                                    <RestaurantRegister restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                                 </Stack>
                             </Stack>
                         </Paper>
@@ -128,6 +138,21 @@ function RestaurantSignup(props) {
             <Footer />
         </div>
     )
+}
+
+async function editUser(id, editProps) {
+    const body = {
+        data: editProps,
+        id: id
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    };
+    fetch('http://localhost:5001/restaurant/edit', requestOptions)
+        .then(response => response.json())
+        .then(data => { console.log(data) });
 }
 
 export default RestaurantSignup;
