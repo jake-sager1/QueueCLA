@@ -19,7 +19,9 @@ function MainSection() {
             </Typography>
             <Container maxWidth="md">
                 <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                We solve a problem rampant on UCLA's campus -- what the British call queuing.
+                    We solve a problem rampant on UCLA's campus -- what the British call queuing.
+                    We provide a platform for students to stand in virtual queues and for restaurants to
+                    monitor these queues.
                 </Typography>
                 <Grid container spacing={2} alignItems="stretch">
                     <Person 
