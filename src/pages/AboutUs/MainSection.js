@@ -19,9 +19,7 @@ function MainSection() {
             </Typography>
             <Container maxWidth="md">
                 <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                    Something short and leading about the collection below—its contents,
-                    the creator, etc. Make it short and sweet, but not too short so folks
-                    don&apos;t simply skip over it entirely.
+                We solve a problem rampant on UCLA's campus -- what the British call queuing.
                 </Typography>
                 <Grid container spacing={2} alignItems="stretch">
                     <Person 
