@@ -1,4 +1,3 @@
-const { connectFirestoreEmulator } = require("@firebase/firestore");
 const express = require("express");
 let router = express.Router();
 
