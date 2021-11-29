@@ -8,7 +8,6 @@ import { signInWithGoogleRestaurant } from '../../service/firebase';
 function Header(props) {
 
     const classes = useStyles();
-    let isLoggedIn = false;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -29,7 +28,7 @@ function Header(props) {
                             </Typography>
                         </Link>
                         <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-                            {(!props.page || (props.page !== "line")) && (
+                            {(!props.page || (props.page !== "line")) && props.isLoggedIn && (
                                 <Link to="/manage/line" style={{ textDecoration: "none" }}>
                                     <Button style={{ color: "white" }}>Mangage Line</Button>
                                 </Link>
@@ -37,10 +36,10 @@ function Header(props) {
                             }
 
                             {
-                                !isLoggedIn ? (
-                                    <Link to="../signup" style={{ textDecoration: "none" }}>
-                                        <Button variant="contained" color="primary" href="../restaurantlogin" onClick={signInWithGoogleRestaurant}>Sign In</Button>
-                                    </Link>
+                                !props.isLoggedIn ? (
+                                   
+                                    <Button variant="contained" color="primary" onClick={signInWithGoogleRestaurant}>Sign In With Google</Button>
+                                   
                                 ) :
                                     (
 

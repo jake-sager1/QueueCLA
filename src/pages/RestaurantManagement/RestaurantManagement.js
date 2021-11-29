@@ -6,19 +6,12 @@ import { Redirect } from 'react-router';
 
 function RestaurantManagement(props) {
 
-    let isLoggedIn = false;
-
     return (
-        !isLoggedIn ? (
-            <div class="page">
-                <Header restaurant={props.restaurant} />
-                <MainSection />
-                <Footer />
-            </div>
-        ) :
-            (
-                <Redirect to="/manage/line" />
-            )
+        <div class="page">
+            <Header restaurant={props.restaurant} isLoggedIn={props.isLoggedIn} />
+            <MainSection />
+            <Footer />
+        </div>
     );
 }
 

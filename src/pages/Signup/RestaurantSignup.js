@@ -7,6 +7,22 @@ import MenuChip from '../../../src/GlobalComponents/Chips';
 import Header from './Header';
 import Footer from '../../GlobalComponents/Footer';
 import { spacing } from '@mui/system';
+import { Link } from 'react-router-dom';
+
+async function editRestaurant(id, editProps) {
+    const body = {
+        data: editProps,
+        id: id
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    };
+    fetch('http://localhost:5001/restaurant/edit', requestOptions)
+        .then(response => response.json())
+        .then(data => { console.log(data) });
+}
 
 class RestaurantRegister extends React.Component {
 
@@ -19,6 +35,7 @@ class RestaurantRegister extends React.Component {
             websiteVal: null,
             avgWaitSelection: 3,
             selectedChips: [],
+            restaurant: this.props.restaurant,
         }
     }
 
@@ -37,10 +54,6 @@ class RestaurantRegister extends React.Component {
                 selectedChips: this.state.selectedChips.concat([chip]),
             });
         }
-    }
-
-    handleSave() {
-        // does nothing yet
     }
 
     render() {
@@ -94,7 +107,15 @@ class RestaurantRegister extends React.Component {
                         </Stack>
                     </Stack>
                 </Stack>
-                <Button align="center" variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                <Button align="center" variant="contained" onClick={() => {
+                    let change = { name: this.state.nameVal, description: this.state.descVal,
+                        phone: this.state.phoneVal, url: this.state.websiteVal, avgTimePerCustomer: this.state.avgWaitSelection,
+                        chips: this.state.selectedChips, setup: true };
+                    editRestaurant(this.state.restaurant.id, change)
+                        .then(() => {
+                            this.props.changeRestaurantData(change);
+                        });
+                        }}>Save</Button>
             </Stack>
             
         );
@@ -118,7 +139,7 @@ function RestaurantSignup(props) {
                             <Stack spacing={2} direction="column">
                                 <Typography spacing="5" variant="h5" style={{fontWeight: "bold"}}>Register Your Restaurant</Typography>
                                 <Stack direction="column" spacing={5} sx={{ mb: 3 }}>
-                                    <RestaurantRegister restaurant={props.restaurant} classes={classes}/>
+                                    <RestaurantRegister restaurant={props.restaurant} changeRestaurantData={props.changeRestaurantData} classes={classes}/>
                                 </Stack>
                             </Stack>
                         </Paper>
