@@ -40,7 +40,6 @@ class UserRegister extends React.Component {
 function UserSignup(props) {
 
     const classes = useStyles();
-
     return (
         <div class={classes.page}>
             <Header/>
