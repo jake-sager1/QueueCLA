@@ -8,6 +8,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import Signup from './pages/Signup/Signup'
 import UserSignup from './pages/Signup/UserSignup'
+import About from './pages/AboutUs/AboutUs'
 import RestaurantSignup from './pages/Signup/RestaurantSignup'
 import Restaurants from './pages/Restaurants/Restaurants'
 import NotFound from './pages/ErrorPages/NotFound'
@@ -365,6 +366,7 @@ class App extends React.Component {
             <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]} /></Route>
             <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]} /></Route>
             <Route path="/manage"><RestaurantManagement restaurant={this.restaurants[1]} /></Route>
+            <Route path="/about"><About /></Route>
             <Route path="/404" component={NotFound}></Route>
             <Redirect to="/404" />
           </Switch>

@@ -1,9 +1,26 @@
 import React from "react";
 import { Paper, Stack, Typography, Box, Button } from '@mui/material';
 import useStyles from "./restaurant-styles";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 function JoinLineSection(props) {
     const classes = useStyles();
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        if (props.user.inLine){
+            setOpen(true);
+        }
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     let currentSpotInLine = 1;
     
@@ -42,7 +59,26 @@ function JoinLineSection(props) {
                                 {props.restaurant.avgTimePerCustomer * props.restaurant.waitlist.length} minutes
                             </Box>
                         </Typography>
-                        <Button variant="contained" style={{padding: "20px"}}>Get in Line</Button>
+                        <Button variant="contained" style={{padding: "20px"}} onClick={handleClickOpen}>Get in Line</Button>
+                        <Dialog
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">
+                            {"You're Already in Line"}
+                            </DialogTitle>
+                            <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                You are currently already in line at {props.restaurants[props.user.restaurantID].name}. 
+                                Please leave line to join another.
+                            </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                            <Button onClick={handleClose} autoFocus>Okay</Button>
+                            </DialogActions>
+                        </Dialog>
                     </Stack>
                 }
                 {props.user.inLine && props.user.restaurantID == props.restaurant.id &&
