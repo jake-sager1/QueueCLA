@@ -13,6 +13,18 @@ router.route("/create").post(async (req, res, next) => {
     //if user already exists
     if (!userDoc.exists) {
         console.log("No such user");
+        //check if a restaurant exists
+        let restaurantRef = db.collection("restaurants").doc(id);
+        let restaurantDoc = await restaurantRef.get();
+
+        if (restaurantDoc.exists) {
+            const response = {
+                message: `A restaurant exists with same id ${id}, email ${email}`,
+                statusCode: 403
+            };
+            res.status(response.statusCode).send(response);
+            return;
+        }
         console.log(`Creating user with id ${id}, email ${email}`);
         //TODO:need to change this when user account page is created
         const userData = {
