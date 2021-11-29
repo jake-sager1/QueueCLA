@@ -8,7 +8,7 @@ import { signInWithGoogleRestaurant } from '../../service/firebase';
 function Header(props) {
 
     const classes = useStyles();
-    let isLoggedIn = false;
+    let isLoggedIn = props.isLoggedIn;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {

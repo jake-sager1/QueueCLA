@@ -10,10 +10,10 @@ function LineManagement(props) {
 
     return (
         <div className={classes.page}>
-            <Header restaurant={props.restaurant} page="line"/>
-            <LineStatus restaurant={props.restaurant} users={props.users}/>
-            <Footer/>
-        </div> 
+            <Header restaurant={props.restaurant} page="line" isLoggedIn={props.isLoggedIn} />
+            <LineStatus restaurant={props.restaurant} users={props.users} />
+            <Footer />
+        </div>
     );
 }
 

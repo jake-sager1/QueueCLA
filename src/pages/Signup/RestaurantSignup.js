@@ -47,7 +47,8 @@ class RestaurantRegister extends React.Component {
             "description": this.state.descVal,
             "phone": this.state.phoneVal,
             "url": this.state.websiteVal,
-            "chips": this.state.selectedChips
+            "chips": this.state.selectedChips,
+            "setup": true
         }
         editUser(this.props.restaurant.id, change)
             .then(() => {

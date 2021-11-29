@@ -23,7 +23,7 @@ import Loader from "react-loader-spinner";
 import { signOut } from '@firebase/auth';
 
 
-function PrivateRoute({ component, isLoggedIn, isSetup, ...rest }) {
+function UserPrivateRoute({ component, isLoggedIn, isSetup, userType, ...rest }) {
   return (
     <Route {...rest} render={(props) => {
       if (!isLoggedIn) {
@@ -31,15 +31,48 @@ function PrivateRoute({ component, isLoggedIn, isSetup, ...rest }) {
       }
       else {
         if (isSetup) {
-          return component;
+          if (userType === "student")
+            return component;
+          else {
+            return <Redirect exact to="/" />;
+          }
         }
         else {
-          return <Redirect exact to="/user/create" />;
+          if (userType === "student")
+            return <Redirect exact to="/user/create" />;
+          else
+            return <Redirect exact to="/" />;
         }
       }
     }} />
   )
 }
+
+function RestaurantPrivateRoute({ component, isLoggedIn, isSetup, userType, ...rest }) {
+  return (
+    <Route {...rest} render={(props) => {
+      if (!isLoggedIn) {
+        return <Redirect exact to="/" />;
+      }
+      else {
+        if (isSetup) {
+          if (userType === "restaurant")
+            return component;
+          else {
+            return <Redirect exact to="/" />;
+          }
+        }
+        else {
+          if (userType === "restaurant")
+            return <Redirect exact to="/manage/create" />;
+          else
+            return <Redirect exact to="/" />;
+        }
+      }
+    }} />
+  )
+}
+
 
 function PublicRoute({ component, isLoggedIn, isSetup, userType, ...rest }) {
   return (
@@ -67,7 +100,7 @@ function PublicRoute({ component, isLoggedIn, isSetup, userType, ...rest }) {
   )
 }
 
-function SetupRoute({ component, isLoggedIn, isSetup, ...rest }) {
+function UserSetupRoute({ component, isLoggedIn, isSetup, ...rest }) {
   return (
     <Route {...rest} render={(props) => {
       if (!isLoggedIn) {
@@ -76,6 +109,24 @@ function SetupRoute({ component, isLoggedIn, isSetup, ...rest }) {
       else {
         if (isSetup) {
           return <Redirect exact to="/restaurants" />;
+        }
+        else {
+          return component;
+        }
+      }
+    }} />
+  )
+}
+
+function RestaurantSetupRoute({ component, isLoggedIn, isSetup, ...rest }) {
+  return (
+    <Route {...rest} render={(props) => {
+      if (!isLoggedIn) {
+        return <Redirect exact to="/" />;
+      }
+      else {
+        if (isSetup) {
+          return <Redirect exact to="/manage/line" />;
         }
         else {
           return component;
@@ -381,22 +432,35 @@ class App extends React.Component {
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
               component={<Signup />} />
-            <SetupRoute path="/user/create"
+            <UserSetupRoute path="/user/create"
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
               component={<UserSignup user={this.state.user} changeUserData={this.changeUserData} />} />
-            <Route path="/manage/create"><RestaurantSignup restaurant={this.state.user} changeUserData={this.changeUserData} /></Route>
+            <RestaurantSetupRoute path="/manage/create"
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              component={<RestaurantSignup restaurant={this.state.user} changeUserData={this.changeUserData} />} />
             <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.loggedIn} restaurants={this.restaurants} user={this.state.user} />}></Route>
-            <PrivateRoute path="/restaurants"
+            <UserPrivateRoute path="/restaurants"
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
+              userType={this.state.userType}
               component={<Restaurants isLoggedIn={this.state.loggedIn} user={this.state.user} restaurants={this.restaurants} />} />
-            <PrivateRoute path="/user"
+            <UserPrivateRoute path="/user"
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
+              userType={this.state.userType}
               component={<UserSettings isLoggedIn={this.state.loggedIn} user={this.state.user} restaurants={this.restaurants} changeUserData={this.changeUserData} />} />
-            <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]} /></Route>
-            <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]} /></Route>
+            <RestaurantPrivateRoute path="/manage/line"
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              userType={this.state.userType}
+              component={<LineManagement users={this.users} restaurant={this.state.user} isLoggedIn={this.state.loggedIn} />} />
+            <RestaurantPrivateRoute path="/manage/settings"
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              userType={this.state.userType}
+              component={<RestaurantSettings restaurant={this.state.user} isLoggedIn={this.state.loggedIn} />} />
             <PublicRoute exact path="/manage"
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
