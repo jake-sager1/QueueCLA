@@ -5,13 +5,13 @@ import { Settings, Logout } from '@mui/icons-material';
 import { Link, NavLink } from 'react-router-dom';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SearchBar from './SearchBar';
-import { signInWithGoogle } from '../service/firebase'
+import { signInWithGoogleUser } from '../service/firebase'
 import { signOutWithGoogle } from '../service/firebase';
 
-function StackLogin() {
+function StackLogin(props) {
   return (
     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-        <Button variant="contained" color="primary" onClick={() => {signInWithGoogle('user')}}>Sign In With Google</Button>
+      <Button variant="contained" color="primary" onClick={() => { signInWithGoogleUser('user'); props.userLoggingInToggle(); }}>Sign In With Google</Button>
     </Stack>
   )
 }
@@ -157,7 +157,7 @@ function GlobalHeader(props) {
   let stackRight;
 
   if (!isLoggedIn) {
-    stackRight = <StackLogin />;
+    stackRight = <StackLogin userLoggingInToggle={props.userLoggingInToggle} />;
   } else {
     stackRight = <StackProfile user={props.user} />;
   }

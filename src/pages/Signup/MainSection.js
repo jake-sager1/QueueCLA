@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import BasicCard from '../BasicCard';
 import image1 from '../../images/dining.jpeg'
 import image2 from '../../images/background.jpeg'
-import { signInWithGoogle } from '../../service/firebase'
+import { signInWithGoogleUser } from '../../service/firebase'
 
 function MainSection() {
 
@@ -36,8 +36,8 @@ function MainSection() {
                             </Typography>
                         </CardContent>
                         <CardActions style={{ padding: "15px" }}>
-                            <Button size="small" variant="contained" color="primary" className={classes.cardButtons} onClick={signInWithGoogle}>Login with Google</Button>
-                            
+                            <Button size="small" variant="contained" color="primary" className={classes.cardButtons} onClick={signInWithGoogleUser}>Login with Google</Button>
+
                         </CardActions>
                     </Card>
 
@@ -52,9 +52,9 @@ function MainSection() {
                             </Typography>
                         </CardContent>
                         <CardActions style={{ padding: "15px" }}>
-                           
-                            <Button size="small" variant="contained" color="primary" className={classes.cardButtons} onClick={signInWithGoogle}>Login with Google</Button>
-                
+
+                            <Button size="small" variant="contained" color="primary" className={classes.cardButtons} onClick={signInWithGoogleUser}>Login with Google</Button>
+
                         </CardActions>
                     </Card>
                 </Grid>

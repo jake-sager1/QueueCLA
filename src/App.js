@@ -21,21 +21,23 @@ import { auth, signOutWithGoogle } from './service/firebase';
 import Loader from "react-loader-spinner";
 
 
-function PrivateRoute({component, isLoggedIn, ...rest}) {
+function PrivateRoute({ component, isLoggedIn, ...rest }) {
   return (
     <Route {...rest} render={(props) => {
-      return ( isLoggedIn ? component : 
-      <Redirect exact to="/"/>
-      )}}/>
+      return (isLoggedIn ? component :
+        <Redirect exact to="/" />
+      )
+    }} />
   )
 }
 
-function PublicRoute({component, isLoggedIn, ...rest}) {
+function PublicRoute({ component, isLoggedIn, ...rest }) {
   return (
     <Route {...rest} render={(props) => {
-      return ( isLoggedIn ? <Redirect exact to="/restaurants"/> : 
-      component
-    )}}/>
+      return (isLoggedIn ? <Redirect exact to="/restaurants" /> :
+        component
+      )
+    }} />
   )
 }
 
@@ -48,8 +50,14 @@ class App extends React.Component {
       userType: null,
       userLoggedIn: false,
       signOutClicked: false,
-      user: null,
+      userLoggingIn: false,
+      user: null
     }
+  }
+
+  userLoggingInToggle = () => {
+    let loggingIn = this.state.userLoggingIn;
+    this.setState({ userLoggingIn: !loggingIn });
   }
 
   async componentDidMount() {
@@ -74,6 +82,7 @@ class App extends React.Component {
                 userLoggedIn: true,
                 signOutClicked: false
               });
+              this.userLoggingInToggle();
             });
         }, 2000);
       } else {
@@ -273,7 +282,8 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.state.user === null && !this.state.signOutClicked) return (
+    console.log(this.state);
+    if (this.state.userLoggingIn && this.state.user == null) return (
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -291,14 +301,14 @@ class App extends React.Component {
       <ThemeProvider theme={theme}>
         <Router>
           <Switch>
-            <PublicRoute exact path="/" isLoggedIn={this.state.userLoggedIn} component={<Home isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants}/>} />
+            <PublicRoute exact path="/" isLoggedIn={this.state.userLoggedIn} component={<Home isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} userLoggingInToggle={this.userLoggingInToggle} />} />
             <Route path="/card"><CardPage /></Route>
-            <PublicRoute path="/signup" isLoggedIn={this.state.userLoggedIn} component={<Signup />}/>
+            <PublicRoute path="/signup" isLoggedIn={this.state.userLoggedIn} component={<Signup />} />
             <Route path="/user/create"><UserSignup /></Route>
-            <Route path="/manage/create"><RestaurantSignup restaurant={this.restaurants[1]}/></Route>
+            <Route path="/manage/create"><RestaurantSignup restaurant={this.restaurants[1]} /></Route>
             <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.userLoggedIn} restaurants={this.restaurants} user={this.state.user} />}></Route>
             <PrivateRoute path="/restaurants" isLoggedIn={this.state.userLoggedIn} component={<Restaurants isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} />} />
-            <PrivateRoute path="/user" isLoggedIn={this.state.userLoggedIn} component={<UserSettings isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} changeUserData={this.changeUserData} />}/>
+            <PrivateRoute path="/user" isLoggedIn={this.state.userLoggedIn} component={<UserSettings isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} changeUserData={this.changeUserData} />} />
             <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]} /></Route>
             <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]} /></Route>
             <Route path="/manage"><RestaurantManagement restaurant={this.restaurants[1]} /></Route>
