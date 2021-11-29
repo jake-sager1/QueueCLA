@@ -35,7 +35,9 @@ function Footer() {
                     <Grid item spacing={5} xs={12} md={4}>
                         <Stack spacing={1} justifyContent="left">
                             <Typography style={{fontWeight: "bold"}}>Information</Typography>
-                            <Typography>About Us</Typography>
+                            <Link to="/about" style={{color: "white", textDecoration: "none"}}>
+                                <Typography>About Us</Typography>
+                            </Link>
                             <Typography>Privacy Policy</Typography>
                             <Typography>Terms of Service</Typography>
                         </Stack>
