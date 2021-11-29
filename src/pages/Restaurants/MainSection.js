@@ -15,6 +15,47 @@ import LocalDiningSharpIcon from '@mui/icons-material/LocalDiningSharp';
 import DinnerDiningSharpIcon from '@mui/icons-material/DinnerDiningSharp';
 import MenuChip from '../../GlobalComponents/Chips';
 
+class RestaurantTags extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedChips: [],
+        }
+    }
+
+    chips = [
+        "vegetarian", "vegan", "gluten-free", "breakfast", "lunch", "dinner",
+        "fast-food", "takeout"
+    ]
+
+    handleClick(chip) {
+        if(this.state.selectedChips.includes(chip)) {
+            this.setState({
+                selectedChips: this.state.selectedChips.filter(function (value, index, arr) {return arr.includes(value) && value != chip}),
+            });
+        } else {
+            this.setState({
+                selectedChips: this.state.selectedChips.concat([chip]),
+            });
+        }
+    }
+
+    render() {
+        return (
+            <Stack direction="row" alignItems="center" style={{marginLeft: "10px"}}>
+                <Stack spacing={1} alignItems="center" direction="row" justifyContent="flex-start"
+                    style={{overflow: "scroll"}, {padding: "10px"}}>
+                    {this.chips.map((name) =>
+                            <MenuChip name={name}
+                            onClick={() => this.handleClick(name)}
+                            variant={this.state.selectedChips.includes(name) ? "filled" : "outlined"}/>
+                    )}
+                </Stack>
+            </Stack>
+        );
+    }
+}
 
 
 function MainSection(props) {
@@ -25,7 +66,7 @@ function MainSection(props) {
 
       <div className={classes.contained} style={{backgroundColor: "#f7f7f7"}}>
           <Container maxWidth="md">
-
+          <RestaurantTags alignItems="center"/>
             <Grid container spacing={2} alignItems="stretch">
                 {Object.keys(props.restaurants).map((id) => (
                     
