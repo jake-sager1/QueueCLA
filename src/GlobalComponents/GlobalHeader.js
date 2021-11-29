@@ -11,7 +11,10 @@ import { signOutWithGoogle } from '../service/firebase';
 function StackLogin(props) {
   return (
     <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-      <Button variant="contained" color="primary" onClick={() => { signInWithGoogleUser('user'); props.userLoggingInToggle(); }}>Sign In With Google</Button>
+      <Button variant="contained" color="primary" onClick={() => {
+        signInWithGoogleUser();
+        props.loggingInToggle();
+      }}>Sign In With Google</Button>
     </Stack>
   )
 }
@@ -157,7 +160,7 @@ function GlobalHeader(props) {
   let stackRight;
 
   if (!isLoggedIn) {
-    stackRight = <StackLogin userLoggingInToggle={props.userLoggingInToggle} />;
+    stackRight = <StackLogin loggingInToggle={props.loggingInToggle} />;
   } else {
     stackRight = <StackProfile user={props.user} />;
   }

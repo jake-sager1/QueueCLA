@@ -20,6 +20,7 @@ import UserSettings from './pages/User/UserSettings/UserSettings.js'
 import { Redirect } from 'react-router';
 import { auth, signOutWithGoogle } from './service/firebase';
 import Loader from "react-loader-spinner";
+import { signOut } from '@firebase/auth';
 
 
 function PrivateRoute({ component, isLoggedIn, isSetup, ...rest }) {
@@ -40,7 +41,7 @@ function PrivateRoute({ component, isLoggedIn, isSetup, ...rest }) {
   )
 }
 
-function PublicRoute({ component, isLoggedIn, isSetup, ...rest }) {
+function PublicRoute({ component, isLoggedIn, isSetup, userType, ...rest }) {
   return (
     <Route {...rest} render={(props) => {
       if (!isLoggedIn) {
@@ -85,15 +86,16 @@ class App extends React.Component {
     this.state = {
       userType: null,
       userLoggedIn: false,
+      restaurantLoggedIn: false,
       signOutClicked: false,
-      userLoggingIn: false,
-      user: null
+      loggingIn: false,
+      user: null,
     }
   }
 
-  userLoggingInToggle = () => {
-    let loggingIn = this.state.userLoggingIn;
-    this.setState({ userLoggingIn: !loggingIn });
+  loggingInToggle = () => {
+    let loggingIn = this.state.loggingIn;
+    this.setState({ loggingIn: !loggingIn });
   }
 
   async componentDidMount() {
@@ -111,22 +113,41 @@ class App extends React.Component {
           fetch('http://localhost:5001/user/get', requestOptions)
             .then(response => response.json())
             .then(data => {
-              let userState = data.data.user;
-              userState.id = user.uid;
-              this.setState({
-                user: userState,
-                userLoggedIn: true,
-                signOutClicked: false,
-                userType: "student"
-              });
-              this.userLoggingInToggle();
+              if (data.statusCode === 200) {
+                let userState = data.data.user;
+                userState.id = user.uid;
+                this.setState({
+                  user: userState,
+                  userLoggedIn: true,
+                  signOutClicked: false,
+                  userType: userState.type
+                });
+                this.loggingInToggle();
+              }
+            });
+        }, 2000);
+        setTimeout(() => {
+          fetch('http://localhost:5001/restaurant/get', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+              if (data.statusCode === 200) {
+                let userState = data.data.restaurant;
+                userState.id = user.uid;
+                this.setState({
+                  user: userState,
+                  restaurantLoggedIn: true,
+                  signOutClicked: false,
+                  userType: userState.type
+                });
+                this.loggingInToggle();
+              }
             });
         }, 2000);
       } else {
         this.setState({
           user: null,
           userLoggedIn: false,
-          userLoggingIn: false,
+          loggingIn: false,
           signOutClicked: true,
           userType: null
         });
@@ -322,7 +343,7 @@ class App extends React.Component {
 
   render() {
     console.log(this.state);
-    if (this.state.user === null && (this.state.userLoggingIn || !this.state.signOutClicked)) return (
+    if (this.state.user === null && (this.state.loggingIn || !this.state.signOutClicked)) return (
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -343,7 +364,9 @@ class App extends React.Component {
             <PublicRoute exact path="/"
               isLoggedIn={this.state.userLoggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
-              component={<Home isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} userLoggingInToggle={this.userLoggingInToggle} />} />
+              component={<Home isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants}
+                loggingInToggle={this.loggingInToggle}
+              />} />
             <Route path="/card"><CardPage /></Route>
             <PublicRoute path="/signup"
               isLoggedIn={this.state.userLoggedIn}

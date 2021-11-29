@@ -39,7 +39,9 @@ function Header(props) {
                             {
                                 !isLoggedIn ? (
                                     <Link to="../signup" style={{ textDecoration: "none" }}>
-                                        <Button variant="contained" color="primary" href="../restaurantlogin" onClick={signInWithGoogleRestaurant}>Sign In</Button>
+                                        <Button variant="contained" color="primary" href="../restaurantlogin" onClick={() => {
+                                            signInWithGoogleRestaurant();
+                                        }}>Sign In</Button>
                                     </Link>
                                 ) :
                                     (

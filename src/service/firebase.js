@@ -1,3 +1,5 @@
+import SelectInput from "@mui/material/Select/SelectInput";
+import { StyledEngineProvider } from "@mui/styled-engine";
 import { initializeApp, applicationDefault, cert } from "firebase/app";
 import { GoogleAuthProvider, getAuth, signInWithRedirect, getRedirectResult, signOut, signInWithPopup } from "firebase/auth";
 import { getFirestore } from 'firebase/firestore';
@@ -19,6 +21,7 @@ export const provider = new GoogleAuthProvider();
 export const auth = getAuth();
 
 export const signInWithGoogleUser = async () => {
+  let noConflicts = true;
   signInWithPopup(auth, provider).then((result) => {
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -39,7 +42,13 @@ export const signInWithGoogleUser = async () => {
     };
     fetch('http://localhost:5001/user/create', requestOptions)
       .then(response => response.json())
-      .then(data => { console.log(data) });
+      .then(data => {
+        console.log(data);
+        if (data.statusCode == 403) {
+          console.log("OOF");
+          noConflicts = false;
+        }
+      });
   }).catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;
@@ -49,10 +58,12 @@ export const signInWithGoogleUser = async () => {
     // The AuthCredential type that was used.
     const credential = GoogleAuthProvider.credentialFromError(error);
   });
+  return noConflicts;
 };
 
 export const signInWithGoogleRestaurant = async () => {
-  signInWithPopup(auth, provider).then((result) => {
+  let noConflicts = true;
+  signInWithPopup(auth, provider).then(async (result) => {
     // This gives you a Google Access Token. You can use it to access the Google API.
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential.accessToken;
@@ -71,7 +82,12 @@ export const signInWithGoogleRestaurant = async () => {
     };
     fetch('http://localhost:5001/restaurant/create', requestOptions)
       .then(response => response.json())
-      .then(data => { console.log(data) });
+      .then(data => {
+        console.log(data);
+        if (data.statusCode === 403) {
+          noConflicts = false;
+        }
+      });
   }).catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;
@@ -81,6 +97,7 @@ export const signInWithGoogleRestaurant = async () => {
     // The AuthCredential type that was used.
     const credential = GoogleAuthProvider.credentialFromError(error);
   });
+  return noConflicts;
 };
 
 export const signOutWithGoogle = async () => {
