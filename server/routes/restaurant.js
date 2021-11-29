@@ -16,6 +16,7 @@ router.route("/create").post(async (req, res, next) => {
         console.log(`Creating restaurant with id ${id}, email ${email}`);
         //TODO:need to change this when restaurant account page is created
         const restaurantData = {
+            type: "restaurant",
             email: email,
             name: "Sample Name",
             chips: ["vegetarian", "gluten-free"],
@@ -37,6 +38,7 @@ router.route("/create").post(async (req, res, next) => {
             waitlist: [],
             url: "https://ucla.edu",
             menu: "Sample Item 1\n Sample Item 2\n",
+            setup: false
         };
         //create the restaurant
         await restaurantRef.set(restaurantData);

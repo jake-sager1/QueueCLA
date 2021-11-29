@@ -19,7 +19,10 @@ router.route("/create").post(async (req, res, next) => {
             email: email,
             inLine: false,
             name: req.body.name,
-            favorites: [2]
+            favorites: [2],
+            type: "student",
+            setup: false,
+            uid: ""
         };
         //create the user
         await userRef.set(userData);
