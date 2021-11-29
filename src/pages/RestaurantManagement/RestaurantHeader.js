@@ -4,6 +4,7 @@ import { Settings, Logout } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import useStyles from './restaurant-styles';
 import { signInWithGoogleRestaurant } from '../../service/firebase';
+import { signOutWithGoogle } from '../../service/firebase';
 
 function Header(props) {
 
@@ -94,8 +95,8 @@ function Header(props) {
                                         Settings
                                     </MenuItem>
                                 </Link>
-                                <Link to="/manage/logout" style={{ textDecoration: "none", color: "black" }}>
-                                    <MenuItem>
+                                <Link to="/manage" style={{textDecoration: "none", color: "black"}}>
+                                    <MenuItem onClick={signOutWithGoogle}>
                                         <ListItemIcon>
                                             <Logout fontSize="small" />
                                         </ListItemIcon>

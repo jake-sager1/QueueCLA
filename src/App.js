@@ -211,6 +211,7 @@ class App extends React.Component {
         this.setState({
           user: null,
           restaurant: null,
+          restaurantLoggedIn: false,
           userLoggedIn: false,
           userLoggingIn: false,
           signOutClicked: true,
