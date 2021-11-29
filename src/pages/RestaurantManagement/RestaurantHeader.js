@@ -41,6 +41,7 @@ function Header(props) {
                                     <Link to="../signup" style={{ textDecoration: "none" }}>
                                         <Button variant="contained" color="primary" href="../restaurantlogin" onClick={() => {
                                             signInWithGoogleRestaurant();
+                                            props.loggingInToggle();
                                         }}>Sign In</Button>
                                     </Link>
                                 ) :
