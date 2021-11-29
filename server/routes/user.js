@@ -1,14 +1,8 @@
 const express = require("express");
 let router = express.Router();
 
-const admin = require('firebase-admin');
-const serviceAccount = require('../queuecla-firebase-adminsdk-dcsra-ae14b81ebf.json');
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-});
-
-const db = admin.firestore();
+const firebaseInfo = require("../server");
+const db = firebaseInfo.admin.firestore();
 
 router.route("/create").post(async (req, res, next) => {
     const email = req.body.email;
