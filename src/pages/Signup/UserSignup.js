@@ -31,13 +31,13 @@ class UserRegister extends React.Component {
                         <MenuItem value={2}>2022</MenuItem>
                     </Select>
                 </Stack>
-                <Button spacing={5} align="center" variant="contained">Register</Button>
+                <Button spacing={5} align="center" variant="contained" onClick={this.props.setSetup}>Register</Button>
             </Stack>
         );
     }
 }
 
-function UserSignup() {
+function UserSignup(props) {
 
     const classes = useStyles();
 
@@ -50,7 +50,7 @@ function UserSignup() {
                         <Paper className={classes.settingsPaper} style={{padding: "20px"}}>
                             <Stack spacing={2} direction="column">
                                 <Stack direction="column" spacing={5} sx={{ mb: 3 }}>
-                                    <UserRegister classes={classes}/>
+                                    <UserRegister setSetup={props.setSetup} classes={classes}/>
                                 </Stack>
                             </Stack>
                         </Paper>

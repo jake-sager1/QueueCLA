@@ -24,8 +24,10 @@ function PrivateRoute({component, isLoggedIn, isSetup, ...rest}) {
   return (
     <Route {...rest} render={(props) => {
         if (isLoggedIn && isSetup) {
+            console.log("PrivateRoute, isLoggedin, isSetup")
             return component;
         } else if (isLoggedIn && !isSetup) {
+            console.log("PrivateRoute, isLoggedin, !isSetup")
             return (<Redirect exact to="/user/create" />)
         } else {
             return (<Redirect exact to="/" />)
@@ -44,8 +46,10 @@ function PublicRoute({component, isLoggedIn, isSetup, ...rest}) {
     return (
         <Route {...rest} render={(props) => {
             if (isLoggedIn && isSetup) {
+                console.log("PublicRoute, isLoggedin, isSetup")
                 return (<Redirect exact to="/restaurants"/>)
             } else if (isLoggedIn && !isSetup) {
+                console.log("PublicRoute, isLoggedin, !isSetup")
                 return (<Redirect exact to="/user/create" />)
             } else {
                 return component
@@ -310,6 +314,7 @@ class App extends React.Component {
   }
 
   render() {
+    signOutWithGoogle()
     if (this.state.user === null && !this.state.signOutClicked) return (
       <div style={{
         display: 'flex',
@@ -331,7 +336,7 @@ class App extends React.Component {
             <PublicRoute exact path="/" isLoggedIn={this.state.userLoggedIn} isSetup={this.state.userSetup} component={<Home isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants}/>} />
             <Route path="/card"><CardPage /></Route>
             <PublicRoute path="/signup" isLoggedIn={this.state.userLoggedIn} isSetup={this.state.userSetup} component={<Signup />}/>
-            <Route path="/user/create"><UserSignup /></Route>
+            <Route path="/user/create"><UserSignup isSetup={this.setSetup} /></Route>
             <Route path="/manage/create"><RestaurantSignup restaurant={this.restaurants[1]}/></Route>
             <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.userLoggedIn} restaurants={this.restaurants} user={this.state.user} />}></Route>
             <PrivateRoute path="/restaurants" isLoggedIn={this.state.userLoggedIn} isSetup={this.state.userSetup} component={<Restaurants isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} />} />
