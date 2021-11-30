@@ -134,7 +134,7 @@ class RestaurantName extends React.Component {
                                     error={!this.state.isNameValid}
                                     helperText={this.state.isNameValid ? "" : "Enter a valid name."}
                                 />
-                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button disabled={!this.state.isNameValid} variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}
                                     onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
@@ -232,7 +232,7 @@ class RestaurantDescription extends React.Component {
                                     error={!this.state.isDescriptionValid}
                                     helperText={this.state.isDescriptionValid ? "" : "Enter a valid description with at least 10 characters."}
                                 />
-                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button disabled={!this.state.isDescriptionValid} variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}
                                     onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
