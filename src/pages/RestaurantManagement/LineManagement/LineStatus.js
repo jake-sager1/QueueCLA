@@ -77,7 +77,32 @@ function LineStatus(props) {
                                                 </Typography>
                                             </Stack>
                                             <Stack direction="row" alignItems="flex-end" spacing={1}>
-                                                <Button variant="contained">Seat Customer</Button>
+                                                <Button variant="contained"
+                                                    onClick={() => {
+                                                        let customerID = user.id;
+                                                        let customerChange = {
+                                                            inLine: false,
+                                                            restaurantID: {}
+                                                        };
+                                                        let restaurantWaitlist = props.restaurant.waitlist;
+                                                        let indexToRemove;
+                                                        for (let i = 0; i < restaurantWaitlist.length; i++) {
+                                                            if (restaurantWaitlist[i].id === customerID) {
+                                                                indexToRemove = i;
+                                                            }
+                                                        }
+                                                        restaurantWaitlist.splice(indexToRemove, 1);
+                                                        let restaurantChange = {
+                                                            waitlist: restaurantWaitlist
+                                                        };
+                                                        //note:user is the restaurant here!
+                                                        editUser(props.restaurant.id, restaurantChange).then(() => {
+                                                            props.changeRestaurantData(restaurantChange);
+                                                        });
+                                                        //remove that customer was in line
+                                                        editCustomer(customerID, customerChange);
+                                                    }}
+                                                >Seat Customer</Button>
                                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}>Not Present</Button>
                                             </Stack>
                                         </Stack>
@@ -107,4 +132,18 @@ async function editUser(id, editProps) {
         .then(data => { console.log(data) });
 }
 
+async function editCustomer(id, editProps) {
+    const body = {
+        data: editProps,
+        id: id
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    };
+    fetch('http://localhost:5001/user/edit', requestOptions)
+        .then(response => response.json())
+        .then(data => { console.log(data) });
+}
 export default LineStatus;

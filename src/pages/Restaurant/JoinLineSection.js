@@ -30,7 +30,8 @@ function JoinLineSection(props) {
         restaurantWaitlist.push(
             {
                 uid: props.user.uid,
-                name: props.user.name
+                name: props.user.name,
+                id: props.user.id
             }
         );
 
@@ -137,7 +138,7 @@ function JoinLineSection(props) {
                                 let restaurantWaitlist = props.restaurant.waitlist;
                                 let indexToRemove;
                                 for (let i = 0; i < restaurantWaitlist.length; i++) {
-                                    if (restaurantWaitlist[i].uid === props.user.uid) {
+                                    if (restaurantWaitlist[i].id === props.user.id) {
                                         indexToRemove = i;
                                         console.log("hey");
                                     }
