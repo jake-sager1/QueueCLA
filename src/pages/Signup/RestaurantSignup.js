@@ -1,4 +1,4 @@
-import { Typography, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem } from '@mui/material';
+import { Typography, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem, Alert } from '@mui/material';
 import React from 'react';
 import useStyles from './signup-styles';
 import EditIcon from '@mui/icons-material/Edit';
@@ -24,6 +24,7 @@ class RestaurantRegister extends React.Component {
             isWebsiteValid: true,
             avgWaitSelection: 3,
             selectedChips: [],
+            isFormValid: false,
         }
     }
 
@@ -61,15 +62,34 @@ class RestaurantRegister extends React.Component {
             });
     }
 
+    checkFormValidity() {
+        if (this.state.isNameValid && 
+            this.state.isPhoneValid && 
+            this.state.isDescriptionValid && 
+            this.state.isWebsiteValid && 
+            this.state.nameVal !== null && 
+            this.state.descVal !== null && 
+            this.state.phoneVal !== null && 
+            this.state.websiteVal !== null) {
+            this.setState({
+                isFormValid: true
+            })
+        } else {
+            this.setState({
+                isFormValid: false
+            })
+        }
+    }
+
     checkNameValidity(name) {
         if (validator.isAscii(name) && (/[a-zA-Z]/.test(name) || /\d/.test(name))) {
             this.setState({
                 isNameValid: true
-            })
+            }, this.checkFormValidity)
         } else {
             this.setState({
                 isNameValid: false
-            })
+            }, this.checkFormValidity)
         }
     }
 
@@ -77,11 +97,11 @@ class RestaurantRegister extends React.Component {
         if (validator.isAscii(description) && (/[a-zA-Z]/.test(description) || /\d/.test(description))) {
             this.setState({
                 isDescriptionValid: true
-            })
+            }, this.checkFormValidity)
         } else {
             this.setState({
                 isDescriptionValid: false
-            })
+            }, this.checkFormValidity)
         }
     }
 
@@ -89,11 +109,11 @@ class RestaurantRegister extends React.Component {
         if (validator.isMobilePhone(phone_number) && phone_number.length === 10) {
             this.setState({
                 isPhoneValid: true
-            })
+            }, this.checkFormValidity)
         } else {
             this.setState({
                 isPhoneValid: false
-            })
+            }, this.checkFormValidity)
         }
     }
 
@@ -102,11 +122,11 @@ class RestaurantRegister extends React.Component {
         if (result !== null) {
             this.setState({
                 isWebsiteValid: true
-            })
+            }, this.checkFormValidity)
         } else {
             this.setState({
                 isWebsiteValid: false
-            })
+            }, this.checkFormValidity)
         }
     }
 
@@ -114,6 +134,13 @@ class RestaurantRegister extends React.Component {
         console.log(this.state)
         return (
             <Stack direction="column" spacing={3}>
+                {
+                    !this.state.isFormValid ? (
+                        <Alert severity="error">Fill out all fields correctly.</Alert>
+                    ) : (
+                        <span></span>
+                    )
+                }
                 <TextField 
                     sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' }, }} 
                     id="outlined-error"
@@ -203,7 +230,14 @@ class RestaurantRegister extends React.Component {
                         </Stack>
                     </Stack>
                 </Stack>
-                <Button align="center" variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                <Button 
+                    align="center"
+                    variant="contained"
+                    onClick={this.handleSave.bind(this)}
+                    disabled={!this.state.isFormValid}
+                >
+                    Save
+                </Button>
             </Stack>
 
         );
