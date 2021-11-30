@@ -35,20 +35,28 @@ switch(dayNum) {
 
 function HiddenHours(props) {
 
+    const daysOfWeek = ["Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"];
+
     const classes = useStyles();
 
     return (
     <Stack direction="row" spacing={1} alignItems="center" justifyContent="flex-start"
         style={{marginBottom: "15px"}} className={classes.hiddenHours}>
             <Stack direction="column" spacing={1}>
-                {Object.keys(props.restaurant.hours).map((day) => (
+                {daysOfWeek.map((day) => (
                     <Typography>
                         {day + ":"}
                     </Typography>
                 ))}
             </Stack>
             <Stack direction="column" spacing={1}>
-                {Object.keys(props.restaurant.hours).map((day) => (
+                {daysOfWeek.map((day) => (
                     <Typography>
                         {props.restaurant.hours[day].open +
                         props.restaurant.hours[day].openHalf + 
