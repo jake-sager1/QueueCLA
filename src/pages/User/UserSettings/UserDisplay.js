@@ -4,6 +4,7 @@ import useStyles from '../user-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
 import { Link } from 'react-router-dom';
+import validator from 'validator';
 
 
 class UserName extends React.Component {
@@ -13,6 +14,7 @@ class UserName extends React.Component {
         this.state = {
             editable: false,
             nameFieldValue: props.user.name,
+            isNameValid: true,
         }
     }
 
@@ -46,6 +48,18 @@ class UserName extends React.Component {
             });
     }
 
+    checkNameValidity(name) {
+        if (validator.isAscii(name) && (/[a-zA-Z]/.test(name) || /\d/.test(name)) && name.length <= 50) {
+            this.setState({
+                isNameValid: true
+            })
+        } else {
+            this.setState({
+                isNameValid: false
+            })
+        }
+    }
+    
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
@@ -70,9 +84,17 @@ class UserName extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Name"
-                                    onChange={(e) => { this.setState({ nameFieldValue: e.target.value }) }}
+                                    onChange={(e) => { 
+                                        this.setState({ 
+                                            nameFieldValue: e.target.value 
+                                        }, () => {
+                                            this.checkNameValidity(e.target.value)
+                                        })
+                                    }}
+                                    error={!this.state.isNameValid}
+                                    helperText={this.state.isNameValid ? "" : "Enter a valid name."}
                                 />
-                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button disabled={!this.state.isNameValid} variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}
                                     onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
