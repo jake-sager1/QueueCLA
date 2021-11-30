@@ -129,12 +129,14 @@ function Ribbon(props) {
 
   let spotInLine;
   let desiredRestaurant;
+  let desiredRestaurantIndex;
 
   if (props.user.inLine) {
     //get restaurant
     for (let i = 0; i < props.restaurants.length; i++) {
       if (props.restaurants[i].id === props.user.restaurantID.id) {
         desiredRestaurant = props.restaurants[i];
+        desiredRestaurantIndex = i;
       }
     }
     for (let i = 0; i < desiredRestaurant.waitlist.length; i++) {
@@ -149,7 +151,7 @@ function Ribbon(props) {
       <Container>
         <Stack direction="column" alignItems="center">
           <Typography>You are currently #{spotInLine} in line at&nbsp;
-            <a style={{ color: "white" }} href={"/restaurants/" + props.user.restaurantID}>{desiredRestaurant.name}</a>.</Typography>
+            <a style={{ color: "white" }} href={"/restaurants/" + desiredRestaurantIndex}>{desiredRestaurant.name}</a>.</Typography>
         </Stack>
       </Container>
     </div>
