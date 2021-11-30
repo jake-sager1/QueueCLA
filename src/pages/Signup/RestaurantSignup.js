@@ -15,6 +15,7 @@ class RestaurantRegister extends React.Component {
         super(props);
         this.state = {
             nameVal: null,
+            isNameValid: true,
             descVal: null,
             phoneVal: null,
             isPhoneValid: true,
@@ -59,6 +60,18 @@ class RestaurantRegister extends React.Component {
             });
     }
 
+    checkNameValidity(name) {
+        if (validator.isAscii(name) && (/[a-zA-Z]/.test(name) || /\d/.test(name))) {
+            this.setState({
+                isNameValid: true
+            })
+        } else {
+            this.setState({
+                isNameValid: false
+            })
+        }
+    }
+
     checkPhoneNumberValidity(phone_number) {
         if (validator.isMobilePhone(phone_number) && phone_number.length === 10) {
             this.setState({
@@ -88,8 +101,17 @@ class RestaurantRegister extends React.Component {
         console.log(this.state)
         return (
             <Stack direction="column" spacing={3}>
-                <TextField sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' }, }} id="outlined-error" label="Restaurant Name" variant="outlined"
-                    onChange={(e) => { this.setState({ nameVal: e.target.value, }) }}
+                <TextField 
+                    sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' }, }} 
+                    id="outlined-error"
+                    label="Restaurant Name"
+                    variant="outlined"
+                    onChange={(e) => { 
+                        this.setState({ nameVal: e.target.value, }) 
+                        this.checkNameValidity(e.target.value)
+                    }}
+                    error={!this.state.isNameValid}
+                    helperText={this.state.isNameValid ? "" : "Please enter a valid name."}
                 />
                 <TextField spacing={3} id="outlined-multiline-static" rows={2} label="Description" variant="outlined"
                     onChange={(e) => { this.setState({ descVal: e.target.value, }) }}
@@ -102,7 +124,7 @@ class RestaurantRegister extends React.Component {
                         this.checkPhoneNumberValidity(e.target.value)
                     }} 
                     error={!this.state.isPhoneValid}
-                    helperText={this.state.isPhoneValid ? "" : "Phone number must be a 10 digit number."}
+                    helperText={this.state.isPhoneValid ? "" : "Phone number must be a 10 digit number. Ex: 4246484499"}
                 />
                 <TextField 
                     label="Website URL"
