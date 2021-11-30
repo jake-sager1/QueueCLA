@@ -15,7 +15,41 @@ function JoinLineSection(props) {
     const handleClickOpen = () => {
         if (props.user.inLine) {
             setOpen(true);
+            return;
         }
+        //change user data to add restaurant to user's restaurantID 
+        let userChange = {
+            restaurantID: {
+                id: props.restaurant.id,
+                name: props.restaurant.name
+            },
+            inLine: true
+        };
+
+        let restaurantWaitlist = props.restaurant.waitlist;
+        restaurantWaitlist.push(
+            {
+                uid: props.user.uid,
+                name: props.user.name
+            }
+        );
+
+        let restaurantChange = {
+            waitlist: restaurantWaitlist
+        };
+
+        editUser(props.user.id, userChange).then(() => {
+            props.changeUserData(userChange);
+        });
+
+        editRestaurant(props.restaurant.id, restaurantChange).then(() => {
+            props.changeRestaurantsData(props.index, restaurantChange);
+        })
+
+
+        //and add user to that restaurant's waitlist (add in the state and add in firebase)
+
+
     };
 
     const handleClose = () => {
@@ -24,7 +58,7 @@ function JoinLineSection(props) {
 
     let currentSpotInLine = 1;
 
-    if (props.user.inLine && props.user.restaurantID.email === props.restaurant.email) {
+    if (props.user.inLine && props.user.restaurantID.id === props.restaurant.id) {
         for (let i = 0; i < props.restaurant.waitlist.length; i++) {
             if (props.restaurant.waitlist[i].email === props.user.email) {
                 currentSpotInLine = i + 1;
@@ -37,14 +71,14 @@ function JoinLineSection(props) {
 
             <Stack direction="column" spacing={2}>
                 <Typography variant="h4">
-                    {(!props.user.inLine || (props.user.inLine && props.user.restaurantID.email !== props.restaurant.email)) &&
+                    {(!props.user.inLine || (props.user.inLine && props.user.restaurantID.id !== props.restaurant.id)) &&
                         "Join the Line"
                     }
-                    {props.user.inLine && props.user.restaurantID.email === props.restaurant.email &&
+                    {props.user.inLine && props.user.restaurantID.id === props.restaurant.id &&
                         "You're in line!"
                     }
                 </Typography>
-                {!(props.user.inLine && props.user.restaurantID.email === props.restaurant.id.email) &&
+                {!(props.user.inLine && props.user.restaurantID.id === props.restaurant.id) &&
                     <Stack direction="column" spacing={2}>
                         <Typography>
                             {"There are currently "}
@@ -81,7 +115,7 @@ function JoinLineSection(props) {
                         </Dialog>
                     </Stack>
                 }
-                {props.user.inLine && props.user.restaurantID.email == props.restaurant.email &&
+                {props.user.inLine && props.user.restaurantID.id == props.restaurant.id &&
                     <Stack direction="column" spacing={2}>
                         <Typography>
                             {"You are number "}
@@ -125,5 +159,36 @@ function JoinLineSection(props) {
 
 
 }
+
+async function editUser(id, editProps) {
+    const body = {
+        data: editProps,
+        id: id
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    };
+    fetch('http://localhost:5001/user/edit', requestOptions)
+        .then(response => response.json())
+        .then(data => { console.log(data) });
+}
+
+async function editRestaurant(id, editProps) {
+    const body = {
+        data: editProps,
+        id: id
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    };
+    fetch('http://localhost:5001/restaurant/edit', requestOptions)
+        .then(response => response.json())
+        .then(data => { console.log(data) });
+}
+
 
 export default JoinLineSection;

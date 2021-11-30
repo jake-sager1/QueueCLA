@@ -11,7 +11,7 @@ function LineManagement(props) {
     return (
         <div className={classes.page}>
             <Header restaurant={props.restaurant} page="line" isLoggedIn={props.isLoggedIn} />
-            <LineStatus restaurant={props.restaurant} users={props.users} changeUserData={props.changeUserData} />
+            <LineStatus restaurant={props.restaurant} users={props.users} changeUserData={props.changeUserData} changeRestaurantData={props.changeRestaurantData} />
             <Footer />
         </div>
     );

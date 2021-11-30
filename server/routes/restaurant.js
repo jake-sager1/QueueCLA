@@ -53,7 +53,8 @@ router.route("/create").post(async (req, res, next) => {
             waitlist: [],
             url: "https://ucla.edu",
             menu: "Sample Item 1\n Sample Item 2\n",
-            setup: false
+            setup: false,
+            id: id
         };
         //create the restaurant
         await restaurantRef.set(restaurantData);

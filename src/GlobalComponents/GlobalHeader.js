@@ -128,10 +128,17 @@ function StackProfile(props) {
 function Ribbon(props) {
 
   let spotInLine;
+  let desiredRestaurant;
 
   if (props.user.inLine) {
-    for (var i = 0; i < props.restaurants[props.user.restaurantID].waitlist.length; i++) {
-      if (props.restaurants[props.user.restaurantID].waitlist[i] == props.user.id) {
+    //get restaurant
+    for (let i = 0; i < props.restaurants.length; i++) {
+      if (props.restaurants[i].id === props.user.restaurantID.id) {
+        desiredRestaurant = props.restaurants[i];
+      }
+    }
+    for (let i = 0; i < desiredRestaurant.waitlist.length; i++) {
+      if (desiredRestaurant.waitlist[i].uid === props.user.uid) {
         spotInLine = i + 1;
       }
     }
@@ -142,7 +149,7 @@ function Ribbon(props) {
       <Container>
         <Stack direction="column" alignItems="center">
           <Typography>You are currently #{spotInLine} in line at&nbsp;
-            <a style={{ color: "white" }} href={"/restaurants/" + props.user.restaurantID}>{props.restaurants[props.user.restaurantID].name}</a>.</Typography>
+            <a style={{ color: "white" }} href={"/restaurants/" + props.user.restaurantID}>{desiredRestaurant.name}</a>.</Typography>
         </Stack>
       </Container>
     </div>

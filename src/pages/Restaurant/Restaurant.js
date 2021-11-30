@@ -24,12 +24,16 @@ class Restaurant extends React.Component {
                         <GlobalHeader restaurants={this.props.restaurants}
                             isLoggedIn={this.props.isLoggedIn} user={this.props.user} />
                         <BannerSection restaurant={this.props.restaurants[this.props.match.params.id]} />
-                        <MainSection restaurant={this.props.restaurants[this.props.match.params.id]} id={this.props.match.params.id} 
-                                    restaurants={this.props.restaurants} user={this.props.user} />
+                        <MainSection restaurant={this.props.restaurants[this.props.match.params.id]} id={this.props.match.params.id}
+                            restaurants={this.props.restaurants} user={this.props.user}
+                            changeUserData={this.props.changeUserData}
+                            changeRestaurantData={this.props.changeRestaurantData}
+                            index={this.props.match.params.id}
+                        />
                         <Footer />
                     </div>
                 ) : (
-                    <Redirect to="/404"/>
+                    <Redirect to="/404" />
                 )
             ) : (
                 <Redirect exact to="/"></Redirect>
