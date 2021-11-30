@@ -1,3 +1,4 @@
+const { responsiveFontSizes } = require("@mui/material");
 const express = require("express");
 let router = express.Router();
 
@@ -52,7 +53,8 @@ router.route("/create").post(async (req, res, next) => {
             waitlist: [],
             url: "https://ucla.edu",
             menu: "Sample Item 1\n Sample Item 2\n",
-            setup: false
+            setup: false,
+            id: id
         };
         //create the restaurant
         await restaurantRef.set(restaurantData);
@@ -130,6 +132,25 @@ router.route("/get").post(async (req, res, next) => {
         };
         res.status(response.statusCode).send(response);
     }
+});
+
+router.route("/all").get(async (req, res, next) => {
+    //get all the restaurants in the database
+    let restaurantRef = db.collection("restaurants");
+    let snapshot = await restaurantRef.get();
+    let response = {
+        data: null,
+        message: "All restaurants in database",
+        statusCode: 200
+    };
+    let listOfRestaurants = [];
+    snapshot.forEach((doc) => {
+        let restaurant = doc.data();
+        if (restaurant.setup)
+            listOfRestaurants.push(restaurant);
+    });
+    response.data = listOfRestaurants;
+    res.status(response.statusCode).send(response);
 });
 
 

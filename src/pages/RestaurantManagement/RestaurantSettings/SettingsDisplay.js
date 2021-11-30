@@ -628,9 +628,18 @@ class RestaurantHours extends React.Component {
     constructor(props) {
         super(props);
     }
+
+    
+
     render() {
-        let sortedDays = [...Object.keys(this.props.restaurant.hours)];
-        sortedDays.sort();
+        const daysOfWeek = ["Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"];
+        
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
@@ -639,7 +648,7 @@ class RestaurantHours extends React.Component {
                     </Typography>
                     <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         <Stack direction="column" spacing={1}>
-                            {sortedDays.map((day) => (
+                            {daysOfWeek.map((day) => (
                                 <HourEntry key={day} day={day} restaurant={this.props.restaurant} changeUserData={this.props.changeUserData} />
                             ))}
                         </Stack>
