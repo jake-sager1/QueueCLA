@@ -133,7 +133,7 @@ function LineStatus(props) {
                                                     };
                                                     //note:user is the restaurant here!
                                                     editUser(props.restaurant.id, restaurantChange).then(() => {
-                                                        props.changeRestaurantData(restaurantChange);
+                                                        props.changeRestaurantData(indexToRemove, restaurantChange);
                                                     });
                                                     //remove that customer was in line
                                                     editCustomer(customerID, customerChange);
