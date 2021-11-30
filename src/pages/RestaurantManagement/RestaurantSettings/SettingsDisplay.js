@@ -333,6 +333,7 @@ class RestaurantWebsite extends React.Component {
         this.state = {
             editable: false,
             websiteValue: props.restaurant.url,
+            isWebsiteValid: true,
         }
     }
 
@@ -364,6 +365,19 @@ class RestaurantWebsite extends React.Component {
             });
     }
 
+    checkWebsiteValidity(website_url) {
+        let result = website_url.match(/^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/gm)
+        if (result !== null) {
+            this.setState({
+                isWebsiteValid: true
+            })
+        } else {
+            this.setState({
+                isWebsiteValid: false
+            })
+        }
+    }
+
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
@@ -388,9 +402,17 @@ class RestaurantWebsite extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Website URL"
-                                    onChange={(e) => { this.setState({ websiteValue: e.target.value, }) }}
+                                    onChange={(e) => { 
+                                        this.setState({ 
+                                            websiteValue: e.target.value, 
+                                        }, () => {
+                                            this.checkWebsiteValidity(e.target.value)
+                                        }) 
+                                    }}
+                                    error={!this.state.isWebsiteValid}
+                                    helperText={this.state.isWebsiteValid ? "" : "Enter a valid website URL."}
                                 />
-                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button disabled={!this.state.isWebsiteValid} variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}
                                     onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>

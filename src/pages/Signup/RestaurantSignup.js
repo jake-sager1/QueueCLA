@@ -117,8 +117,8 @@ class RestaurantRegister extends React.Component {
         }
     }
 
-    checkWebsiteValidity(webiste_url) {
-        let result = webiste_url.match(/^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/gm)
+    checkWebsiteValidity(website_url) {
+        let result = website_url.match(/^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/gm)
         if (result !== null) {
             this.setState({
                 isWebsiteValid: true
