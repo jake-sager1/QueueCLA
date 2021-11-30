@@ -3,6 +3,7 @@ import React from 'react';
 import useStyles from '../restaurant-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
+import validator from 'validator';
 
 class ImageUpload extends React.Component {
     constructor(props) {
@@ -234,6 +235,7 @@ class RestaurantPhone extends React.Component {
         this.state = {
             editable: false,
             phoneValue: props.restaurant.phone,
+            isPhoneValid: true,
         }
     }
 
@@ -265,6 +267,18 @@ class RestaurantPhone extends React.Component {
             });
     }
 
+    checkPhoneValidity(phone_number) {
+        if (validator.isMobilePhone(phone_number) && phone_number.length === 10) {
+            this.setState({
+                isPhoneValid: true
+            })
+        } else {
+            this.setState({
+                isPhoneValid: false
+            })
+        }
+    }
+
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
@@ -289,9 +303,17 @@ class RestaurantPhone extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Phone Number"
-                                    onChange={(e) => { this.setState({ phoneValue: e.target.value, }) }}
+                                    onChange={(e) => { 
+                                        this.setState({
+                                            phoneValue: e.target.value, 
+                                        }, () => {
+                                            this.checkPhoneValidity(e.target.value)
+                                        }) 
+                                    }}
+                                    error={!this.state.isPhoneValid}
+                                    helperText={this.state.isPhoneValid ? "" : "Enter a valid 10 digit phone number."}
                                 />
-                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button disabled={!this.state.isPhoneValid} variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}
                                     onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
