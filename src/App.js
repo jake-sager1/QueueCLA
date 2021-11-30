@@ -21,6 +21,7 @@ import { Redirect } from 'react-router';
 import { auth, signOutWithGoogle } from './service/firebase';
 import Loader from "react-loader-spinner";
 import { signOut } from '@firebase/auth';
+import SearchPage from './pages/Restaurants/Search';
 
 
 function UserPrivateRoute({ component, isLoggedIn, isSetup, userType, ...rest }) {
@@ -476,6 +477,15 @@ class App extends React.Component {
               changeUserData={this.changeUserData}
               changeRestaurantData={this.changeRestaurantData}
               user={this.state.user} />}></Route>
+            <Route path="/search/:query" render={(props) => <SearchPage {...props}
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              changeUserData={this.changeUserData}
+              changeRestaurantData={this.changeRestaurantData}
+              restaurants={this.state.restaurants}
+              user={this.state.user}
+              />}/>
+            <Route path="/search"><Redirect to="/restaurants"/></Route>
             <UserPrivateRoute path="/restaurants"
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}

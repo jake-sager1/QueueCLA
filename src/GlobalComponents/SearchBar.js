@@ -10,7 +10,7 @@ class SearchBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchValue: null,
+      searchValue: "",
       submitSearch: false,
     }
   }
