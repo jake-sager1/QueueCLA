@@ -57,7 +57,7 @@ function JoinLineSection(props) {
 
     if (props.user.inLine && props.user.restaurantID.id === props.restaurant.id) {
         for (let i = 0; i < props.restaurant.waitlist.length; i++) {
-            if (props.restaurant.waitlist[i].email === props.user.email) {
+            if (props.restaurant.waitlist[i].id === props.user.id) {
                 currentSpotInLine = i + 1;
             }
         }
