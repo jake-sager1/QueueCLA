@@ -34,7 +34,8 @@ router.route("/create").post(async (req, res, next) => {
             favorites: [2],
             type: "student",
             setup: false,
-            uid: ""
+            uid: "",
+            restaurantID: ""
         };
         //create the user
         await userRef.set(userData);
