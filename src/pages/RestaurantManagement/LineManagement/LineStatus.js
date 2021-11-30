@@ -29,7 +29,18 @@ function LineStatus(props) {
                             </Typography>
                             <Button variant="contained"
                                 onClick={
-                                    () => {
+                                    async () => {
+                                        console.log(props.restaurant.waitlist);
+                                        for (let i = 0; i < props.restaurant.waitlist.length; i++) {
+                                            let customerID = props.restaurant.waitlist[i].id;
+                                            let customerChange = {
+                                                inLine: false,
+                                                restaurantID: {}
+                                            };
+                                            //remove that customer was in line
+                                            console.log(customerID);
+                                            await editCustomer(customerID, customerChange);
+                                        }
                                         let change = { waitEnabled: !props.restaurant.waitEnabled, waitlist: [] };
                                         editUser(props.restaurant.id, change)
                                             .then(() => {
@@ -103,7 +114,30 @@ function LineStatus(props) {
                                                         editCustomer(customerID, customerChange);
                                                     }}
                                                 >Seat Customer</Button>
-                                                <Button variant="contained" style={{ backgroundColor: "darkRed" }}>Not Present</Button>
+                                                <Button variant="contained" style={{ backgroundColor: "darkRed" }} onClick={() => {
+                                                    let customerID = user.id;
+                                                    let customerChange = {
+                                                        inLine: false,
+                                                        restaurantID: {}
+                                                    };
+                                                    let restaurantWaitlist = props.restaurant.waitlist;
+                                                    let indexToRemove;
+                                                    for (let i = 0; i < restaurantWaitlist.length; i++) {
+                                                        if (restaurantWaitlist[i].id === customerID) {
+                                                            indexToRemove = i;
+                                                        }
+                                                    }
+                                                    restaurantWaitlist.splice(indexToRemove, 1);
+                                                    let restaurantChange = {
+                                                        waitlist: restaurantWaitlist
+                                                    };
+                                                    //note:user is the restaurant here!
+                                                    editUser(props.restaurant.id, restaurantChange).then(() => {
+                                                        props.changeRestaurantData(restaurantChange);
+                                                    });
+                                                    //remove that customer was in line
+                                                    editCustomer(customerID, customerChange);
+                                                }}>Not Present</Button>
                                             </Stack>
                                         </Stack>
                                     </Paper>
