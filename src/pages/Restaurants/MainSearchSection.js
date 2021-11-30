@@ -1,18 +1,9 @@
 import React from 'react'
 import useStyles from './restaurants-styles'
-import { Typography, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, Container, CardActionArea, IconButton, Tooltip } from '@mui/material'
-import { ArrowBack, ArrowLeft, PhotoCamera } from '@mui/icons-material'
+import { Typography, Card, CardContent, CardMedia, Grid, Container, CardActionArea, IconButton, Tooltip } from '@mui/material'
+import { ArrowBack } from '@mui/icons-material'
 import { Link } from 'react-router-dom';
-import BasicCard from '../BasicCard';
-import image1 from '../../images/dining.jpeg'
-import image2 from '../../images/background.jpeg'
-import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
-import DoneIcon from '@mui/icons-material/Done';
-import DeleteIcon from '@mui/icons-material/Delete';
-import DiningIcon from '@mui/icons-material/Dining';
-import LocalDiningSharpIcon from '@mui/icons-material/LocalDiningSharp';
-import DinnerDiningSharpIcon from '@mui/icons-material/DinnerDiningSharp';
 import MenuChip from '../../GlobalComponents/Chips';
 
 function filterRestaurantsByQuery(restaurants, query) {
@@ -24,16 +15,31 @@ function filterRestaurantsByQuery(restaurants, query) {
         if(restaurants[i].name.toLowerCase().includes(query.toLowerCase())) {
             matches.push(i);
         }
+    }
+    
+    for(let i = 0; i < restaurants.length; i++) {
+        // Next, add restaurants whose descriptions match
         if(restaurants[i].description.toLowerCase().includes(query.toLowerCase())) {
-            matches.push(i);
-        }
-        if(restaurants[i].menu.toLowerCase().includes(query.toLowerCase())) {
-            matches.push(i);
-        }
-        for(let j = 0; j < restaurants[i].chips.length; j++) {
-            if(restaurants[i].chips[j].includes(query.toLowerCase())) {
+            if(!matches.includes(i)) {
                 matches.push(i);
-                break;
+            } 
+        }
+    }
+
+    for(let i = 0; i < restaurants.length; i++) {
+        if(restaurants[i].menu.toLowerCase().includes(query.toLowerCase())) {
+            if(!matches.includes(i)) {
+                matches.push(i);
+            } 
+        }
+    }
+
+    for(let i = 0; i < restaurants.length; i++) {
+        for(let j = 0; j < restaurants[i].chips.length; j++) {
+            if(restaurants[i].chips[j].toLowerCase().includes(query.toLowerCase())) {
+                if(!matches.includes(i)) {
+                    matches.push(i);
+                } 
             }
         }
     }
