@@ -56,6 +56,7 @@ class RestaurantName extends React.Component {
         this.state = {
             editable: false,
             nameFieldValue: props.restaurant.name,
+            isNameValid: true,
         }
     }
 
@@ -87,6 +88,18 @@ class RestaurantName extends React.Component {
             });
     }
 
+    checkNameValidity(name) {
+        if (validator.isAscii(name) && (/[a-zA-Z]/.test(name) || /\d/.test(name)) && name.length <= 50) {
+            this.setState({
+                isNameValid: true
+            }, this.checkFormValidity)
+        } else {
+            this.setState({
+                isNameValid: false
+            }, this.checkFormValidity)
+        }
+    }
+
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
@@ -111,7 +124,15 @@ class RestaurantName extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Name"
-                                    onChange={(e) => { this.setState({ nameFieldValue: e.target.value, }) }}
+                                    onChange={(e) => { 
+                                        this.setState({ 
+                                            nameFieldValue: e.target.value, 
+                                        }, () => {
+                                            this.checkNameValidity(e.target.value)
+                                        })
+                                    }}
+                                    error={!this.state.isNameValid}
+                                    helperText={this.state.isNameValid ? "" : "Enter a valid name."}
                                 />
                                 <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}

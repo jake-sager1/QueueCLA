@@ -82,7 +82,7 @@ class RestaurantRegister extends React.Component {
     }
 
     checkNameValidity(name) {
-        if (validator.isAscii(name) && (/[a-zA-Z]/.test(name) || /\d/.test(name))) {
+        if (validator.isAscii(name) && (/[a-zA-Z]/.test(name) || /\d/.test(name)) && name.length <= 50) {
             this.setState({
                 isNameValid: true
             }, this.checkFormValidity)
