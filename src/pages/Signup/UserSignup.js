@@ -27,8 +27,25 @@ class UserRegister extends React.Component {
         super(props);
         this.state = {
             user: props.user,
-            yearValue: 2025
+            yearValue: 2025,
+            isUIDValid: true,
         };
+    }
+
+    checkUIDValidity(uid) {
+        if (/^\d+$/.test(uid) && uid.length === 9) {
+            this.setState({
+                isUIDValid: true
+            })
+        } else {
+            this.setState({
+                isUIDValid: false
+            })
+        }
+    }
+
+    isButtonDisabled() {
+        return this.state.user.uid === null || !this.state.user.uid || !this.state.isUIDValid
     }
 
     render() {
@@ -41,8 +58,14 @@ class UserRegister extends React.Component {
                     onChange={(e) => {
                         let user = this.state.user;
                         user.uid = e.target.value;
-                        this.setState({ user: user });
+                        this.setState({ 
+                            user: user 
+                        }, () => {
+                            this.checkUIDValidity(e.target.value)
+                        });
                     }}
+                    error={!this.state.isUIDValid}
+                    helperText={this.state.isUIDValid ? "" : "Enter a valid 9 digit UID."}
                     sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' }, }} id="outlined-error" label="UCLA UID" input="number" variant="outlined" />
                 <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                     <Typography spacing={3} variant="p">Graduation Year</Typography>
@@ -64,7 +87,7 @@ class UserRegister extends React.Component {
                         <MenuItem value={2022}>2022</MenuItem>
                     </Select>
                 </Stack>
-                <Button spacing={5} align="center" variant="contained" onClick={() => {
+                <Button disabled={this.isButtonDisabled()} spacing={5} align="center" variant="contained" onClick={() => {
                     let change = { uid: this.state.user.uid, year: this.state.user.year, setup: true };
                     editUser(this.state.user.id, change)
                         .then(() => {

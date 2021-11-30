@@ -3,6 +3,7 @@ import React from 'react';
 import useStyles from '../restaurant-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
+import validator from 'validator';
 
 class ImageUpload extends React.Component {
     constructor(props) {
@@ -55,6 +56,7 @@ class RestaurantName extends React.Component {
         this.state = {
             editable: false,
             nameFieldValue: props.restaurant.name,
+            isNameValid: true,
         }
     }
 
@@ -86,6 +88,18 @@ class RestaurantName extends React.Component {
             });
     }
 
+    checkNameValidity(name) {
+        if (validator.isAscii(name) && (/[a-zA-Z]/.test(name) || /\d/.test(name)) && name.length <= 50) {
+            this.setState({
+                isNameValid: true
+            }, this.checkFormValidity)
+        } else {
+            this.setState({
+                isNameValid: false
+            }, this.checkFormValidity)
+        }
+    }
+
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
@@ -110,9 +124,17 @@ class RestaurantName extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Name"
-                                    onChange={(e) => { this.setState({ nameFieldValue: e.target.value, }) }}
+                                    onChange={(e) => { 
+                                        this.setState({ 
+                                            nameFieldValue: e.target.value, 
+                                        }, () => {
+                                            this.checkNameValidity(e.target.value)
+                                        })
+                                    }}
+                                    error={!this.state.isNameValid}
+                                    helperText={this.state.isNameValid ? "" : "Enter a valid name."}
                                 />
-                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button disabled={!this.state.isNameValid} variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}
                                     onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
@@ -131,6 +153,7 @@ class RestaurantDescription extends React.Component {
         this.state = {
             editable: false,
             descriptionFieldValue: props.restaurant.description,
+            isDescriptionValid: true,
         }
     }
 
@@ -162,6 +185,18 @@ class RestaurantDescription extends React.Component {
             });
     }
 
+    checkDescriptionValidity(description) {
+        if (validator.isAscii(description) && (/[a-zA-Z]/.test(description) || /\d/.test(description)) && description.length >= 10 && description.length <= 100) {
+            this.setState({
+                isDescriptionValid: true
+            })
+        } else {
+            this.setState({
+                isDescriptionValid: false
+            })
+        }
+    }
+
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
@@ -187,9 +222,17 @@ class RestaurantDescription extends React.Component {
                                     size="small"
                                     label="Description"
                                     style={{ width: "400px", }}
-                                    onChange={(e) => { this.setState({ descriptionFieldValue: e.target.value, }) }}
+                                    onChange={(e) => { 
+                                        this.setState({ 
+                                            descriptionFieldValue: e.target.value, 
+                                        }, () => {
+                                            this.checkDescriptionValidity(e.target.value)
+                                        }) 
+                                    }}
+                                    error={!this.state.isDescriptionValid}
+                                    helperText={this.state.isDescriptionValid ? "" : "Enter a valid description with at least 10 characters."}
                                 />
-                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button disabled={!this.state.isDescriptionValid} variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}
                                     onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
@@ -234,6 +277,7 @@ class RestaurantPhone extends React.Component {
         this.state = {
             editable: false,
             phoneValue: props.restaurant.phone,
+            isPhoneValid: true,
         }
     }
 
@@ -265,6 +309,18 @@ class RestaurantPhone extends React.Component {
             });
     }
 
+    checkPhoneValidity(phone_number) {
+        if (validator.isMobilePhone(phone_number) && phone_number.length === 10) {
+            this.setState({
+                isPhoneValid: true
+            })
+        } else {
+            this.setState({
+                isPhoneValid: false
+            })
+        }
+    }
+
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
@@ -289,9 +345,17 @@ class RestaurantPhone extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Phone Number"
-                                    onChange={(e) => { this.setState({ phoneValue: e.target.value, }) }}
+                                    onChange={(e) => { 
+                                        this.setState({
+                                            phoneValue: e.target.value, 
+                                        }, () => {
+                                            this.checkPhoneValidity(e.target.value)
+                                        }) 
+                                    }}
+                                    error={!this.state.isPhoneValid}
+                                    helperText={this.state.isPhoneValid ? "" : "Enter a valid 10 digit phone number."}
                                 />
-                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button disabled={!this.state.isPhoneValid} variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}
                                     onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
@@ -311,6 +375,7 @@ class RestaurantWebsite extends React.Component {
         this.state = {
             editable: false,
             websiteValue: props.restaurant.url,
+            isWebsiteValid: true,
         }
     }
 
@@ -342,6 +407,19 @@ class RestaurantWebsite extends React.Component {
             });
     }
 
+    checkWebsiteValidity(website_url) {
+        let result = website_url.match(/^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/gm)
+        if (result !== null) {
+            this.setState({
+                isWebsiteValid: true
+            })
+        } else {
+            this.setState({
+                isWebsiteValid: false
+            })
+        }
+    }
+
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
@@ -366,9 +444,17 @@ class RestaurantWebsite extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Website URL"
-                                    onChange={(e) => { this.setState({ websiteValue: e.target.value, }) }}
+                                    onChange={(e) => { 
+                                        this.setState({ 
+                                            websiteValue: e.target.value, 
+                                        }, () => {
+                                            this.checkWebsiteValidity(e.target.value)
+                                        }) 
+                                    }}
+                                    error={!this.state.isWebsiteValid}
+                                    helperText={this.state.isWebsiteValid ? "" : "Enter a valid website URL."}
                                 />
-                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button disabled={!this.state.isWebsiteValid} variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}
                                     onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>

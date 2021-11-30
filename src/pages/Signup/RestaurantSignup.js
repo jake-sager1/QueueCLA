@@ -1,4 +1,4 @@
-import { Typography, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem } from '@mui/material';
+import { Typography, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem, Alert } from '@mui/material';
 import React from 'react';
 import useStyles from './signup-styles';
 import EditIcon from '@mui/icons-material/Edit';
@@ -7,6 +7,7 @@ import MenuChip from '../../../src/GlobalComponents/Chips';
 import Header from './Header';
 import Footer from '../../GlobalComponents/Footer';
 import { spacing } from '@mui/system';
+import validator from 'validator';
 
 class RestaurantRegister extends React.Component {
 
@@ -14,11 +15,16 @@ class RestaurantRegister extends React.Component {
         super(props);
         this.state = {
             nameVal: null,
+            isNameValid: true,
             descVal: null,
+            isDescriptionValid: true,
             phoneVal: null,
+            isPhoneValid: true,
             websiteVal: null,
+            isWebsiteValid: true,
             avgWaitSelection: 3,
             selectedChips: [],
+            isFormValid: false,
         }
     }
 
@@ -56,17 +62,134 @@ class RestaurantRegister extends React.Component {
             });
     }
 
+    checkFormValidity() {
+        if (this.state.isNameValid && 
+            this.state.isPhoneValid && 
+            this.state.isDescriptionValid && 
+            this.state.isWebsiteValid && 
+            this.state.nameVal !== null && 
+            this.state.descVal !== null && 
+            this.state.phoneVal !== null && 
+            this.state.websiteVal !== null) {
+            this.setState({
+                isFormValid: true
+            })
+        } else {
+            this.setState({
+                isFormValid: false
+            })
+        }
+    }
+
+    checkNameValidity(name) {
+        if (validator.isAscii(name) && (/[a-zA-Z]/.test(name) || /\d/.test(name)) && name.length <= 50) {
+            this.setState({
+                isNameValid: true
+            }, this.checkFormValidity)
+        } else {
+            this.setState({
+                isNameValid: false
+            }, this.checkFormValidity)
+        }
+    }
+
+    checkDescriptionValidity(description) {
+        if (validator.isAscii(description) && (/[a-zA-Z]/.test(description) || /\d/.test(description)) && description.length >= 10 && description.length <= 100) {
+            this.setState({
+                isDescriptionValid: true
+            }, this.checkFormValidity)
+        } else {
+            this.setState({
+                isDescriptionValid: false
+            }, this.checkFormValidity)
+        }
+    }
+
+    checkPhoneNumberValidity(phone_number) {
+        if (validator.isMobilePhone(phone_number) && phone_number.length === 10) {
+            this.setState({
+                isPhoneValid: true
+            }, this.checkFormValidity)
+        } else {
+            this.setState({
+                isPhoneValid: false
+            }, this.checkFormValidity)
+        }
+    }
+
+    checkWebsiteValidity(website_url) {
+        let result = website_url.match(/^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/gm)
+        if (result !== null) {
+            this.setState({
+                isWebsiteValid: true
+            }, this.checkFormValidity)
+        } else {
+            this.setState({
+                isWebsiteValid: false
+            }, this.checkFormValidity)
+        }
+    }
+
     render() {
+        console.log(this.state)
         return (
             <Stack direction="column" spacing={3}>
-                <TextField sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' }, }} id="outlined-error" label="Restaurant Name" variant="outlined"
-                    onChange={(e) => { this.setState({ nameVal: e.target.value, }) }}
+                {
+                    !this.state.isFormValid ? (
+                        <Alert severity="error">Fill out all fields correctly.</Alert>
+                    ) : (
+                        <span></span>
+                    )
+                }
+                <TextField 
+                    sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' }, }} 
+                    id="outlined-error"
+                    label="Restaurant Name"
+                    variant="outlined"
+                    onClick={(e) => {this.checkNameValidity(e.target.value)}}
+                    onChange={(e) => { 
+                        this.setState({ nameVal: e.target.value, }) 
+                        this.checkNameValidity(e.target.value)
+                    }}
+                    error={!this.state.isNameValid}
+                    helperText={this.state.isNameValid ? "" : "Please enter a valid name."}
                 />
-                <TextField spacing={3} id="outlined-multiline-static" rows={2} label="Description" variant="outlined"
-                    onChange={(e) => { this.setState({ descVal: e.target.value, }) }}
+                <TextField 
+                    spacing={3} 
+                    id="outlined-multiline-static" 
+                    rows={2} 
+                    label="Description" 
+                    variant="outlined"
+                    onClick={(e) => {this.checkDescriptionValidity(e.target.value)}}
+                    onChange={(e) => { 
+                        this.setState({ descVal: e.target.value, }) 
+                        this.checkDescriptionValidity(e.target.value)
+                    }}
+                    error={!this.state.isDescriptionValid}
+                    helperText={this.state.isDescriptionValid ? "" : "Please enter a valid description."}
                 />
-                <TextField label="Phone Number" variant="outlined" onChange={(e) => { this.setState({ phoneVal: e.target.value, }) }} />
-                <TextField label="Website URL" variant="outlined" onChange={(e) => { this.setState({ websiteVal: e.target.value, }) }} />
+                <TextField 
+                    label="Phone Number"
+                    variant="outlined"
+                    onClick={(e) => {this.checkPhoneNumberValidity(e.target.value)}}
+                    onChange={(e) => { 
+                        this.setState({ phoneVal: e.target.value, }) 
+                        this.checkPhoneNumberValidity(e.target.value)
+                    }} 
+                    error={!this.state.isPhoneValid}
+                    helperText={this.state.isPhoneValid ? "" : "Phone number must be a 10 digit number. Ex: 4246484499"}
+                />
+                <TextField 
+                    label="Website URL"
+                    variant="outlined"
+                    onClick={(e) => {this.checkWebsiteValidity(e.target.value)}}
+                    onChange={(e) => { 
+                        this.setState({ websiteVal: e.target.value, }) 
+                        this.checkWebsiteValidity(e.target.value)
+                    }}
+                    error={!this.state.isWebsiteValid}
+                    helperText={this.state.isWebsiteValid ? "" : "Please enter a valid website url."}
+                />
                 <Stack direction="column" spacing={1} alignItems="left">
                     <Typography variant="h6" style={{ fontWeight: "bold" }}>Average Wait Time Per Customer</Typography>
                     <Select value={this.state.avgWaitSelection}
@@ -107,7 +230,14 @@ class RestaurantRegister extends React.Component {
                         </Stack>
                     </Stack>
                 </Stack>
-                <Button align="center" variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                <Button 
+                    align="center"
+                    variant="contained"
+                    onClick={this.handleSave.bind(this)}
+                    disabled={!this.state.isFormValid}
+                >
+                    Save
+                </Button>
             </Stack>
 
         );
