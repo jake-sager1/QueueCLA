@@ -28,9 +28,9 @@ class RestaurantRegister extends React.Component {
     ]
 
     handleClick(chip) {
-        if(this.state.selectedChips.includes(chip)) {
+        if (this.state.selectedChips.includes(chip)) {
             this.setState({
-                selectedChips: this.state.selectedChips.filter(function (value, index, arr) {return arr.includes(value) && value != chip}),
+                selectedChips: this.state.selectedChips.filter(function (value, index, arr) { return arr.includes(value) && value != chip }),
             });
         } else {
             this.setState({
@@ -40,29 +40,42 @@ class RestaurantRegister extends React.Component {
     }
 
     handleSave() {
-        // does nothing yet
+        console.log(this.state);
+        let change = {
+            "name": this.state.nameVal,
+            "avgTimePerCustomer": this.state.avgWaitSelection,
+            "description": this.state.descVal,
+            "phone": this.state.phoneVal,
+            "url": this.state.websiteVal,
+            "chips": this.state.selectedChips,
+            "setup": true
+        }
+        editUser(this.props.restaurant.id, change)
+            .then(() => {
+                this.props.changeUserData(change);
+            });
     }
 
     render() {
         return (
             <Stack direction="column" spacing={3}>
-                <TextField sx={{'& .MuiTextField-root': { m: 1, width: '25ch' }, }} id="outlined-error" label="Restaurant Name" variant="outlined" 
-                    onChange={(e) => {this.setState({nameVal: e.target.value,})}}
+                <TextField sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' }, }} id="outlined-error" label="Restaurant Name" variant="outlined"
+                    onChange={(e) => { this.setState({ nameVal: e.target.value, }) }}
                 />
                 <TextField spacing={3} id="outlined-multiline-static" rows={2} label="Description" variant="outlined"
-                    onChange={(e) => {this.setState({descVal: e.target.value,})}}
+                    onChange={(e) => { this.setState({ descVal: e.target.value, }) }}
                 />
-                <TextField label="Phone Number" variant="outlined" onChange={(e) => {this.setState({phoneVal: e.target.value,})}}/>
-                <TextField label="Website URL" variant="outlined" onChange={(e) => {this.setState({websiteVal: e.target.value,})}}/>
+                <TextField label="Phone Number" variant="outlined" onChange={(e) => { this.setState({ phoneVal: e.target.value, }) }} />
+                <TextField label="Website URL" variant="outlined" onChange={(e) => { this.setState({ websiteVal: e.target.value, }) }} />
                 <Stack direction="column" spacing={1} alignItems="left">
-                    <Typography variant="h6" style={{fontWeight: "bold"}}>Average Wait Time Per Customer</Typography>
-                    <Select value={this.state.avgWaitSelection} 
-                        variant="outlined" 
-                        size="small" 
+                    <Typography variant="h6" style={{ fontWeight: "bold" }}>Average Wait Time Per Customer</Typography>
+                    <Select value={this.state.avgWaitSelection}
+                        variant="outlined"
+                        size="small"
                         label="Average Wait Time Per Customer"
-                        style={{width: "150px",}}
-                        onChange={(e) => {this.setState({avgWaitSelection: e.target.value,})}}
-                        >
+                        style={{ width: "150px", }}
+                        onChange={(e) => { this.setState({ avgWaitSelection: e.target.value, }) }}
+                    >
                         <MenuItem value={0.25}>15 seconds</MenuItem>
                         <MenuItem value={0.5}>30 seconds</MenuItem>
                         <MenuItem value={1}>1 minute</MenuItem>
@@ -80,23 +93,23 @@ class RestaurantRegister extends React.Component {
                     </Select>
                 </Stack>
                 <Stack direction="column" spacing={1}>
-                    <Typography variant="h6" style={{fontWeight: "bold"}}>
+                    <Typography variant="h6" style={{ fontWeight: "bold" }}>
                         Tags
                     </Typography>
-                    <Stack direction="row" spacing={1} alignItems="center" style={{marginLeft: "10px"}}>
+                    <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         <Stack spacing={1} alignItems="center" direction="row" justifyContent="flex-start"
-                            style={{overflow: "scroll"}}>
-                            {this.chips.map((name) => 
-                                    <MenuChip name={name} 
+                            style={{ overflow: "scroll" }}>
+                            {this.chips.map((name) =>
+                                <MenuChip name={name}
                                     onClick={() => this.handleClick(name)}
-                                    variant={this.state.selectedChips.includes(name) ? "filled" : "outlined"}/>
+                                    variant={this.state.selectedChips.includes(name) ? "filled" : "outlined"} />
                             )}
                         </Stack>
                     </Stack>
                 </Stack>
                 <Button align="center" variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
             </Stack>
-            
+
         );
     }
 }
@@ -105,29 +118,42 @@ class RestaurantRegister extends React.Component {
 function RestaurantSignup(props) {
 
     const classes = useStyles();
-    
-    let editName = false;
-    
+
     return (
         <div class={classes.page}>
-            <Header/>
+            <Header />
             <div class={classes.mainPage}>
                 <Container maxWidth="md">
                     <Stack direction="column" spacing={2}>
-                        <Paper className={classes.settingsPaper} style={{padding: "20px"}}>
+                        <Paper className={classes.settingsPaper} style={{ padding: "20px" }}>
                             <Stack spacing={2} direction="column">
-                                <Typography spacing="5" variant="h5" style={{fontWeight: "bold"}}>Register Your Restaurant</Typography>
+                                <Typography spacing="5" variant="h5" style={{ fontWeight: "bold" }}>Register Your Restaurant</Typography>
                                 <Stack direction="column" spacing={5} sx={{ mb: 3 }}>
-                                    <RestaurantRegister restaurant={props.restaurant} classes={classes}/>
+                                    <RestaurantRegister restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                                 </Stack>
                             </Stack>
                         </Paper>
                     </Stack>
                 </Container>
             </div>
-            <Footer/>
+            <Footer />
         </div>
     )
+}
+
+async function editUser(id, editProps) {
+    const body = {
+        data: editProps,
+        id: id
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    };
+    fetch('http://localhost:5001/restaurant/edit', requestOptions)
+        .then(response => response.json())
+        .then(data => { console.log(data) });
 }
 
 export default RestaurantSignup;

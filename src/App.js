@@ -20,25 +20,122 @@ import UserSettings from './pages/User/UserSettings/UserSettings.js'
 import { Redirect } from 'react-router';
 import { auth, signOutWithGoogle } from './service/firebase';
 import Loader from "react-loader-spinner";
+import { signOut } from '@firebase/auth';
 
 
-function PrivateRoute({component, isLoggedIn, ...rest}) {
+function UserPrivateRoute({ component, isLoggedIn, isSetup, userType, ...rest }) {
   return (
     <Route {...rest} render={(props) => {
-      return ( isLoggedIn ? component : 
-      <Redirect exact to="/"/>
-      )}}/>
+      if (!isLoggedIn) {
+        return <Redirect exact to="/" />;
+      }
+      else {
+        if (isSetup) {
+          if (userType === "student")
+            return component;
+          else {
+            return <Redirect exact to="/" />;
+          }
+        }
+        else {
+          if (userType === "student")
+            return <Redirect exact to="/user/create" />;
+          else
+            return <Redirect exact to="/" />;
+        }
+      }
+    }} />
   )
 }
 
-function PublicRoute({component, isLoggedIn, ...rest}) {
+function RestaurantPrivateRoute({ component, isLoggedIn, isSetup, userType, ...rest }) {
   return (
     <Route {...rest} render={(props) => {
-      return ( isLoggedIn ? <Redirect exact to="/restaurants"/> : 
-      component
-    )}}/>
+      if (!isLoggedIn) {
+        return <Redirect exact to="/manage" />;
+      }
+      else {
+        if (isSetup) {
+          if (userType === "restaurant")
+            return component;
+          else {
+            return <Redirect exact to="/" />;
+          }
+        }
+        else {
+          if (userType === "restaurant")
+            return <Redirect exact to="/manage/create" />;
+          else
+            return <Redirect exact to="/" />;
+        }
+      }
+    }} />
   )
 }
+
+
+function PublicRoute({ component, isLoggedIn, isSetup, userType, ...rest }) {
+  return (
+    <Route {...rest} render={(props) => {
+      if (!isLoggedIn) {
+        return component;
+      }
+      else {
+        if (isSetup) {
+          if (userType === "student")
+            return <Redirect exact to="/restaurants" />;
+          else {
+            return <Redirect exact to="/manage/line" />;
+          }
+        }
+        else {
+          if (userType === "student")
+            return <Redirect exact to="/user/create" />;
+          else {
+            return <Redirect exact to="/manage/create" />;
+          }
+        }
+      }
+    }} />
+  )
+}
+
+function UserSetupRoute({ component, isLoggedIn, isSetup, ...rest }) {
+  return (
+    <Route {...rest} render={(props) => {
+      if (!isLoggedIn) {
+        return <Redirect exact to="/" />;
+      }
+      else {
+        if (isSetup) {
+          return <Redirect exact to="/restaurants" />;
+        }
+        else {
+          return component;
+        }
+      }
+    }} />
+  )
+}
+
+function RestaurantSetupRoute({ component, isLoggedIn, isSetup, ...rest }) {
+  return (
+    <Route {...rest} render={(props) => {
+      if (!isLoggedIn) {
+        return <Redirect exact to="/" />;
+      }
+      else {
+        if (isSetup) {
+          return <Redirect exact to="/manage/line" />;
+        }
+        else {
+          return component;
+        }
+      }
+    }} />
+  )
+}
+
 
 
 class App extends React.Component {
@@ -47,10 +144,16 @@ class App extends React.Component {
     super()
     this.state = {
       userType: null,
-      userLoggedIn: false,
+      loggedIn: false,
       signOutClicked: false,
+      loggingIn: false,
       user: null,
     }
+  }
+
+  loggingInToggle = () => {
+    let loggingIn = this.state.loggingIn;
+    this.setState({ loggingIn: !loggingIn });
   }
 
   async componentDidMount() {
@@ -68,20 +171,43 @@ class App extends React.Component {
           fetch('http://localhost:5001/user/get', requestOptions)
             .then(response => response.json())
             .then(data => {
-              let userState = data.data.user;
-              userState.id = user.uid;
-              this.setState({
-                user: userState,
-                userLoggedIn: true,
-                signOutClicked: false
-              });
+              if (data.statusCode === 200) {
+                let userState = data.data.user;
+                userState.id = user.uid;
+                this.setState({
+                  user: userState,
+                  loggedIn: true,
+                  signOutClicked: false,
+                  userType: userState.type
+                });
+                this.loggingInToggle();
+              }
+            });
+        }, 2000);
+        setTimeout(() => {
+          fetch('http://localhost:5001/restaurant/get', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+              if (data.statusCode === 200) {
+                let userState = data.data.restaurant;
+                userState.id = user.uid;
+                this.setState({
+                  user: userState,
+                  loggedIn: true,
+                  signOutClicked: false,
+                  userType: userState.type
+                });
+                this.loggingInToggle();
+              }
             });
         }, 2000);
       } else {
         this.setState({
           user: null,
-          userLoggedIn: false,
-          signOutClicked: true
+          loggedIn: false,
+          loggingIn: false,
+          signOutClicked: true,
+          userType: null
         });
         console.log("no user");
       }
@@ -274,7 +400,9 @@ class App extends React.Component {
   }
 
   render() {
-    if (this.state.user === null && !this.state.signOutClicked) return (
+    //signOutWithGoogle();
+    console.log(this.state);
+    if (this.state.user === null && (this.state.loggingIn || !this.state.signOutClicked)) return (
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -292,17 +420,55 @@ class App extends React.Component {
       <ThemeProvider theme={theme}>
         <Router>
           <Switch>
-            <PublicRoute exact path="/" isLoggedIn={this.state.userLoggedIn} component={<Home isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants}/>} />
+            <PublicRoute exact path="/"
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              userType={this.state.userType}
+              component={<Home isLoggedIn={this.state.loggedIn} user={this.state.user} restaurants={this.restaurants}
+                loggingInToggle={this.loggingInToggle}
+              />} />
             <Route path="/card"><CardPage /></Route>
-            <PublicRoute path="/signup" isLoggedIn={this.state.userLoggedIn} component={<Signup />}/>
-            <Route path="/user/create"><UserSignup /></Route>
-            <Route path="/manage/create"><RestaurantSignup restaurant={this.restaurants[1]}/></Route>
-            <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.userLoggedIn} restaurants={this.restaurants} user={this.state.user} />}></Route>
-            <PrivateRoute path="/restaurants" isLoggedIn={this.state.userLoggedIn} component={<Restaurants isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} />} />
-            <PrivateRoute path="/user" isLoggedIn={this.state.userLoggedIn} component={<UserSettings isLoggedIn={this.state.userLoggedIn} user={this.state.user} restaurants={this.restaurants} changeUserData={this.changeUserData} />}/>
-            <Route path="/manage/line"><LineManagement users={this.users} restaurant={this.restaurants[1]} /></Route>
-            <Route path="/manage/settings"><RestaurantSettings restaurant={this.restaurants[1]} /></Route>
-            <Route path="/manage"><RestaurantManagement restaurant={this.restaurants[1]} /></Route>
+            <PublicRoute path="/signup"
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              component={<Signup />} />
+            <UserSetupRoute path="/user/create"
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              component={<UserSignup user={this.state.user} changeUserData={this.changeUserData} />} />
+            <RestaurantSetupRoute path="/manage/create"
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              component={<RestaurantSignup restaurant={this.state.user} changeUserData={this.changeUserData} />} />
+            <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.loggedIn} restaurants={this.restaurants} user={this.state.user} />}></Route>
+            <UserPrivateRoute path="/restaurants"
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              userType={this.state.userType}
+              component={<Restaurants isLoggedIn={this.state.loggedIn} user={this.state.user} restaurants={this.restaurants} />} />
+            <UserPrivateRoute path="/user"
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              userType={this.state.userType}
+              component={<UserSettings isLoggedIn={this.state.loggedIn} user={this.state.user} restaurants={this.restaurants} changeUserData={this.changeUserData} />} />
+            <RestaurantPrivateRoute path="/manage/line"
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              userType={this.state.userType}
+              component={<LineManagement users={this.users} restaurant={this.state.user} isLoggedIn={this.state.loggedIn} />} />
+            <RestaurantPrivateRoute path="/manage/settings"
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              userType={this.state.userType}
+              component={<RestaurantSettings restaurant={this.state.user} isLoggedIn={this.state.loggedIn} changeUserData={this.changeUserData} />} />
+            <PublicRoute exact path="/manage"
+              isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
+              userType={this.state.userType}
+              component={<RestaurantManagement restaurant={this.state.user}
+                isLoggedIn={this.loggedIn}
+                loggingInToggle={this.loggingInToggle}
+              />} />
             <Route path="/about"><About /></Route>
             <Route path="/404" component={NotFound}></Route>
             <Redirect to="/404" />

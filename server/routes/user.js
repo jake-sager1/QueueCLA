@@ -1,15 +1,8 @@
-const { connectFirestoreEmulator } = require("@firebase/firestore");
 const express = require("express");
 let router = express.Router();
 
-const admin = require('firebase-admin');
-const serviceAccount = require('../queuecla-firebase-adminsdk-dcsra-ae14b81ebf.json');
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-});
-
-const db = admin.firestore();
+const firebaseInfo = require("../server");
+const db = firebaseInfo.admin.firestore();
 
 router.route("/create").post(async (req, res, next) => {
     const email = req.body.email;
@@ -20,13 +13,28 @@ router.route("/create").post(async (req, res, next) => {
     //if user already exists
     if (!userDoc.exists) {
         console.log("No such user");
+        //check if a restaurant exists
+        let restaurantRef = db.collection("restaurants").doc(id);
+        let restaurantDoc = await restaurantRef.get();
+
+        if (restaurantDoc.exists) {
+            const response = {
+                message: `A restaurant exists with same id ${id}, email ${email}`,
+                statusCode: 403
+            };
+            res.status(response.statusCode).send(response);
+            return;
+        }
         console.log(`Creating user with id ${id}, email ${email}`);
         //TODO:need to change this when user account page is created
         const userData = {
             email: email,
             inLine: false,
             name: req.body.name,
-            favorites: [2]
+            favorites: [2],
+            type: "student",
+            setup: false,
+            uid: ""
         };
         //create the user
         await userRef.set(userData);
