@@ -113,6 +113,7 @@ class Identification extends React.Component {
         this.state = {
             editable: false,
             nameFieldValue: props.user.uid,
+            isUIDValid: true,
         }
     }
 
@@ -144,6 +145,18 @@ class Identification extends React.Component {
             });
     }
 
+    checkUIDValidity(uid) {
+        if (/^\d+$/.test(uid) && uid.length === 9) {
+            this.setState({
+                isUIDValid: true
+            })
+        } else {
+            this.setState({
+                isUIDValid: false
+            })
+        }
+    }
+
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
@@ -169,10 +182,16 @@ class Identification extends React.Component {
                                     size="small"
                                     label="UID"
                                     onChange={(e) => {
-                                        this.setState({ nameFieldValue: e.target.value });
+                                        this.setState({ 
+                                            nameFieldValue: e.target.value 
+                                        }, () => {
+                                            this.checkUIDValidity(e.target.value)
+                                        });
                                     }}
+                                    error={!this.state.isUIDValid}
+                                    helperText={this.state.isUIDValid ? "" : "Enter a valid 9 digit UID."}
                                 />
-                                <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
+                                <Button disabled={!this.state.isUIDValid} variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}
                                     onClick={this.handleCancel.bind(this)}>Cancel</Button>
                             </Stack>
