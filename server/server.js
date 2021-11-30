@@ -2,7 +2,15 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5001; //use port 5000
 const cors = require('cors');
-const userRoutes = require('./routes/user');
+
+const admin = require('firebase-admin');
+const serviceAccount = require('./queuecla-firebase-adminsdk-dcsra-ae14b81ebf.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+module.exports = { admin: admin };
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 const allowedOrigins = ["http://localhost:3000", "http://localhost:8080"];
@@ -23,7 +31,11 @@ app.use(
 
 app.use(express.json());
 
+const userRoutes = require('./routes/user');
+const restaurantRoutes = require('./routes/restaurant');
 app.use("/user", userRoutes);
+app.use("/restaurant", restaurantRoutes);
+
 
 app.get('/', (req, res) => {
   res.send({ message: 'Hello, World' });
