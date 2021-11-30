@@ -15,3 +15,7 @@ code {
 .logo {
   font-family: Roboto;
 }
+
+img {
+  object-fit: cover;
+}

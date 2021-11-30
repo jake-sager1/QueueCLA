@@ -35,8 +35,8 @@ class ImageUpload extends React.Component {
                 </Typography>
                 <div>
                     <div>
-                        <img width={this.state.width} height={this.state.height} src={this.state.image} 
-                        style={this.props.type == "Profile" ? {borderRadius: "100%"} : {}}/>
+                        <img width={this.state.width} height={this.state.height} src={this.state.image}
+                                style={this.props.type == "Profile" ? {borderRadius: "100%"} : {}}/>
                         <div>
                                 <Button variant="contained" style={{marginTop: "10px"}}><label for={this.state.type} style={{cursor: "pointer"}}>Upload Image</label></Button>
                                 <input type="file" style={{display: "none"}} id={this.state.type} name="myImage" onChange={this.onImageChange} accept=".png,.jpg"/>
