@@ -17,6 +17,7 @@ class RestaurantRegister extends React.Component {
             nameVal: null,
             isNameValid: true,
             descVal: null,
+            isDescriptionValid: true,
             phoneVal: null,
             isPhoneValid: true,
             websiteVal: null,
@@ -72,6 +73,18 @@ class RestaurantRegister extends React.Component {
         }
     }
 
+    checkDescriptionValidity(description) {
+        if (validator.isAscii(description) && (/[a-zA-Z]/.test(description) || /\d/.test(description))) {
+            this.setState({
+                isDescriptionValid: true
+            })
+        } else {
+            this.setState({
+                isDescriptionValid: false
+            })
+        }
+    }
+
     checkPhoneNumberValidity(phone_number) {
         if (validator.isMobilePhone(phone_number) && phone_number.length === 10) {
             this.setState({
@@ -106,6 +119,7 @@ class RestaurantRegister extends React.Component {
                     id="outlined-error"
                     label="Restaurant Name"
                     variant="outlined"
+                    onClick={(e) => {this.checkNameValidity(e.target.value)}}
                     onChange={(e) => { 
                         this.setState({ nameVal: e.target.value, }) 
                         this.checkNameValidity(e.target.value)
@@ -113,12 +127,24 @@ class RestaurantRegister extends React.Component {
                     error={!this.state.isNameValid}
                     helperText={this.state.isNameValid ? "" : "Please enter a valid name."}
                 />
-                <TextField spacing={3} id="outlined-multiline-static" rows={2} label="Description" variant="outlined"
-                    onChange={(e) => { this.setState({ descVal: e.target.value, }) }}
+                <TextField 
+                    spacing={3} 
+                    id="outlined-multiline-static" 
+                    rows={2} 
+                    label="Description" 
+                    variant="outlined"
+                    onClick={(e) => {this.checkDescriptionValidity(e.target.value)}}
+                    onChange={(e) => { 
+                        this.setState({ descVal: e.target.value, }) 
+                        this.checkDescriptionValidity(e.target.value)
+                    }}
+                    error={!this.state.isDescriptionValid}
+                    helperText={this.state.isDescriptionValid ? "" : "Please enter a valid description."}
                 />
                 <TextField 
                     label="Phone Number"
                     variant="outlined"
+                    onClick={(e) => {this.checkPhoneNumberValidity(e.target.value)}}
                     onChange={(e) => { 
                         this.setState({ phoneVal: e.target.value, }) 
                         this.checkPhoneNumberValidity(e.target.value)
@@ -129,6 +155,7 @@ class RestaurantRegister extends React.Component {
                 <TextField 
                     label="Website URL"
                     variant="outlined"
+                    onClick={(e) => {this.checkWebsiteValidity(e.target.value)}}
                     onChange={(e) => { 
                         this.setState({ websiteVal: e.target.value, }) 
                         this.checkWebsiteValidity(e.target.value)
