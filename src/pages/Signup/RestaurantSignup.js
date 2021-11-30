@@ -94,7 +94,7 @@ class RestaurantRegister extends React.Component {
     }
 
     checkDescriptionValidity(description) {
-        if (validator.isAscii(description) && (/[a-zA-Z]/.test(description) || /\d/.test(description))) {
+        if (validator.isAscii(description) && (/[a-zA-Z]/.test(description) || /\d/.test(description)) && description.length >= 10 && description.length <= 100) {
             this.setState({
                 isDescriptionValid: true
             }, this.checkFormValidity)

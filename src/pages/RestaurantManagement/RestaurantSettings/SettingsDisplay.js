@@ -153,6 +153,7 @@ class RestaurantDescription extends React.Component {
         this.state = {
             editable: false,
             descriptionFieldValue: props.restaurant.description,
+            isDescriptionValid: true,
         }
     }
 
@@ -184,6 +185,18 @@ class RestaurantDescription extends React.Component {
             });
     }
 
+    checkDescriptionValidity(description) {
+        if (validator.isAscii(description) && (/[a-zA-Z]/.test(description) || /\d/.test(description)) && description.length >= 10 && description.length <= 100) {
+            this.setState({
+                isDescriptionValid: true
+            })
+        } else {
+            this.setState({
+                isDescriptionValid: false
+            })
+        }
+    }
+
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
@@ -209,7 +222,15 @@ class RestaurantDescription extends React.Component {
                                     size="small"
                                     label="Description"
                                     style={{ width: "400px", }}
-                                    onChange={(e) => { this.setState({ descriptionFieldValue: e.target.value, }) }}
+                                    onChange={(e) => { 
+                                        this.setState({ 
+                                            descriptionFieldValue: e.target.value, 
+                                        }, () => {
+                                            this.checkDescriptionValidity(e.target.value)
+                                        }) 
+                                    }}
+                                    error={!this.state.isDescriptionValid}
+                                    helperText={this.state.isDescriptionValid ? "" : "Enter a valid description with at least 10 characters."}
                                 />
                                 <Button variant="contained" onClick={this.handleSave.bind(this)}>Save</Button>
                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }}
