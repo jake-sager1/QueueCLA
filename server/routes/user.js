@@ -31,7 +31,7 @@ router.route("/create").post(async (req, res, next) => {
             email: email,
             inLine: false,
             name: req.body.name,
-            favorites: [2],
+            favorites: [],
             type: "student",
             setup: false,
             uid: "",
