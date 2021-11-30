@@ -5,7 +5,11 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: '56.25%',
   },
   cardContent: {
-      flexGrow: 1,
+      flexGrow: 1
+  },
+  gridItem: {
+    display: "flex",
+    flexDirection: "column",
   },
   homeNavBar: {
       padding: "20px",
@@ -26,15 +30,19 @@ const useStyles = makeStyles((theme) => ({
       width:"100%",
   },
   contained: {
-      paddingTop: "75px",
-      paddingBottom: "75px",
+      paddingTop: "50px",
+      paddingBottom: "50px",
   },
   middletext: {
       align: "center"
   },
   card: {
+    height: "100%",
+    display: "flex", 
+    flexDirection: "column",
   },
   cardActionArea: {
+      height: "100%",
   },
   chips: {
     padding: "9px"
