@@ -19,6 +19,7 @@ class RestaurantRegister extends React.Component {
             phoneVal: null,
             isPhoneValid: true,
             websiteVal: null,
+            isWebsiteValid: true,
             avgWaitSelection: 3,
             selectedChips: [],
         }
@@ -59,14 +60,26 @@ class RestaurantRegister extends React.Component {
     }
 
     checkPhoneNumberValidity(phone_number) {
-        let is_valid_phone_number = validator.isMobilePhone(phone_number)
-        if (is_valid_phone_number && phone_number.length === 10) {
+        if (validator.isMobilePhone(phone_number) && phone_number.length === 10) {
             this.setState({
                 isPhoneValid: true
             })
         } else {
             this.setState({
                 isPhoneValid: false
+            })
+        }
+    }
+
+    checkWebsiteValidity(webiste_url) {
+        let result = webiste_url.match(/^((ftp|http|https):\/\/)?(www.)?(?!.*(ftp|http|https|www.))[a-zA-Z0-9_-]+(\.[a-zA-Z]+)+((\/)[\w#]+)*(\/\w+\?[a-zA-Z0-9_]+=\w+(&[a-zA-Z0-9_]+=\w+)*)?$/gm)
+        if (result !== null) {
+            this.setState({
+                isWebsiteValid: true
+            })
+        } else {
+            this.setState({
+                isWebsiteValid: false
             })
         }
     }
@@ -91,7 +104,16 @@ class RestaurantRegister extends React.Component {
                     error={!this.state.isPhoneValid}
                     helperText={this.state.isPhoneValid ? "" : "Phone number must be a 10 digit number."}
                 />
-                <TextField label="Website URL" variant="outlined" onChange={(e) => { this.setState({ websiteVal: e.target.value, }) }} />
+                <TextField 
+                    label="Website URL"
+                    variant="outlined"
+                    onChange={(e) => { 
+                        this.setState({ websiteVal: e.target.value, }) 
+                        this.checkWebsiteValidity(e.target.value)
+                    }}
+                    error={!this.state.isWebsiteValid}
+                    helperText={this.state.isWebsiteValid ? "" : "Please enter a valid website url."}
+                />
                 <Stack direction="column" spacing={1} alignItems="left">
                     <Typography variant="h6" style={{ fontWeight: "bold" }}>Average Wait Time Per Customer</Typography>
                     <Select value={this.state.avgWaitSelection}
