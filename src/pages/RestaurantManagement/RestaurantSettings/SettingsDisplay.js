@@ -4,6 +4,7 @@ import useStyles from '../restaurant-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
 import validator from 'validator';
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 class ImageUpload extends React.Component {
     constructor(props) {
@@ -23,8 +24,32 @@ class ImageUpload extends React.Component {
         this.setState({
           image: URL.createObjectURL(img)
         });
+        this.handleSave()
       }
     };
+
+    handleSave() {
+        let change;
+        const storage = getStorage();
+        if (this.state.type == "Profile"){
+            //const storageRef = ref(storage, this.props.restaurant.id.profileImage);
+            //let imageRef = storageRef.child(this.state.image);
+            // uploadBytes(storageRef, this.state.image).then((snapshot) => {
+            //     console.log('Uploaded a blob or file!');
+            //   });
+            change = { "profileImage": this.state.image };
+        } else {
+            // const storageRef = ref(storage, this.props.restaurant.id.bannerImage);
+            // uploadBytes(storageRef, this.state.image).then((snapshot) => {
+            //     console.log('Uploaded a blob or file!');
+            //   });
+            change = { "bannerImage": this.state.image };
+        }
+        editUser(this.props.restaurant.id, change)
+            .then(() => {
+                this.props.changeUserData(change);
+            });
+    }
   
     render() {
       return (
@@ -35,8 +60,15 @@ class ImageUpload extends React.Component {
                 </Typography>
                 <div>
                     <div>
-                        <img width={this.state.width} height={this.state.height} src={this.state.image} 
-                        style={this.props.type == "Profile" ? {borderRadius: "100%"} : {}}/>
+                        {this.state.type == "Profile" && 
+                            <img width={this.state.width} height={this.state.height} src={this.props.restaurant.id.profileImage?
+                                this.props.restaurant.id.profileImage : this.state.image} 
+                                style={{borderRadius: "100%"}}/>}
+                        {this.state.type == "Banner" && 
+                            <img width={this.state.width} height={this.state.height} src={this.props.restaurant.id.bannerImage?
+                                this.props.restaurant.id.bannerImage : this.state.image}/>}
+                        {/* <img width={this.state.width} height={this.state.height} src={this.state.image} 
+                            style={this.props.type == "Profile" ? {borderRadius: "100%"} : {}}/> */}
                         <div>
                                 <Button variant="contained" style={{marginTop: "10px"}}><label for={this.state.type} style={{cursor: "pointer"}}>Upload Image</label></Button>
                                 <input type="file" style={{display: "none"}} id={this.state.type} name="myImage" onChange={this.onImageChange} accept=".png,.jpg"/>
@@ -897,10 +929,10 @@ function SettingsDisplay(props) {
                             <RestaurantWaitTime restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                             <RestaurantTags restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                             <RestaurantMenu restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
-                            <ImageUpload user={props.user} classes={classes} changeUserData={props.changeUserData} 
+                            <ImageUpload restaurant={props.restaurant} user={props.user} classes={classes} changeUserData={props.changeUserData} 
                                 default="https://www.topshelfrecruitment.com.au/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaXdRIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--5298fb4188cd114508cc4f93dc8ba3555164f8a9/old-banner-default.jpg" 
                                 width="700px" height="180px" type="Banner"/>
-                            <ImageUpload user={props.user} classes={classes} changeUserData={props.changeUserData} 
+                            <ImageUpload restaurant={props.restaurant} user={props.user} classes={classes} changeUserData={props.changeUserData} 
                                 default="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
                                 width="100px" height="100px" type="Profile"/>
                         </Stack>
