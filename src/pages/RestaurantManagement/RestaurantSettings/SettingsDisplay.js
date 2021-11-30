@@ -4,6 +4,50 @@ import useStyles from '../restaurant-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
 
+class ImageUpload extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        image: props.default,
+        width: props.width,
+        height: props.height,
+        type: props.type
+      };
+      this.onImageChange = this.onImageChange.bind(this);
+    }
+  
+    onImageChange = event => {
+      if (event.target.files && event.target.files[0]) {
+        let img = event.target.files[0];
+        this.setState({
+          image: URL.createObjectURL(img)
+        });
+      }
+    };
+  
+    render() {
+      return (
+        <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
+            <Stack direction="column" spacing={1}>
+                <Typography variant="h5" style={{ fontWeight: "bold" }}>
+                    Select a {this.state.type} Photo:
+                </Typography>
+                <div>
+                    <div>
+                        <img width={this.state.width} height={this.state.height} src={this.state.image} 
+                        style={this.props.type == "Profile" ? {borderRadius: "100%"} : {}}/>
+                        <div>
+                                <Button variant="contained" style={{marginTop: "10px"}}><label for={this.state.type} style={{cursor: "pointer"}}>Upload Image</label></Button>
+                                <input type="file" style={{display: "none"}} id={this.state.type} name="myImage" onChange={this.onImageChange} accept=".png,.jpg"/>
+                        </div>
+                    </div>
+                </div>
+            </Stack>
+        </Paper>
+      );
+    }
+  }
+
 class RestaurantName extends React.Component {
 
     constructor(props) {
@@ -767,6 +811,12 @@ function SettingsDisplay(props) {
                             <RestaurantWaitTime restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                             <RestaurantTags restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                             <RestaurantMenu restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
+                            <ImageUpload user={props.user} classes={classes} changeUserData={props.changeUserData} 
+                                default="https://www.topshelfrecruitment.com.au/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaXdRIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--5298fb4188cd114508cc4f93dc8ba3555164f8a9/old-banner-default.jpg" 
+                                width="700px" height="180px" type="Banner"/>
+                            <ImageUpload user={props.user} classes={classes} changeUserData={props.changeUserData} 
+                                default="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+                                width="100px" height="100px" type="Profile"/>
                         </Stack>
                     </Paper>
                 </Stack>
