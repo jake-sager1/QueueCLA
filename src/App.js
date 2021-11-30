@@ -52,7 +52,7 @@ function RestaurantPrivateRoute({ component, isLoggedIn, isSetup, userType, ...r
   return (
     <Route {...rest} render={(props) => {
       if (!isLoggedIn) {
-        return <Redirect exact to="/" />;
+        return <Redirect exact to="/manage" />;
       }
       else {
         if (isSetup) {
