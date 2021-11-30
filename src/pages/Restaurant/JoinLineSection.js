@@ -13,7 +13,7 @@ function JoinLineSection(props) {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
-        if (props.user.inLine){
+        if (props.user.inLine) {
             setOpen(true);
         }
     };
@@ -23,43 +23,43 @@ function JoinLineSection(props) {
     };
 
     let currentSpotInLine = 1;
-    
-    if(props.user.inLine && props.user.restaurantID == props.restaurant.id) {
-        for(var i = 0; i < props.restaurant.waitlist.length; i++) {
-            if(props.restaurant.waitlist[i] == props.user.id) {
+
+    if (props.user.inLine && props.user.restaurantID == props.restaurant.id) {
+        for (var i = 0; i < props.restaurant.waitlist.length; i++) {
+            if (props.restaurant.waitlist[i] == props.user.id) {
                 currentSpotInLine = i + 1;
             }
         }
     }
 
-    if(props.restaurant.waitEnabled) {
+    if (props.restaurant.waitEnabled) {
         return (
-            
+
             <Stack direction="column" spacing={2}>
                 <Typography variant="h4">
                     {(!props.user.inLine || (props.user.inLine && props.user.restaurantID != props.restaurant.id)) &&
-                    "Join the Line"
+                        "Join the Line"
                     }
                     {props.user.inLine && props.user.restaurantID == props.restaurant.id &&
-                    "You're in line!"
+                        "You're in line!"
                     }
                 </Typography>
                 {!(props.user.inLine && props.user.restaurantID == props.restaurant.id) &&
                     <Stack direction="column" spacing={2}>
                         <Typography>
-                            {"There are currently "} 
-                            <Box component="span" display="inline" style={{fontWeight: "bold"}}>
+                            {"There are currently "}
+                            <Box component="span" display="inline" style={{ fontWeight: "bold" }}>
                                 {props.restaurant.waitlist.length}
-                            </Box> 
+                            </Box>
                             {" people in line right now."}
                         </Typography>
                         <Typography>
                             {"Approximate wait time: "}
-                            <Box component="span" display="inline" style={{fontWeight: "bold"}}>
+                            <Box component="span" display="inline" style={{ fontWeight: "bold" }}>
                                 {props.restaurant.avgTimePerCustomer * props.restaurant.waitlist.length} minutes
                             </Box>
                         </Typography>
-                        <Button variant="contained" style={{padding: "20px"}} onClick={handleClickOpen}>Get in Line</Button>
+                        <Button variant="contained" style={{ padding: "20px" }} onClick={handleClickOpen}>Get in Line</Button>
                         <Dialog
                             open={open}
                             onClose={handleClose}
@@ -67,16 +67,16 @@ function JoinLineSection(props) {
                             aria-describedby="alert-dialog-description"
                         >
                             <DialogTitle id="alert-dialog-title">
-                            {"You're Already in Line"}
+                                {"You're Already in Line"}
                             </DialogTitle>
                             <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                You are currently already in line at {props.restaurants[props.user.restaurantID].name}. 
-                                Please leave line to join another.
-                            </DialogContentText>
+                                <DialogContentText id="alert-dialog-description">
+                                    You are currently already in line at {props.user.restaurantID.name}.
+                                    Please leave line to join another.
+                                </DialogContentText>
                             </DialogContent>
                             <DialogActions>
-                            <Button onClick={handleClose} autoFocus>Okay</Button>
+                                <Button onClick={handleClose} autoFocus>Okay</Button>
                             </DialogActions>
                         </Dialog>
                     </Stack>
@@ -84,30 +84,30 @@ function JoinLineSection(props) {
                 {props.user.inLine && props.user.restaurantID == props.restaurant.id &&
                     <Stack direction="column" spacing={2}>
                         <Typography>
-                            {"You are number "} 
-                            <Box component="span" display="inline" style={{fontWeight: "bold"}}>
+                            {"You are number "}
+                            <Box component="span" display="inline" style={{ fontWeight: "bold" }}>
                                 {currentSpotInLine + " of " + props.restaurant.waitlist.length}
-                            </Box> 
+                            </Box>
                             {" in line at " + props.restaurant.name + "."}
                         </Typography>
                         <Typography>
                             {"Approximate wait time remaining: "}
-                            <Box component="span" display="inline" style={{fontWeight: "bold"}}>
+                            <Box component="span" display="inline" style={{ fontWeight: "bold" }}>
                                 {props.restaurant.avgTimePerCustomer * currentSpotInLine} minutes
                             </Box>
                         </Typography>
-                        <Button variant="contained" style={{backgroundColor: "darkRed"}}>Leave the line</Button>
+                        <Button variant="contained" style={{ backgroundColor: "darkRed" }}>Leave the line</Button>
                     </Stack>
                 }
 
-               
-                
+
+
             </Stack>
-            
+
         );
     } else {
         return (
-          
+
             <Stack direction="column" spacing={2}>
                 <Typography variant="h4">
                     Virtual Line Not Available

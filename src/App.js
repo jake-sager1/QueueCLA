@@ -148,6 +148,7 @@ class App extends React.Component {
       signOutClicked: false,
       loggingIn: false,
       user: null,
+      restaurants: []
     }
   }
 
@@ -156,7 +157,26 @@ class App extends React.Component {
     this.setState({ loggingIn: !loggingIn });
   }
 
+  getRestaurants = async () => {
+    const requestOptions = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    };
+    fetch("http://localhost:5001/restaurant/all", requestOptions)
+      .then(response => response.json())
+      .then(data => {
+        let listOfRestaurants = data.data;
+        if (listOfRestaurants.length !== this.state.restaurants.length)
+          this.setState({
+            restaurants: listOfRestaurants
+          })
+      });
+  }
+
   async componentDidMount() {
+    this.getRestaurants();
+
+    //track auth
     auth.onAuthStateChanged(user => {
       if (user !== null) {
         let body = {
@@ -201,6 +221,7 @@ class App extends React.Component {
               }
             });
         }, 2000);
+        //get the list of all the restaurants
       } else {
         this.setState({
           user: null,
@@ -440,12 +461,12 @@ class App extends React.Component {
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
               component={<RestaurantSignup restaurant={this.state.user} changeUserData={this.changeUserData} />} />
-            <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.loggedIn} restaurants={this.restaurants} user={this.state.user} />}></Route>
+            <Route path="/restaurants/:id" render={(props) => <Restaurant {...props} isLoggedIn={this.state.loggedIn} restaurants={this.state.restaurants} user={this.state.user} />}></Route>
             <UserPrivateRoute path="/restaurants"
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
               userType={this.state.userType}
-              component={<Restaurants isLoggedIn={this.state.loggedIn} user={this.state.user} restaurants={this.restaurants} />} />
+              component={<Restaurants isLoggedIn={this.state.loggedIn} user={this.state.user} restaurants={this.state.restaurants} />} />
             <UserPrivateRoute path="/user"
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
@@ -455,7 +476,12 @@ class App extends React.Component {
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
               userType={this.state.userType}
-              component={<LineManagement users={this.users} restaurant={this.state.user} isLoggedIn={this.state.loggedIn} />} />
+              component={<LineManagement
+                users={this.users}
+                restaurant={this.state.user}
+                isLoggedIn={this.state.loggedIn}
+                changeUserData={this.changeUserData}
+              />} />
             <RestaurantPrivateRoute path="/manage/settings"
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
