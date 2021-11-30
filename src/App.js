@@ -455,7 +455,7 @@ class App extends React.Component {
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
               userType={this.state.userType}
-              component={<Home isLoggedIn={this.state.loggedIn} user={this.state.user} restaurants={this.restaurants}
+              component={<Home isLoggedIn={this.state.loggedIn} user={this.state.user} restaurants={this.state.restaurants}
                 loggingInToggle={this.loggingInToggle}
               />} />
             <Route path="/card"><CardPage /></Route>
@@ -484,8 +484,8 @@ class App extends React.Component {
               changeRestaurantData={this.changeRestaurantData}
               restaurants={this.state.restaurants}
               user={this.state.user}
-              />}/>
-            <Route path="/search"><Redirect to="/restaurants"/></Route>
+            />} />
+            <Route path="/search"><Redirect to="/restaurants" /></Route>
             <UserPrivateRoute path="/restaurants"
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
@@ -495,7 +495,7 @@ class App extends React.Component {
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
               userType={this.state.userType}
-              component={<UserSettings isLoggedIn={this.state.loggedIn} user={this.state.user} restaurants={this.restaurants} changeUserData={this.changeUserData} />} />
+              component={<UserSettings isLoggedIn={this.state.loggedIn} user={this.state.user} restaurants={this.state.restaurants} changeUserData={this.changeUserData} />} />
             <RestaurantPrivateRoute path="/manage/line"
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}

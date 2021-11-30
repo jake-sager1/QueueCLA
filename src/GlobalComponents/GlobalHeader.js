@@ -139,6 +139,9 @@ function Ribbon(props) {
         desiredRestaurantIndex = i;
       }
     }
+    console.log({ desiredRestaurant: desiredRestaurant });
+    console.log(props.restaurants);
+    console.log(props);
     for (let i = 0; i < desiredRestaurant.waitlist.length; i++) {
       if (desiredRestaurant.waitlist[i].uid === props.user.uid) {
         spotInLine = i + 1;
@@ -165,6 +168,7 @@ function GlobalHeader(props) {
   const isLoggedIn = props.isLoggedIn
   // const userName = props.user.name;
   const inline = props.isLoggedIn ? props.user.inLine : false;
+  console.log({ "hi": props.restaurants });
 
   let stackRight;
 
