@@ -29,7 +29,7 @@ function Header(props) {
                             </Typography>
                         </Link>
                         <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-                            {(!props.page || (props.page !== "line")) && (
+                            {(!props.page || (props.page !== "line")) && isLoggedIn && (
                                 <Link to="/manage/line" style={{ textDecoration: "none" }}>
                                     <Button style={{ color: "white" }}>Mangage Line</Button>
                                 </Link>
