@@ -30,7 +30,7 @@ function LineStatus(props) {
                             <Button variant="contained"
                                 onClick={
                                     () => {
-                                        let change = { "waitEnabled": !props.restaurant.waitEnabled };
+                                        let change = { waitEnabled: !props.restaurant.waitEnabled, waitlist: [] };
                                         editUser(props.restaurant.id, change)
                                             .then(() => {
                                                 props.changeUserData(change);
