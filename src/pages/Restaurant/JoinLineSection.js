@@ -43,12 +43,8 @@ function JoinLineSection(props) {
         });
 
         editRestaurant(props.restaurant.id, restaurantChange).then(() => {
-            props.changeRestaurantsData(props.index, restaurantChange);
+            props.changeRestaurantData(props.index, restaurantChange);
         })
-
-
-        //and add user to that restaurant's waitlist (add in the state and add in firebase)
-
 
     };
 
@@ -130,13 +126,42 @@ function JoinLineSection(props) {
                                 {props.restaurant.avgTimePerCustomer * currentSpotInLine} minutes
                             </Box>
                         </Typography>
-                        <Button variant="contained" style={{ backgroundColor: "darkRed" }}>Leave the line</Button>
+                        <Button variant="contained" style={{ backgroundColor: "darkRed" }} onClick={
+                            () => {
+                                //change the user
+                                let userChange = {
+                                    restaurantID: {},
+                                    inLine: false
+                                };
+
+                                let restaurantWaitlist = props.restaurant.waitlist;
+                                let indexToRemove;
+                                for (let i = 0; i < restaurantWaitlist.length; i++) {
+                                    if (restaurantWaitlist[i].uid === props.user.uid) {
+                                        indexToRemove = i;
+                                        console.log("hey");
+                                    }
+                                }
+                                console.log(indexToRemove);
+                                restaurantWaitlist.splice(indexToRemove, 1);
+                                let restaurantChange = {
+                                    waitlist: restaurantWaitlist
+                                };
+                                editUser(props.user.id, userChange).then(() => {
+                                    props.changeUserData(userChange);
+                                });
+
+                                editRestaurant(props.restaurant.id, restaurantChange).then(() => {
+                                    props.changeRestaurantData(props.index, restaurantChange);
+                                });
+                            }
+                        }>Leave the line</Button>
                     </Stack>
                 }
 
 
 
-            </Stack>
+            </Stack >
 
         );
     } else {
