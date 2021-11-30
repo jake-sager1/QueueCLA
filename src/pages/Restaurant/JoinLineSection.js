@@ -24,9 +24,9 @@ function JoinLineSection(props) {
 
     let currentSpotInLine = 1;
 
-    if (props.user.inLine && props.user.restaurantID == props.restaurant.id) {
-        for (var i = 0; i < props.restaurant.waitlist.length; i++) {
-            if (props.restaurant.waitlist[i] == props.user.id) {
+    if (props.user.inLine && props.user.restaurantID.email === props.restaurant.email) {
+        for (let i = 0; i < props.restaurant.waitlist.length; i++) {
+            if (props.restaurant.waitlist[i].email === props.user.email) {
                 currentSpotInLine = i + 1;
             }
         }
@@ -37,14 +37,14 @@ function JoinLineSection(props) {
 
             <Stack direction="column" spacing={2}>
                 <Typography variant="h4">
-                    {(!props.user.inLine || (props.user.inLine && props.user.restaurantID != props.restaurant.id)) &&
+                    {(!props.user.inLine || (props.user.inLine && props.user.restaurantID.email !== props.restaurant.email)) &&
                         "Join the Line"
                     }
-                    {props.user.inLine && props.user.restaurantID == props.restaurant.id &&
+                    {props.user.inLine && props.user.restaurantID.email === props.restaurant.email &&
                         "You're in line!"
                     }
                 </Typography>
-                {!(props.user.inLine && props.user.restaurantID == props.restaurant.id) &&
+                {!(props.user.inLine && props.user.restaurantID.email === props.restaurant.id.email) &&
                     <Stack direction="column" spacing={2}>
                         <Typography>
                             {"There are currently "}
@@ -81,7 +81,7 @@ function JoinLineSection(props) {
                         </Dialog>
                     </Stack>
                 }
-                {props.user.inLine && props.user.restaurantID == props.restaurant.id &&
+                {props.user.inLine && props.user.restaurantID.email == props.restaurant.email &&
                     <Stack direction="column" spacing={2}>
                         <Typography>
                             {"You are number "}
