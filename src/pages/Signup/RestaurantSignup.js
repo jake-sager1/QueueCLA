@@ -7,6 +7,7 @@ import MenuChip from '../../../src/GlobalComponents/Chips';
 import Header from './Header';
 import Footer from '../../GlobalComponents/Footer';
 import { spacing } from '@mui/system';
+import validator from 'validator';
 
 class RestaurantRegister extends React.Component {
 
@@ -16,6 +17,7 @@ class RestaurantRegister extends React.Component {
             nameVal: null,
             descVal: null,
             phoneVal: null,
+            isPhoneValid: true,
             websiteVal: null,
             avgWaitSelection: 3,
             selectedChips: [],
@@ -56,7 +58,21 @@ class RestaurantRegister extends React.Component {
             });
     }
 
+    checkPhoneNumberValidity(phone_number) {
+        let is_valid_phone_number = validator.isMobilePhone(phone_number)
+        if (is_valid_phone_number && phone_number.length === 10) {
+            this.setState({
+                isPhoneValid: true
+            })
+        } else {
+            this.setState({
+                isPhoneValid: false
+            })
+        }
+    }
+
     render() {
+        console.log(this.state)
         return (
             <Stack direction="column" spacing={3}>
                 <TextField sx={{ '& .MuiTextField-root': { m: 1, width: '25ch' }, }} id="outlined-error" label="Restaurant Name" variant="outlined"
@@ -65,7 +81,16 @@ class RestaurantRegister extends React.Component {
                 <TextField spacing={3} id="outlined-multiline-static" rows={2} label="Description" variant="outlined"
                     onChange={(e) => { this.setState({ descVal: e.target.value, }) }}
                 />
-                <TextField label="Phone Number" variant="outlined" onChange={(e) => { this.setState({ phoneVal: e.target.value, }) }} />
+                <TextField 
+                    label="Phone Number"
+                    variant="outlined"
+                    onChange={(e) => { 
+                        this.setState({ phoneVal: e.target.value, }) 
+                        this.checkPhoneNumberValidity(e.target.value)
+                    }} 
+                    error={!this.state.isPhoneValid}
+                    helperText={this.state.isPhoneValid ? "" : "Phone number must be a 10 digit number."}
+                />
                 <TextField label="Website URL" variant="outlined" onChange={(e) => { this.setState({ websiteVal: e.target.value, }) }} />
                 <Stack direction="column" spacing={1} alignItems="left">
                     <Typography variant="h6" style={{ fontWeight: "bold" }}>Average Wait Time Per Customer</Typography>
