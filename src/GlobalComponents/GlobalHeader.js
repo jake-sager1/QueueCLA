@@ -154,7 +154,7 @@ function Ribbon(props) {
       <Container>
         <Stack direction="column" alignItems="center">
           <Typography>You are currently #{spotInLine} in line at&nbsp;
-            <a style={{ color: "white" }} href={"/restaurants/" + desiredRestaurantIndex}>{desiredRestaurant.name}</a>.</Typography>
+            <Link style={{ color: "white" }} to={"/restaurants/" + desiredRestaurantIndex}>{desiredRestaurant.name}</Link>.</Typography>
         </Stack>
       </Container>
     </div>
