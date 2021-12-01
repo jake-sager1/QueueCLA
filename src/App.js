@@ -9,6 +9,7 @@ import theme from './theme';
 import Signup from './pages/Signup/Signup'
 import UserSignup from './pages/Signup/UserSignup'
 import About from './pages/AboutUs/AboutUs'
+import Terms from './pages/TermsOfService/Terms'
 import RestaurantSignup from './pages/Signup/RestaurantSignup'
 import Restaurants from './pages/Restaurants/Restaurants'
 import NotFound from './pages/ErrorPages/NotFound'
@@ -573,7 +574,7 @@ class App extends React.Component {
   }
 
   render() {
-    // signOutWithGoogle();
+     signOutWithGoogle();
     console.log(this.state);
     if (this.state.user === null && (this.state.loggingIn || !this.state.signOutClicked)) return (
       <div style={{
@@ -663,6 +664,7 @@ class App extends React.Component {
                 loggingInToggle={this.loggingInToggle}
               />} />
             <Route path="/about"><About /></Route>
+            <Route path="/termsofservice"><Terms /></Route>
             <Route path="/404" component={NotFound}></Route>
             <Redirect to="/404" />
           </Switch>

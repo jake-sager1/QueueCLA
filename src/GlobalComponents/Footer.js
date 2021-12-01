@@ -39,7 +39,9 @@ function Footer() {
                                 <Typography>About Us</Typography>
                             </Link>
                             <Typography>Privacy Policy</Typography>
-                            <Typography>Terms of Service</Typography>
+                            <Link to="/termsofservice" style={{color: "white", textDecoration: "none"}}>
+                                <Typography>Terms of Service</Typography>
+                            </Link>
                         </Stack>
                     </Grid>
                 </Grid>
