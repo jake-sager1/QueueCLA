@@ -4,7 +4,7 @@ import useStyles from '../restaurant-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
 import validator from 'validator';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 class ImageUpload extends React.Component {
     constructor(props) {
@@ -14,6 +14,8 @@ class ImageUpload extends React.Component {
         width: props.width,
         height: props.height,
         type: props.type,
+        percentUploaded: 0,
+        showPercentage: false,
       };
       this.onImageChange = this.onImageChange.bind(this);
     }
@@ -22,6 +24,7 @@ class ImageUpload extends React.Component {
       if (event.target.files && event.target.files[0]) {
         let img = event.target.files[0];
         this.handleSave(event, img);
+        this.setState({showPercentage: true});
       }
     };
 
@@ -32,20 +35,30 @@ class ImageUpload extends React.Component {
             alert("File was not an image. Please upload a .png or .jpg image.");
         }
         const storageRef = ref(storage, '/profile-images/' + this.props.restaurant.id + '/' + img.name);
-        uploadBytes(storageRef, img).then(
-            (snapshot) => {
-                console.log("uploaded file");
-                getDownloadURL(storageRef)
-                .then(firebaseURL => {
-                    let change = { "profileImage": firebaseURL };
-                    editUser(this.props.restaurant.id, change)
-                    .then(() => {
-                        this.props.changeUserData(change);
-                    });
-                    this.setState({image: firebaseURL});
+        const uploadTask = uploadBytesResumable(storageRef, img);
+
+        uploadTask.on('state_changed',
+        (snapshot) => {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const percentUploaded = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          this.setState({percentUploaded: percentUploaded});
+
+        }, (error) => {
+            console.log(error);
+        }, () => {
+            console.log("uploaded file");
+            this.setState({showPercentage: false});
+            getDownloadURL(storageRef)
+            .then(firebaseURL => {
+                let change = { "profileImage": firebaseURL };
+                editUser(this.props.restaurant.id, change)
+                .then(() => {
+                    this.props.changeUserData(change);
+                });
+                this.setState({image: firebaseURL});
             }); 
-        });
         
+        });
     }
 
     handleBannerImageFirebaseUpload(event, img) {
@@ -55,18 +68,29 @@ class ImageUpload extends React.Component {
             alert("File was not an image. Please upload a .png or .jpg image.");
         }
         const storageRef = ref(storage, '/banner-images/' + this.props.restaurant.id + '/' + img.name);
-        uploadBytes(storageRef, img).then(
-            (snapshot) => {
-                console.log("uploaded file");
-                getDownloadURL(storageRef)
-                .then(firebaseURL => {
-                    let change = { "bannerImage": firebaseURL };
-                    editUser(this.props.restaurant.id, change)
-                    .then(() => {
-                        this.props.changeUserData(change);
-                    });
-                    this.setState({image: firebaseURL});
+        const uploadTask = uploadBytesResumable(storageRef, img);
+
+        uploadTask.on('state_changed',
+        (snapshot) => {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const percentUploaded = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          this.setState({percentUploaded: percentUploaded});
+
+        }, (error) => {
+            console.log(error);
+        }, () => {
+            console.log("uploaded file");
+            this.setState({showPercentage: false});
+            getDownloadURL(storageRef)
+            .then(firebaseURL => {
+                let change = { "bannerImage": firebaseURL };
+                editUser(this.props.restaurant.id, change)
+                .then(() => {
+                    this.props.changeUserData(change);
+                });
+                this.setState({image: firebaseURL});
             }); 
+        
         });
         
     }
@@ -99,6 +123,7 @@ class ImageUpload extends React.Component {
                         </div>
                     </div>
                 </div>
+                <Typography style={this.state.showPercentage ? {display: "block"} : {display: "none"}}>{this.state.percentUploaded.toFixed(2)}% uploaded</Typography>
             </Stack>
         </Paper>
       );
