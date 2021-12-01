@@ -4,7 +4,7 @@ import useStyles from '../restaurant-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
 import validator from 'validator';
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage } from 'firebase/storage';
 
 class ImageUpload extends React.Component {
     constructor(props) {
@@ -13,37 +13,74 @@ class ImageUpload extends React.Component {
         image: props.default,
         width: props.width,
         height: props.height,
-        type: props.type
+        type: props.type,
+        imageURL: "",
       };
       this.onImageChange = this.onImageChange.bind(this);
     }
   
-    onImageChange = event => {
+    onImageChange(event) {
       if (event.target.files && event.target.files[0]) {
-        let img = event.target.files[0];
+        let image = event.target.files[0];
         this.setState({
-          image: URL.createObjectURL(img)
+          image: image,
         });
         this.handleSave()
       }
     };
 
-    handleSave() {
-        let change;
+    handleProfileImageFirebaseUpload(event) {
         const storage = getStorage();
+        event.preventDefault();
+        if(this.state.image === '') {
+            alert("File was not an image. Please upload a .png or .jpg image.");
+        }
+        const uploadTask = storage.ref('/profile-images/' + this.props.restaurant.id);
+        uploadTask.on('state_changed', 
+        (snapshot) => {
+            console.log(snapshot);
+        }, (error) => {
+            console.log(error);
+        }, () => {
+            storage.ref('profile-images').child(this.props.restaurant.id).getDownloadURL()
+            .then(firebaseURL => {
+                this.setState({
+                    imageURL: firebaseURL,
+                })
+            });
+        });
+    }
+
+    handleBannerImageFirebaseUpload(event) {
+        const storage = getStorage();
+        event.preventDefault();
+        if(this.state.image === '') {
+            alert("File was not an image. Please upload a .png or .jpg image.");
+        }
+        const uploadTask = storage.ref('/banner-images/' + this.props.restaurant.id);
+        uploadTask.on('state_changed', 
+        (snapshot) => {
+            console.log(snapshot);
+        }, (error) => {
+            console.log(error);
+        }, () => {
+            storage.ref('banner-images').child(this.props.restaurant.id).getDownloadURL()
+            .then(firebaseURL => {
+                this.setState({
+                    imageURL: firebaseURL,
+                })
+            });
+        });
+    }
+
+    handleSave(event) {
+        let change;
         if (this.state.type == "Profile"){
-            //const storageRef = ref(storage, this.props.restaurant.id.profileImage);
-            //let imageRef = storageRef.child(this.state.image);
-            // uploadBytes(storageRef, this.state.image).then((snapshot) => {
-            //     console.log('Uploaded a blob or file!');
-            //   });
-            change = { "profileImage": this.state.image };
+            this.handleProfileImageFirebaseUpload(event);
+            change = { "profileImage": this.state.imageURL };
         } else {
-            // const storageRef = ref(storage, this.props.restaurant.id.bannerImage);
-            // uploadBytes(storageRef, this.state.image).then((snapshot) => {
-            //     console.log('Uploaded a blob or file!');
-            //   });
-            change = { "bannerImage": this.state.image };
+            this.handleBannerImageFirebaseUpload(event);
+            change = { "bannerImage": this.state.imageURL };
         }
         editUser(this.props.restaurant.id, change)
             .then(() => {
@@ -61,12 +98,10 @@ class ImageUpload extends React.Component {
                 <div>
                     <div>
                         {this.state.type == "Profile" && 
-                            <img width={this.state.width} height={this.state.height} src={this.props.restaurant.id.profileImage?
-                                this.props.restaurant.id.profileImage : this.state.image} 
+                            <img width={this.state.width} height={this.state.height} src={this.props.restaurant.profileImage} 
                                 style={{borderRadius: "100%"}}/>}
                         {this.state.type == "Banner" && 
-                            <img width={this.state.width} height={this.state.height} src={this.props.restaurant.id.bannerImage?
-                                this.props.restaurant.id.bannerImage : this.state.image}/>}
+                            <img width={this.state.width} height={this.state.height} src={this.props.restaurant.bannerImage}/>}
                         {/* <img width={this.state.width} height={this.state.height} src={this.state.image} 
                             style={this.props.type == "Profile" ? {borderRadius: "100%"} : {}}/> */}
                         <div>
@@ -660,9 +695,18 @@ class RestaurantHours extends React.Component {
     constructor(props) {
         super(props);
     }
+
+    
+
     render() {
-        let sortedDays = [...Object.keys(this.props.restaurant.hours)];
-        sortedDays.sort();
+        const daysOfWeek = ["Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"];
+        
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
@@ -671,7 +715,7 @@ class RestaurantHours extends React.Component {
                     </Typography>
                     <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         <Stack direction="column" spacing={1}>
-                            {sortedDays.map((day) => (
+                            {daysOfWeek.map((day) => (
                                 <HourEntry key={day} day={day} restaurant={this.props.restaurant} changeUserData={this.props.changeUserData} />
                             ))}
                         </Stack>

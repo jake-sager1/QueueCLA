@@ -18,3 +18,14 @@ Now, run the following command:
     npm install
     
 This will install all the dependencies to the local node_modules folder.
+
+To run the project locally, run the following:
+
+    npm run start
+    
+Additionally, run the backend server with these commands:
+
+    cd server
+    node server.js
+    
+Navigate to localhost:3000 to view the project.

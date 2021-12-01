@@ -6,6 +6,15 @@ function ContactSection(props) {
 
     const classes = useStyles();
 
+    let parsedUrl = "";
+    // parse url
+    if (props.restaurant.url.startsWith("http://") || 
+        props.restaurant.url.startsWith("https://")) {
+            parsedUrl = props.restaurant.url;
+    } else {
+        parsedUrl = "//" + props.restaurant.url;
+    }
+
     return (
         <Stack direction="column" spacing={2}>
             <Typography variant="h5">
@@ -21,7 +30,7 @@ function ContactSection(props) {
                 <Box component="span" display="inline" style={{fontWeight: "bold"}}>
                     Website:&nbsp;
                 </Box>
-                <a style={{color: "black"}} href={props.restaurant.url}>{props.restaurant.url}</a>
+                <a style={{color: "black"}} href={parsedUrl}>{props.restaurant.url}</a>
             </Typography>
         </Stack>
     )

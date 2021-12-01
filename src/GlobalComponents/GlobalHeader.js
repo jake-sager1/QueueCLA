@@ -128,10 +128,23 @@ function StackProfile(props) {
 function Ribbon(props) {
 
   let spotInLine;
+  let desiredRestaurant;
+  let desiredRestaurantKey;
 
   if (props.user.inLine) {
-    for (var i = 0; i < props.restaurants[props.user.restaurantID].waitlist.length; i++) {
-      if (props.restaurants[props.user.restaurantID].waitlist[i] == props.user.id) {
+    //get restaurant
+    for (let i = 0; i < Object.keys(props.restaurants).length; i++) {
+      let key = Object.keys(props.restaurants)[i];
+      if (props.restaurants[key].id === props.user.restaurantID.id) {
+        desiredRestaurant = props.restaurants[key];
+        desiredRestaurantKey = key;
+      }
+    }
+    console.log({ desiredRestaurant: desiredRestaurant });
+    console.log(props.restaurants);
+    console.log(props);
+    for (let i = 0; i < desiredRestaurant.waitlist.length; i++) {
+      if (desiredRestaurant.waitlist[i].uid === props.user.uid) {
         spotInLine = i + 1;
       }
     }
@@ -142,7 +155,7 @@ function Ribbon(props) {
       <Container>
         <Stack direction="column" alignItems="center">
           <Typography>You are currently #{spotInLine} in line at&nbsp;
-            <a style={{ color: "white" }} href={"/restaurants/" + props.user.restaurantID}>{props.restaurants[props.user.restaurantID].name}</a>.</Typography>
+            <Link style={{ color: "white" }} to={"/restaurants/" + desiredRestaurantKey}>{desiredRestaurant.name}</Link>.</Typography>
         </Stack>
       </Container>
     </div>
@@ -156,6 +169,7 @@ function GlobalHeader(props) {
   const isLoggedIn = props.isLoggedIn
   // const userName = props.user.name;
   const inline = props.isLoggedIn ? props.user.inLine : false;
+  console.log({ "hi": props.restaurants });
 
   let stackRight;
 
