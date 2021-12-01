@@ -4,7 +4,7 @@ import useStyles from '../restaurant-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
 import validator from 'validator';
-import { getStorage } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 class ImageUpload extends React.Component {
     constructor(props) {
@@ -14,78 +14,69 @@ class ImageUpload extends React.Component {
         width: props.width,
         height: props.height,
         type: props.type,
-        imageURL: "",
       };
       this.onImageChange = this.onImageChange.bind(this);
     }
   
     onImageChange(event) {
       if (event.target.files && event.target.files[0]) {
-        let image = event.target.files[0];
-        this.setState({
-          image: image,
-        });
-        this.handleSave()
+        let img = event.target.files[0];
+        this.handleSave(event, img);
       }
     };
 
-    handleProfileImageFirebaseUpload(event) {
+    handleProfileImageFirebaseUpload(event, img) {
         const storage = getStorage();
         event.preventDefault();
-        if(this.state.image === '') {
+        if(img === '') {
             alert("File was not an image. Please upload a .png or .jpg image.");
         }
-        const uploadTask = storage.ref('/profile-images/' + this.props.restaurant.id);
-        uploadTask.on('state_changed', 
-        (snapshot) => {
-            console.log(snapshot);
-        }, (error) => {
-            console.log(error);
-        }, () => {
-            storage.ref('profile-images').child(this.props.restaurant.id).getDownloadURL()
-            .then(firebaseURL => {
-                this.setState({
-                    imageURL: firebaseURL,
-                })
-            });
+        const storageRef = ref(storage, '/profile-images/' + this.props.restaurant.id + '/' + img.name);
+        uploadBytes(storageRef, img).then(
+            (snapshot) => {
+                console.log("uploaded file");
+                getDownloadURL(storageRef)
+                .then(firebaseURL => {
+                    let change = { "profileImage": firebaseURL };
+                    editUser(this.props.restaurant.id, change)
+                    .then(() => {
+                        this.props.changeUserData(change);
+                    });
+                    this.setState({image: firebaseURL});
+            }); 
         });
+        
     }
 
-    handleBannerImageFirebaseUpload(event) {
+    handleBannerImageFirebaseUpload(event, img) {
         const storage = getStorage();
         event.preventDefault();
-        if(this.state.image === '') {
+        if(img === '') {
             alert("File was not an image. Please upload a .png or .jpg image.");
         }
-        const uploadTask = storage.ref('/banner-images/' + this.props.restaurant.id);
-        uploadTask.on('state_changed', 
-        (snapshot) => {
-            console.log(snapshot);
-        }, (error) => {
-            console.log(error);
-        }, () => {
-            storage.ref('banner-images').child(this.props.restaurant.id).getDownloadURL()
-            .then(firebaseURL => {
-                this.setState({
-                    imageURL: firebaseURL,
-                })
-            });
+        const storageRef = ref(storage, '/banner-images/' + this.props.restaurant.id + '/' + img.name);
+        uploadBytes(storageRef, img).then(
+            (snapshot) => {
+                console.log("uploaded file");
+                getDownloadURL(storageRef)
+                .then(firebaseURL => {
+                    let change = { "bannerImage": firebaseURL };
+                    editUser(this.props.restaurant.id, change)
+                    .then(() => {
+                        this.props.changeUserData(change);
+                    });
+                    this.setState({image: firebaseURL});
+            }); 
         });
+        
     }
 
-    handleSave(event) {
-        let change;
-        if (this.state.type == "Profile"){
-            this.handleProfileImageFirebaseUpload(event);
-            change = { "profileImage": this.state.imageURL };
+    handleSave(event, img) {
+        if (this.state.type === "Profile"){
+            this.handleProfileImageFirebaseUpload(event, img);
         } else {
-            this.handleBannerImageFirebaseUpload(event);
-            change = { "bannerImage": this.state.imageURL };
+            this.handleBannerImageFirebaseUpload(event, img);
         }
-        editUser(this.props.restaurant.id, change)
-            .then(() => {
-                this.props.changeUserData(change);
-            });
     }
   
     render() {
@@ -97,11 +88,11 @@ class ImageUpload extends React.Component {
                 </Typography>
                 <div>
                     <div>
-                        {this.state.type == "Profile" && 
-                            <img width={this.state.width} height={this.state.height} src={this.props.restaurant.profileImage} 
+                        {this.state.type === "Profile" && 
+                            <img width={this.state.width} height={this.state.height} src={this.state.image} 
                                 style={{borderRadius: "100%"}}/>}
-                        {this.state.type == "Banner" && 
-                            <img width={this.state.width} height={this.state.height} src={this.props.restaurant.bannerImage}/>}
+                        {this.state.type === "Banner" && 
+                            <img width={this.state.width} height={this.state.height} src={this.state.image}/>}
                         {/* <img width={this.state.width} height={this.state.height} src={this.state.image} 
                             style={this.props.type == "Profile" ? {borderRadius: "100%"} : {}}/> */}
                         <div>
@@ -974,10 +965,10 @@ function SettingsDisplay(props) {
                             <RestaurantTags restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                             <RestaurantMenu restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                             <ImageUpload restaurant={props.restaurant} user={props.user} classes={classes} changeUserData={props.changeUserData} 
-                                default="https://www.topshelfrecruitment.com.au/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaXdRIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--5298fb4188cd114508cc4f93dc8ba3555164f8a9/old-banner-default.jpg" 
+                                default={props.restaurant.bannerImage} 
                                 width="700px" height="180px" type="Banner"/>
                             <ImageUpload restaurant={props.restaurant} user={props.user} classes={classes} changeUserData={props.changeUserData} 
-                                default="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+                                default={props.restaurant.profileImage} 
                                 width="100px" height="100px" type="Profile"/>
                         </Stack>
                     </Paper>
