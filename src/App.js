@@ -195,7 +195,7 @@ class App extends React.Component {
     ws.onmessage = async (evt) => {
       evt.data.text().then(
         (msg) => {
-          console.log({ "incoming message": msg });
+          console.log({ "incoming message": JSON.parse(msg) });
         });
     }
 
@@ -232,7 +232,7 @@ class App extends React.Component {
   };
 
   componentWillUnmount() {
-    this.ws.close();
+    this.state.ws.close();
     this.setState({ ws: null });
   }
   async componentDidMount() {
@@ -298,16 +298,20 @@ class App extends React.Component {
     })
   }
 
-  broadcastMessageUser = () => {
+  broadcastMessage = (userType, id, changes) => {
     this.state.ws.send(JSON.stringify({
-      "message": "hello"
+      data: {
+        id: id,
+        userType: userType,
+        changes: changes
+      }
     }));
   }
 
   changeUserData = (changes) => {
     let changedUser = Object.assign({}, this.state.user, changes);
     this.setState({ user: changedUser });
-    this.broadcastMessageUser();
+    this.broadcastMessage(this.state.userType, this.state.user.id, changes);
   }
 
   changeRestaurantData = (id, changes) => {

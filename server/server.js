@@ -7,9 +7,9 @@ const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 });
 
 wss.on('connection', function connection(ws) {
-  ws.on('message', function incoming(data) {
-    console.log('data', data);
-    console.log(wss.clients.size);
+  ws.on('message', async (data) => {
+    console.log(JSON.parse(data));
+    console.log({ numClients: wss.clients.size });
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(data);
