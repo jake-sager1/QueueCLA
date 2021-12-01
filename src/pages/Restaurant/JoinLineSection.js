@@ -44,7 +44,7 @@ function JoinLineSection(props) {
         });
 
         editRestaurant(props.restaurant.id, restaurantChange).then(() => {
-            props.changeRestaurantData(props.index, restaurantChange);
+            props.changeRestaurantData(props.restaurant.id, restaurantChange);
         })
 
     };
@@ -153,7 +153,7 @@ function JoinLineSection(props) {
                                 });
 
                                 editRestaurant(props.restaurant.id, restaurantChange).then(() => {
-                                    props.changeRestaurantData(props.index, restaurantChange);
+                                    props.changeRestaurantData(props.restaurant.id, restaurantChange);
                                 });
                             }
                         }>Leave the line</Button>

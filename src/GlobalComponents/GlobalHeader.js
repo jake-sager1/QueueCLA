@@ -129,14 +129,15 @@ function Ribbon(props) {
 
   let spotInLine;
   let desiredRestaurant;
-  let desiredRestaurantIndex;
+  let desiredRestaurantKey;
 
   if (props.user.inLine) {
     //get restaurant
-    for (let i = 0; i < props.restaurants.length; i++) {
-      if (props.restaurants[i].id === props.user.restaurantID.id) {
-        desiredRestaurant = props.restaurants[i];
-        desiredRestaurantIndex = i;
+    for (let i = 0; i < Object.keys(props.restaurants).length; i++) {
+      let key = Object.keys(props.restaurants)[i];
+      if (props.restaurants[key].id === props.user.restaurantID.id) {
+        desiredRestaurant = props.restaurants[key];
+        desiredRestaurantKey = key;
       }
     }
     console.log({ desiredRestaurant: desiredRestaurant });
@@ -154,7 +155,7 @@ function Ribbon(props) {
       <Container>
         <Stack direction="column" alignItems="center">
           <Typography>You are currently #{spotInLine} in line at&nbsp;
-            <Link style={{ color: "white" }} to={"/restaurants/" + desiredRestaurantIndex}>{desiredRestaurant.name}</Link>.</Typography>
+            <Link style={{ color: "white" }} to={"/restaurants/" + desiredRestaurantKey}>{desiredRestaurant.name}</Link>.</Typography>
         </Stack>
       </Container>
     </div>

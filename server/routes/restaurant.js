@@ -1,3 +1,4 @@
+const { RestaurantTwoTone } = require("@mui/icons-material");
 const { responsiveFontSizes } = require("@mui/material");
 const express = require("express");
 let router = express.Router();
@@ -143,13 +144,13 @@ router.route("/all").get(async (req, res, next) => {
         message: "All restaurants in database",
         statusCode: 200
     };
-    let listOfRestaurants = [];
+    let restaurantObj = {};
     snapshot.forEach((doc) => {
         let restaurant = doc.data();
         if (restaurant.setup)
-            listOfRestaurants.push(restaurant);
+            restaurantObj[doc.id] = restaurant;
     });
-    response.data = listOfRestaurants;
+    response.data = restaurantObj;
     res.status(response.statusCode).send(response);
 });
 
