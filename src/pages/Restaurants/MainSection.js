@@ -15,62 +15,43 @@ import LocalDiningSharpIcon from '@mui/icons-material/LocalDiningSharp';
 import DinnerDiningSharpIcon from '@mui/icons-material/DinnerDiningSharp';
 import MenuChip from '../../GlobalComponents/Chips';
 
-class RestaurantTags extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedChips: [],
-        }
-    }
-
-    chips = [
-        "vegetarian", "vegan", "gluten-free", "breakfast", "lunch", "dinner",
-        "fast-food", "takeout"
-    ]
-
-    handleClick(chip) {
-        if(this.state.selectedChips.includes(chip)) {
-            this.setState({
-                selectedChips: this.state.selectedChips.filter(function (value, index, arr) {return arr.includes(value) && value != chip}),
-            });
-        } else {
-            this.setState({
-                selectedChips: this.state.selectedChips.concat([chip]),
-            });
-        }
-    }
-
-    render() {
-        return (
-            <Stack direction="row" alignItems="center" style={{overflow: "scroll"}}>
-                <Stack spacing={1} alignItems="center" direction="row" justifyContent="flex-start"
-                    style={{overflow: "scroll"}, {padding: "10px"}}>
-                    {this.chips.map((name) =>
-                            <MenuChip name={name}
-                            onClick={() => this.handleClick(name)}
-                            variant={this.state.selectedChips.includes(name) ? "filled" : "outlined"}/>
-                    )}
-                </Stack>
-            </Stack>
-        );
-    }
-}
-
-
 function MainSection(props) {
 
   const classes = useStyles();
+
+    function filterRestaurantsByTags(restaurants, tags){
+        let matches = []
+        if (tags.length > 0){
+            for (let i = 0; i < Object.keys(restaurants).length; i++) {
+                let key = Object.keys(restaurants)[i];
+                let count = tags.length
+                for (let j = 0; j < tags.length; j++){
+                    let tag = tags[j]
+                    if (restaurants[key].chips.length > 0 && restaurants[key].chips.includes(tag)) {
+                        count--;
+                    }
+                }
+                if (count === 0){
+                    matches.push(key)
+                }
+            }
+            return matches
+        } else {
+            return Object.keys(restaurants)
+        }
+    }
+
+    let restaurantsToList = filterRestaurantsByTags(props.restaurants, props.selectedTags);
 
   return (
 
       <div className={classes.contained} style={{backgroundColor: "#f7f7f7"}}>
           <Container maxWidth="md">
             <Stack direction="column" spacing={2}>
-                <RestaurantTags alignItems="center"/>
                 <Box sx={{flexGrow: 1}}>
                     <Grid container spacing={2} alignItems="stretch">
-                        {Object.keys(props.restaurants).map((id) => (
+                        {console.log(props.selectedTags)}
+                        {restaurantsToList.map((id) => (
                             <Grid item key={id} xs={12} sm={6} md={4}>
                                 <Card className={classes.card}>
                                     <CardActionArea component={Link} to={"/restaurants/" + id} className={classes.cardActionArea}>
