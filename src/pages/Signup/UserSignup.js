@@ -91,7 +91,8 @@ class UserRegister extends React.Component {
                 <Button disabled={this.isButtonDisabled()} spacing={5} align="center" variant="contained" onClick={() => {
                     let change = { uid: this.state.user.uid, year: this.state.user.year, setup: true };
                     editUser(this.state.user.id, change)
-                        .then(() => {
+                        .then((gotback) => {
+                            console.log('gotback', gotback)
                             this.props.changeUserData(change);
                         });
                 }}>Register</Button>

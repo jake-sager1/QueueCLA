@@ -78,13 +78,13 @@ router.route("/edit").post(async (req, res, next) => {
     else {
         // if there exists a user with the same uid, don't merge:
         let found_user_with_uid = false
-        db.collection("users").where("uid", "==", body.data.uid).get()
+        await db.collection("users").where("uid", "==", body.data.uid).get()
         .then(doc => {
             found_user_with_uid = true
             console.log("Found a user with same uid.")
             const response = {
                 message: `User with uid ${body.data.uid} found.`,
-                statusCode: 200
+                statusCode: 409
             };
             res.status(response.statusCode).send(response)
         })
