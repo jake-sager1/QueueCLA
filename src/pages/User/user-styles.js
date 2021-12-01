@@ -42,7 +42,15 @@ const useStyles = makeStyles((theme) => ({
     },
     settingsPaper: {
         padding: "15px",
-    }
+    },
+    card: {
+        height: "100%",
+        display: "flex", 
+        flexDirection: "column",
+      },
+      cardActionArea: {
+          height: "100%",
+      },
 }));
 
 export default useStyles;
