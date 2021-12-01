@@ -76,23 +76,42 @@ router.route("/edit").post(async (req, res, next) => {
         res.status(response.statusCode).send(response);
     }
     else {
-        //modify the fields that need to change
-        const fieldsToModify = body.data;
-        let user = userDoc.data();
-        console.log(userDoc);
-        for (let field of Object.keys(fieldsToModify)) {
-            user[field] = fieldsToModify[field];
-        }
-        userRef.set(user, { merge: true })
-            .then((data) => {
-                const response = {
-                    message: `User with id ${id} edited`,
-                    statusCode: 200
-                };
-                res.status(response.statusCode).send(response);
-            })
-            .catch((e) => { console.log(e) });
+        // if there exists a user with the same uid, don't merge:
+        let found_user_with_uid = false
+        db.collection("users").where("uid", "==", body.data.uid).get()
+        .then(doc => {
+            found_user_with_uid = true
+            console.log("Found a user with same uid.")
+            const response = {
+                message: `User with uid ${body.data.uid} found.`,
+                statusCode: 200
+            };
+            res.status(response.statusCode).send(response)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
 
+        if (!found_user_with_uid) {
+            //modify the fields that need to change
+            const fieldsToModify = body.data;
+            let user = userDoc.data();
+            console.log(userDoc);
+            console.log("Fields to modify: ", fieldsToModify)
+            for (let field of Object.keys(fieldsToModify)) {
+                user[field] = fieldsToModify[field];
+            }
+            console.log("user: ", user)
+            userRef.set(user, { merge: true })
+                .then((data) => {
+                    const response = {
+                        message: `User with id ${id} edited`,
+                        statusCode: 200
+                    };
+                    res.status(response.statusCode).send(response);
+                })
+                .catch((e) => { console.log(e) });
+        }
         // const response = {
         //     message: `User with id ${id} edited`,
         //     statusCode: 200

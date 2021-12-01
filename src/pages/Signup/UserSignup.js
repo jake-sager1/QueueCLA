@@ -17,6 +17,7 @@ async function editUser(id, editProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     };
+    console.log("sweet userjs:", requestOptions)
     fetch('http://localhost:5001/user/edit', requestOptions)
         .then(response => response.json())
         .then(data => { console.log(data) });
