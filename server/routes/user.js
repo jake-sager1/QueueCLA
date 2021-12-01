@@ -1,3 +1,4 @@
+const { CountertopsOutlined } = require("@mui/icons-material");
 const express = require("express");
 let router = express.Router();
 
@@ -78,8 +79,9 @@ router.route("/edit").post(async (req, res, next) => {
     else {
         // if there exists a user with the same uid, don't merge:
         let found_user_with_uid = false
-        await db.collection("users").where("uid", "==", body.data.uid).get()
-        .then(doc => {
+        const user_with_same_uid = await db.collection("users").where("uid", "==", body.data.uid).get()
+        if (!user_with_same_uid.empty) {
+            console.log("Printing user with same uid: ", user_with_same_uid)
             found_user_with_uid = true
             console.log("Found a user with same uid.")
             const response = {
@@ -87,10 +89,7 @@ router.route("/edit").post(async (req, res, next) => {
                 statusCode: 409
             };
             res.status(response.statusCode).send(response)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+        }
 
         if (!found_user_with_uid) {
             //modify the fields that need to change
