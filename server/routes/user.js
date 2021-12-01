@@ -65,7 +65,7 @@ router.route("/edit").post(async (req, res, next) => {
     let userRef = db.collection("users").doc(id);
     let userDoc = await userRef.get();
 
-    console.log(req.body);
+    //console.log(req.body);
 
     if (!userDoc.exists) {
         console.log("No such user");
@@ -79,7 +79,6 @@ router.route("/edit").post(async (req, res, next) => {
         //modify the fields that need to change
         const fieldsToModify = body.data;
         let user = userDoc.data();
-        console.log(userDoc);
         for (let field of Object.keys(fieldsToModify)) {
             user[field] = fieldsToModify[field];
         }
