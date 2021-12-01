@@ -1,4 +1,4 @@
-import { Typography, Box, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem, Card, CardActionArea, CardMedia, CardContent, Alert } from '@mui/material';
+import { Typography, Box, Container, CardActions, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem, Card, CardActionArea, CardMedia, CardContent, Alert } from '@mui/material';
 import React from 'react';
 import useStyles from '../user-styles';
 import EditIcon from '@mui/icons-material/Edit';
@@ -258,15 +258,16 @@ function CardRender(props) {
                         {props.restaurants[props.id].description}
                     </Typography>
                 </CardContent>
-
-                <Stack className={classes.chips} direction="row" spacing={1}>
-                    {props.restaurants[props.id].chips.map((name) =>
-                        <MenuChip name={name}
-                            onClick={null}
-                            variant="outlined" />
-                    )}
-                </Stack>
-
+                <CardActions>
+                    <Stack className={classes.chips} direction="row" spacing={1}
+                            style={{overflow: "scroll",}}>
+                        {props.restaurants[props.id].chips.map((name) =>
+                            <MenuChip name={name}
+                                onClick={null}
+                                variant="outlined" />
+                        )}
+                    </Stack>
+                </CardActions>
             </CardActionArea>
 
         </Card>
