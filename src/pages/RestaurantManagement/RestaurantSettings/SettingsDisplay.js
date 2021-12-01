@@ -4,7 +4,7 @@ import useStyles from '../restaurant-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
 import validator from 'validator';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject} from 'firebase/storage';
 
 class ImageUpload extends React.Component {
     constructor(props) {
@@ -30,6 +30,7 @@ class ImageUpload extends React.Component {
 
     handleProfileImageFirebaseUpload(event, img) {
         const storage = getStorage();
+        const oldURL = this.state.image;
         event.preventDefault();
         if(img === '') {
             alert("File was not an image. Please upload a .png or .jpg image.");
@@ -59,10 +60,22 @@ class ImageUpload extends React.Component {
             }); 
         
         });
+
+        const refToDelete = ref(storage, oldURL)
+        deleteObject(refToDelete).then(() => {
+            // File deleted successfully
+            console.log("deleted old image");
+          }).catch((error) => {
+              console.log("error with deleting old image");
+            // Uh-oh, an error occurred!
+          });
+
+
     }
 
     handleBannerImageFirebaseUpload(event, img) {
         const storage = getStorage();
+        const oldURL = this.state.image;
         event.preventDefault();
         if(img === '') {
             alert("File was not an image. Please upload a .png or .jpg image.");
@@ -92,6 +105,15 @@ class ImageUpload extends React.Component {
             }); 
         
         });
+
+        const refToDelete = ref(storage, oldURL);
+        deleteObject(refToDelete).then(() => {
+            // File deleted successfully
+            console.log("deleted old image");
+          }).catch((error) => {
+              console.log("error with deleting old image");
+            // Uh-oh, an error occurred!
+          });
         
     }
 
