@@ -160,8 +160,11 @@ router.route('/delete').post(async(req, res, next) => {
         }
         res.status(response.statusCode).send(response)
     } else {
-        // check for restaurant
-        console.log("check for restaurant")
+        const response = {
+            message: `User with id ${id} not found`,
+            statusCode: 404
+        }
+        res.status(response.statusCode).send(response)
     }
 })
 

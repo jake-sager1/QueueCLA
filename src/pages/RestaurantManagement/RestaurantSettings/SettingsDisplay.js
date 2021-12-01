@@ -1,10 +1,12 @@
-import { Typography, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem } from '@mui/material';
+import { Typography, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem, Box, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import Close from '@mui/icons-material/Close'
 import React from 'react';
 import useStyles from '../restaurant-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
 import validator from 'validator';
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject} from 'firebase/storage';
+import { signOutWithGoogle } from '../../../service/firebase'
 
 class ImageUpload extends React.Component {
     constructor(props) {
@@ -987,6 +989,67 @@ class RestaurantMenu extends React.Component {
     }
 }
 
+class DeleteButton extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleDelete = this.handleDelete.bind(this)
+        this.state = {
+            isDialogBoxVisible: false
+        }
+    }
+    
+    setDialogBoxVisibility(boolean_value) {
+        this.setState({
+            isDialogBoxVisible: boolean_value
+        })
+    }
+
+    handleDelete() {
+        deleteUser(this.props.restaurant.id)
+            .then(console.log('deleted from database'));
+    }
+
+    render() {
+        console.log(this.state)
+        return (
+            <Box textAlign="center">
+                <Button 
+                    variant="contained" 
+                    style={{ backgroundColor: "darkRed", width: "175px" }}
+                    onClick={() => {
+                        this.setDialogBoxVisibility(true)
+                    }}
+                >
+                    Delete Account
+                </Button>
+                { 
+                    this.state.isDialogBoxVisible ? (
+                      <Dialog open={true} maxWidth="sm" fullWidth>
+                        <DialogTitle>Do you want to delete your account?</DialogTitle>
+                        <Box position="absolute" top={0} right={0}>
+                          <IconButton>
+                            <Close onClick={() => {this.setDialogBoxVisibility(false)}}/>
+                          </IconButton>
+                        </Box>
+                        <DialogContent>
+                          <Typography>This action cannot be undone.</Typography>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button variant="contained" onClick={() => {this.setDialogBoxVisibility(false)}}>
+                            Cancel
+                          </Button>
+                          <Button variant="contained" style={{ backgroundColor: "darkRed" }} onClick={this.handleDelete}>
+                            Delete
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    ) : (<span></span>)
+                }
+            </Box>
+        )
+    }
+}
+
 function SettingsDisplay(props) {
 
     const classes = useStyles();
@@ -1015,12 +1078,30 @@ function SettingsDisplay(props) {
                             <ImageUpload restaurant={props.restaurant} user={props.user} classes={classes} changeUserData={props.changeUserData} 
                                 default={props.restaurant.profileImage} 
                                 width="100px" height="100px" type="Profile"/>
+                            <DeleteButton restaurant={props.restaurant} />
                         </Stack>
                     </Paper>
                 </Stack>
             </Container>
         </div>
     )
+}
+
+async function deleteUser(id) {
+    const body = {
+        id: id
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    }
+    fetch('http://localhost:5001/restaurant/delete', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Printing data after deletion: ", data)
+        })
+    signOutWithGoogle()
 }
 
 async function editUser(id, editProps) {

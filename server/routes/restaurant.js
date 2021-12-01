@@ -135,6 +135,31 @@ router.route("/get").post(async (req, res, next) => {
     }
 });
 
+router.route("/delete").post(async (req, res, next) => {
+    const body = req.body
+    const id = body.id
+
+    let restaurantRef = db.collection("restaurants").doc(id);
+    let restaurantDoc = await restaurantRef.get();
+
+    // check if restaurant exists
+    if (restaurantDoc.exists) {
+        await db.collection("restaurants").doc(id).delete()
+        const response = {
+            message: `Restaurant with id ${id} deleted`,
+            statusCode: 200
+        }
+        res.status(response.statusCode).send(response)
+    } else {
+        const response = {
+            message: `Restaurant with id ${id} does not exist`,
+            statusCode: 404
+        }
+        res.status(response.statusCode).send(response)
+    }
+
+})
+
 router.route("/all").get(async (req, res, next) => {
     //get all the restaurants in the database
     let restaurantRef = db.collection("restaurants");
