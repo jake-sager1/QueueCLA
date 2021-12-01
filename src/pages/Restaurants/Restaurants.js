@@ -50,20 +50,22 @@ class Restaurants extends React.Component {
                 />
                 {/* restaurant chips */}
                 <div style={{backgroundColor: "#f7f7f7"}}>
-                    <Container maxWidth="md">
-                            <Stack direction="row" alignItems="center" style={{overflow: "scroll"}}>
-                                <Stack spacing={1} alignItems="center" direction="row" justifyContent="flex-start"
-                                    style={{overflow: "scroll"}, {padding: "10px"}}>
-                                    {this.chips.map((name) =>
-                                            <MenuChip name={name}
-                                            onClick={() => this.handleClick(name)}
-                                            variant={this.state.selectedChips.includes(name) ? "filled" : "outlined"}/>
-                                    )}
+                    <Stack direction="column" style={{padding: "10px"}}>
+                        <Container maxWidth="md">
+                                <Stack spacing={3} direction="row" alignItems="center" style={{overflow: "scroll"}}>
+                                    <Stack spacing={1} alignItems="center" direction="row" justifyContent="flex-start"
+                                        style={{overflow: "scroll"}, {padding: "10px"}}>
+                                        {this.chips.map((name) =>
+                                                <MenuChip name={name}
+                                                onClick={() => this.handleClick(name)}
+                                                variant={this.state.selectedChips.includes(name) ? "filled" : "outlined"}/>
+                                        )}
+                                    </Stack>
                                 </Stack>
-                            </Stack>
-                    </Container>
+                                <MainSection restaurants={this.props.restaurants} searchValue={this.state.searchValue} selectedTags={this.state.selectedChips}/>
+                        </Container>
+                    </Stack>
                 </div>
-                <MainSection restaurants={this.props.restaurants} searchValue={this.state.searchValue} selectedTags={this.state.selectedChips}/>
                 <Footer />
             </div>
         );

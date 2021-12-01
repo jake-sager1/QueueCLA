@@ -43,47 +43,38 @@ function MainSection(props) {
 
     let restaurantsToList = filterRestaurantsByTags(props.restaurants, props.selectedTags);
 
-  return (
-
-      <div className={classes.contained} style={{backgroundColor: "#f7f7f7"}}>
-          <Container maxWidth="md">
-            <Stack direction="column" spacing={2}>
-                <Box sx={{flexGrow: 1}}>
-                    <Grid container spacing={2} alignItems="stretch">
-                        {console.log(props.selectedTags)}
-                        {restaurantsToList.map((id) => (
-                            <Grid item key={id} xs={12} sm={6} md={4}>
-                                <Card className={classes.card}>
-                                    <CardActionArea component={Link} to={"/restaurants/" + id} className={classes.cardActionArea}>
-                                        <CardMedia className={classes.cardMedia} image={props.restaurants[id].bannerImage} title="Image Title"></CardMedia>
-                                            <CardContent className={classes.cardContent}>
-                                                <Typography gutterBottom variant="h5">
-                                                    {props.restaurants[id].name}
-                                                </Typography>
-                                                <Typography color="textSecondary">
-                                                    {props.restaurants[id].description}
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                                <Stack className={classes.chips} direction="row" style={{overflow: "scroll", position: "relative", bottom: "0"}} spacing={1}>
-                                                    {props.restaurants[id].chips.map((name) => 
-                                                        <MenuChip name={name} 
-                                                        onClick={null}
-                                                        variant="outlined"/>
-                                                    )}
-                                                </Stack>
-                                            </CardActions>
-                                    </CardActionArea>
-                                </Card>
-                            </Grid>
-                        ))}
+    return (
+        <Box sx={{flexGrow: 1}}>
+            <Grid container spacing={2} alignItems="stretch">
+                {restaurantsToList.map((id) => (
+                    <Grid item key={id} xs={12} sm={6} md={4}>
+                        <Card className={classes.card}>
+                            <CardActionArea component={Link} to={"/restaurants/" + id} className={classes.cardActionArea}>
+                                <CardMedia className={classes.cardMedia} image={props.restaurants[id].bannerImage} title="Image Title"></CardMedia>
+                                    <CardContent className={classes.cardContent}>
+                                        <Typography gutterBottom variant="h5">
+                                            {props.restaurants[id].name}
+                                        </Typography>
+                                        <Typography color="textSecondary">
+                                            {props.restaurants[id].description}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Stack className={classes.chips} direction="row" style={{overflow: "scroll", position: "relative", bottom: "0"}} spacing={1}>
+                                            {props.restaurants[id].chips.map((name) => 
+                                                <MenuChip name={name} 
+                                                onClick={null}
+                                                variant="outlined"/>
+                                            )}
+                                        </Stack>
+                                    </CardActions>
+                            </CardActionArea>
+                        </Card>
                     </Grid>
-                </Box>
-            </Stack>
-          </Container>
-      </div>
-
-  );
+                ))}
+            </Grid>
+        </Box>
+    );
 }
 
 
