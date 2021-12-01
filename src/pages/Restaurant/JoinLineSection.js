@@ -87,7 +87,9 @@ function JoinLineSection(props) {
                         <Typography>
                             {"Approximate wait time: "}
                             <Box component="span" display="inline" style={{ fontWeight: "bold" }}>
-                                {props.restaurant.avgTimePerCustomer * props.restaurant.waitlist.length} minutes
+                                {props.user.inLine && props.user.restaurantID.id === props.restaurant.id ?
+                                    props.restaurant.avgTimePerCustomer * props.restaurant.waitlist.length :
+                                    props.restaurant.avgTimePerCustomer * (props.restaurant.waitlist.length + 1)} minutes
                             </Box>
                         </Typography>
                         <Button variant="contained" style={{ padding: "20px" }} onClick={handleClickOpen}>Get in Line</Button>
