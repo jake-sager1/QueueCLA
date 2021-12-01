@@ -1,4 +1,5 @@
-import { Typography, Box, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem, Card, CardActionArea, CardMedia, CardContent, Alert } from '@mui/material';
+import { Dialog, DialogTitle, DialogActions, DialogContent, Typography, Box, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem, Card, CardActionArea, CardMedia, CardContent, Alert } from '@mui/material';
+import Close from '@mui/icons-material/Close'
 import React from 'react';
 import useStyles from '../user-styles';
 import EditIcon from '@mui/icons-material/Edit';
@@ -313,6 +314,61 @@ class Favorites extends React.Component {
     }
 }
 
+class DeleteButton extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isDialogBoxVisible: false
+        }
+    }
+    
+    setDialogBoxVisibility(boolean_value) {
+        this.setState({
+            isDialogBoxVisible: boolean_value
+        })
+    }
+
+    render() {
+        console.log(this.state)
+        return (
+            <Box textAlign="center">
+                <Button 
+                    variant="contained" 
+                    style={{ backgroundColor: "darkRed", width: "175px" }}
+                    onClick={() => {
+                        this.setDialogBoxVisibility(true)
+                    }}
+                >
+                    Delete Account
+                </Button>
+                { 
+                    this.state.isDialogBoxVisible ? (
+                      <Dialog open={true} maxWidth="sm" fullWidth>
+                        <DialogTitle>Do you want to delete your account?</DialogTitle>
+                        <Box position="absolute" top={0} right={0}>
+                          <IconButton>
+                            <Close onClick={() => {this.setDialogBoxVisibility(false)}}/>
+                          </IconButton>
+                        </Box>
+                        <DialogContent>
+                          <Typography>This action cannot be undone.</Typography>
+                        </DialogContent>
+                        <DialogActions>
+                          <Button variant="contained" onClick={() => {this.setDialogBoxVisibility(false)}}>
+                            Cancel
+                          </Button>
+                          <Button variant="contained" style={{ backgroundColor: "darkRed" }}>
+                            Delete
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    ) : (<span></span>)
+                }
+            </Box>
+        )
+    }
+}
+
 function UserDisplay(props) {
 
     const classes = useStyles();
@@ -328,6 +384,7 @@ function UserDisplay(props) {
                             <Identification user={props.user} classes={classes} changeUserData={props.changeUserData} />
                             <Email user={props.user} classes={classes} />
                             <Favorites user={props.user} restaurants={props.restaurants} classes={classes} />
+                            <DeleteButton />
                         </Stack>
                     </Paper>
                 </Stack>
