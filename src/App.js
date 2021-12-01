@@ -574,7 +574,7 @@ class App extends React.Component {
   }
 
   render() {
-     signOutWithGoogle();
+    // signOutWithGoogle();
     console.log(this.state);
     if (this.state.user === null && (this.state.loggingIn || !this.state.signOutClicked)) return (
       <div style={{
