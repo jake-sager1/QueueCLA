@@ -37,7 +37,7 @@ router.route("/create").post(async (req, res, next) => {
             setup: false,
             uid: "",
             restaurantID: {},
-            id: id
+            id: id,
         };
         //create the user
         await userRef.set(userData);
@@ -77,44 +77,43 @@ router.route("/edit").post(async (req, res, next) => {
         res.status(response.statusCode).send(response);
     } else {
         // if there exists a user with the same uid, don't merge:
-        let found_user_with_uid = false
-        const user_with_same_uid = await db.collection("users").where("uid", "==", body.data.uid).get()
-        if (!user_with_same_uid.empty) {
-            console.log("Printing user with same uid: ", user_with_same_uid)
-            found_user_with_uid = true
-            console.log("Found a user with same uid.")
-            const response = {
-                message: `User with uid ${body.data.uid} found.`,
-                statusCode: 409
-            };
-            res.status(response.statusCode).send(response)
-        }
-
-        if (!found_user_with_uid) {
-            //modify the fields that need to change
-            const fieldsToModify = body.data;
-            let user = userDoc.data();
-            console.log(userDoc);
-            console.log("Fields to modify: ", fieldsToModify)
-            for (let field of Object.keys(fieldsToModify)) {
-                user[field] = fieldsToModify[field];
+        const fieldsToModify = body.data;
+        if (Object.keys(fieldsToModify).includes("uid")) {
+            let found_user_with_uid = false
+            const user_with_same_uid = await db.collection("users").where("uid", "==", body.data.uid).get()
+            if (!user_with_same_uid.empty) {
+                console.log("Printing user with same uid: ", user_with_same_uid)
+                found_user_with_uid = true
+                console.log("Found a user with same uid.")
+                const response = {
+                    message: `User with uid ${body.data.uid} found.`,
+                    statusCode: 409
+                };
+                res.status(response.statusCode).send(response);
+                return;
             }
-            console.log("user: ", user)
-            userRef.set(user, { merge: true })
-                .then((data) => {
-                    const response = {
-                        message: `User with id ${id} edited`,
-                        statusCode: 200
-                    };
-                    res.status(response.statusCode).send(response);
-                })
-                .catch((e) => { console.log(e) });
         }
-        // const response = {
-        //     message: `User with id ${id} edited`,
-        //     statusCode: 200
-        // };
-        // res.status(response.statusCode).send(response);
+        let user = userDoc.data();
+        console.log(userDoc);
+        console.log("Fields to modify: ", fieldsToModify)
+        for (let field of Object.keys(fieldsToModify)) {
+            user[field] = fieldsToModify[field];
+        }
+        console.log("user: ", user)
+        userRef.set(user, { merge: true })
+            .then((data) => {
+                const response = {
+                    message: `User with id ${id} edited`,
+                    statusCode: 200
+                };
+                res.status(response.statusCode).send(response);
+            })
+            .catch((e) => { console.log(e) });
+        const response = {
+            message: `User with id ${id} edited`,
+            statusCode: 200
+        };
+        res.status(response.statusCode).send(response);
     }
 });
 
