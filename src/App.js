@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -22,7 +22,8 @@ import { auth, signOutWithGoogle } from './service/firebase';
 import Loader from "react-loader-spinner";
 import { signOut } from '@firebase/auth';
 import SearchPage from './pages/Restaurants/Search';
-
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+import { Web } from '@mui/icons-material';
 
 function UserPrivateRoute({ component, isLoggedIn, isSetup, userType, ...rest }) {
   return (
@@ -137,19 +138,18 @@ function RestaurantSetupRoute({ component, isLoggedIn, isSetup, ...rest }) {
   )
 }
 
-
-
 class App extends React.Component {
 
   constructor() {
-    super()
+    super();
     this.state = {
       userType: null,
       loggedIn: false,
       signOutClicked: false,
       loggingIn: false,
       user: null,
-      restaurants: []
+      restaurants: [],
+      ws: null
     }
   }
 
@@ -174,7 +174,69 @@ class App extends React.Component {
       });
   }
 
+  //connect function
+  socketConnect = () => {
+    let ws = new WebSocket("ws://localhost:8080");
+    let that = this; // cache the current properties
+    let connectInterval;
+
+    // websocket onopen event listener
+    ws.onopen = () => {
+      console.log("Websocket connection established");
+
+      //set state of the websocket
+      this.setState({ ws: ws });
+
+      that.timeout = 250; // reset timer to 250 on open of websocket connection 
+      clearTimeout(connectInterval); // clear Interval on onopen of websocket connection
+    };
+
+    //on receiving a message
+    ws.onmessage = async (evt) => {
+      evt.data.text().then(
+        (msg) => {
+          console.log({ "incoming message": msg });
+        });
+    }
+
+    // websocket onclose event listener
+    ws.onclose = e => {
+      console.log(
+        `Socket is closed. Reconnect will be attempted in ${Math.min(
+          10000 / 1000,
+          (that.timeout + that.timeout) / 1000
+        )} second.`,
+        e.reason
+      );
+
+      that.timeout = that.timeout + that.timeout; //increment retry interval
+      connectInterval = setTimeout(this.check, Math.min(10000, that.timeout)); //call check function after timeout
+    };
+
+    // websocket onerror event listener
+    ws.onerror = err => {
+      console.error(
+        "Socket encountered error: ",
+        err.message,
+        "Closing socket"
+      );
+
+      ws.close();
+    };
+  };
+
+  //check if the websocket conenction is closed or has not been setup
+  check = () => {
+    const { ws } = this.state;
+    if (!ws || ws.readyState == WebSocket.CLOSED) this.socketConnect(); //check if websocket instance is closed, if so call `connect` function.
+  };
+
+  componentWillUnmount() {
+    this.ws.close();
+    this.setState({ ws: null });
+  }
   async componentDidMount() {
+    this.socketConnect();
     this.getRestaurants();
 
     //track auth
@@ -236,9 +298,16 @@ class App extends React.Component {
     })
   }
 
+  broadcastMessageUser = () => {
+    this.state.ws.send(JSON.stringify({
+      "message": "hello"
+    }));
+  }
+
   changeUserData = (changes) => {
     let changedUser = Object.assign({}, this.state.user, changes);
     this.setState({ user: changedUser });
+    this.broadcastMessageUser();
   }
 
   changeRestaurantData = (id, changes) => {

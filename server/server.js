@@ -1,7 +1,22 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 5001; //use port 5000
+const port = process.env.PORT || 5001; //use port 5001
 const cors = require('cors');
+const WebSocket = require('ws');
+
+const wss = new WebSocket.Server({ port: 8080 });
+
+wss.on('connection', function connection(ws) {
+  ws.on('message', function incoming(data) {
+    console.log('data', data);
+    console.log(wss.clients.size);
+    wss.clients.forEach(function each(client) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(data);
+      }
+    });
+  });
+});
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./queuecla-firebase-adminsdk-dcsra-ae14b81ebf.json');
