@@ -59,7 +59,7 @@ class UserName extends React.Component {
             })
         }
     }
-    
+
     render() {
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
@@ -84,9 +84,9 @@ class UserName extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Name"
-                                    onChange={(e) => { 
-                                        this.setState({ 
-                                            nameFieldValue: e.target.value 
+                                    onChange={(e) => {
+                                        this.setState({
+                                            nameFieldValue: e.target.value
                                         }, () => {
                                             this.checkNameValidity(e.target.value)
                                         })
@@ -182,8 +182,8 @@ class Identification extends React.Component {
                                     size="small"
                                     label="UID"
                                     onChange={(e) => {
-                                        this.setState({ 
-                                            nameFieldValue: e.target.value 
+                                        this.setState({
+                                            nameFieldValue: e.target.value
                                         }, () => {
                                             this.checkUIDValidity(e.target.value)
                                         });
@@ -274,16 +274,16 @@ class Favorites extends React.Component {
                         <Stack direction="row" spacing={1} alignItems="center">
 
 
-                            <Grid container spacing={1} alignItems="stretch" style={{width: "100%"}}>
+                            <Grid container spacing={1} alignItems="stretch" style={{ width: "100%" }}>
                                 {this.props.user.favorites.map((id) => (
                                     <Grid item key={id} xs={12} sm={6} md={4}>
 
                                         <CardRender id={id} restaurants={this.props.restaurants} />
-                                        
+
 
                                     </Grid>
                                 ))}
-                                
+
                             </Grid>
 
 
@@ -298,8 +298,6 @@ class Favorites extends React.Component {
 function UserDisplay(props) {
 
     const classes = useStyles();
-
-    let editName = false;
 
     return (
         <div class={classes.mainPage}>
