@@ -6,6 +6,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
 import { Link } from 'react-router-dom';
 import validator from 'validator';
+import { signOutWithGoogle } from '../../../service/firebase'
+// import { response } from 'express';
 
 
 class UserName extends React.Component {
@@ -317,6 +319,7 @@ class Favorites extends React.Component {
 class DeleteButton extends React.Component {
     constructor(props) {
         super(props);
+        this.handleDelete = this.handleDelete.bind(this)
         this.state = {
             isDialogBoxVisible: false
         }
@@ -326,6 +329,11 @@ class DeleteButton extends React.Component {
         this.setState({
             isDialogBoxVisible: boolean_value
         })
+    }
+
+    handleDelete() {
+        deleteUser(this.props.user.id)
+            .then(console.log('deleted from database'));
     }
 
     render() {
@@ -357,7 +365,7 @@ class DeleteButton extends React.Component {
                           <Button variant="contained" onClick={() => {this.setDialogBoxVisibility(false)}}>
                             Cancel
                           </Button>
-                          <Button variant="contained" style={{ backgroundColor: "darkRed" }}>
+                          <Button variant="contained" style={{ backgroundColor: "darkRed" }} onClick={this.handleDelete}>
                             Delete
                           </Button>
                         </DialogActions>
@@ -384,7 +392,7 @@ function UserDisplay(props) {
                             <Identification user={props.user} classes={classes} changeUserData={props.changeUserData} />
                             <Email user={props.user} classes={classes} />
                             <Favorites user={props.user} restaurants={props.restaurants} classes={classes} />
-                            <DeleteButton />
+                            <DeleteButton user={props.user} />
                         </Stack>
                     </Paper>
                 </Stack>
@@ -393,12 +401,28 @@ function UserDisplay(props) {
     )
 }
 
+async function deleteUser(id) {
+    const body = {
+        id: id
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    };
+    await fetch('http://localhost:5001/user/delete', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Printing data after deletion: ", data)
+        })
+    signOutWithGoogle()
+}
+
 async function editUser(id, editProps) {
     const body = {
         data: editProps,
         id: id
     }
-    console.log("Printing body: ", body)
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

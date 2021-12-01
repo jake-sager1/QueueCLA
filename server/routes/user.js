@@ -144,4 +144,25 @@ router.route("/get").post(async (req, res, next) => {
     }
 });
 
+router.route('/delete').post(async(req, res, next) => {
+    console.log('entered /delete request')
+    const body = req.body
+    const id = body.id
+    //check if id in user database
+    let userRef = db.collection("users").doc(id);
+    let userDoc = await userRef.get();
+    // delete if user exists
+    if (userDoc.exists) {
+        await db.collection("users").doc(id).delete()
+        const response = {
+            message: `User with id ${id} deleted`,
+            statusCode: 200
+        }
+        res.status(response.statusCode).send(response)
+    } else {
+        // check for restaurant
+        console.log("check for restaurant")
+    }
+})
+
 module.exports = router;
