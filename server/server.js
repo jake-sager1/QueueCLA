@@ -1,7 +1,22 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 5001; //use port 5000
+const port = process.env.PORT || 5001; //use port 5001
 const cors = require('cors');
+const WebSocket = require('ws');
+
+const wss = new WebSocket.Server({ port: 8080 });
+
+wss.on('connection', function connection(ws) {
+  ws.on('message', async (data) => {
+    console.log(JSON.parse(data));
+    console.log({ numClients: wss.clients.size });
+    wss.clients.forEach(function each(client) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(data);
+      }
+    });
+  });
+});
 
 const admin = require('firebase-admin');
 const serviceAccount = require('./queuecla-firebase-adminsdk-dcsra-ae14b81ebf.json');
@@ -13,7 +28,7 @@ admin.initializeApp({
 module.exports = { admin: admin };
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
-const allowedOrigins = ["http://localhost:3000", "http://localhost:8080"];
+const allowedOrigins = ["http://localhost:3000", "http://localhost:3001", "http://localhost:8080"];
 app.use(
   cors({
     origin: function (origin, callback) {
