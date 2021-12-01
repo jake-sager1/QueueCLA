@@ -166,10 +166,10 @@ class App extends React.Component {
     fetch("http://localhost:5001/restaurant/all", requestOptions)
       .then(response => response.json())
       .then(data => {
-        let listOfRestaurants = data.data;
-        if (listOfRestaurants.length !== this.state.restaurants.length)
+        let restaurantObj = data.data;
+        if (Object.keys(restaurantObj).length !== Object.keys(this.state.restaurants).length)
           this.setState({
-            restaurants: listOfRestaurants
+            restaurants: restaurantObj
           })
       });
   }
@@ -241,10 +241,10 @@ class App extends React.Component {
     this.setState({ user: changedUser });
   }
 
-  changeRestaurantData = (index, changes) => {
-    let changedRestaurant = Object.assign({}, this.state.restaurants[index], changes);
+  changeRestaurantData = (id, changes) => {
+    let changedRestaurant = Object.assign({}, this.state.restaurants[id], changes);
     let oldRestaurants = this.state.restaurants;
-    oldRestaurants[index] = changedRestaurant;
+    oldRestaurants[id] = changedRestaurant;
     this.setState({
       restaurants: oldRestaurants
     });
