@@ -210,30 +210,30 @@ class App extends React.Component {
             }
           });
       }, 2000);
-      let waitlist = this.state.user.waitlist;
-      setTimeout(() => {
-        for (let i = 0; i < waitlist.length; i++) {
-          body.id = waitlist[i].id;
-          requestOptions.body = JSON.stringify(body);
-          fetch('http://localhost:5001/user/get', requestOptions)
-            .then(response => response.json())
-            .then(data => {
-              if (data.statusCode === 200) {
-                let uid = data.data.user.uid;
-                let id = data.data.user.id;
-                let name = data.data.user.name;
-                waitlist[i].id = id;
-                waitlist[i].uid = uid;
-                waitlist[i].name = name;
-                let oldUser = this.state.user;
-                oldUser.waitlist = waitlist;
-                this.setState({
-                  user: oldUser
-                });
-              }
-            })
-        }
-      }, 2000);
+      // let waitlist = this.state.user.waitlist;
+      // setTimeout(() => {
+      //   for (let i = 0; i < waitlist.length; i++) {
+      //     body.id = waitlist[i].id;
+      //     requestOptions.body = JSON.stringify(body);
+      //     fetch('http://localhost:5001/user/get', requestOptions)
+      //       .then(response => response.json())
+      //       .then(data => {
+      //         if (data.statusCode === 200) {
+      //           let uid = data.data.user.uid;
+      //           let id = data.data.user.id;
+      //           let name = data.data.user.name;
+      //           waitlist[i].id = id;
+      //           waitlist[i].uid = uid;
+      //           waitlist[i].name = name;
+      //           let oldUser = this.state.user;
+      //           oldUser.waitlist = waitlist;
+      //           this.setState({
+      //             user: oldUser
+      //           });
+      //         }
+      //       })
+      //   }
+      // }, 2000);
     }
   }
 
@@ -260,8 +260,10 @@ class App extends React.Component {
         (msg) => {
           let data = JSON.parse(msg);
           console.log(data);
-          this.getUserAgain(this.state.userType);
-          this.getRestaurants();
+          setTimeout(() => {
+            this.getUserAgain(this.state.userType);
+            this.getRestaurants();
+          }, 1000);
         });
     }
 
