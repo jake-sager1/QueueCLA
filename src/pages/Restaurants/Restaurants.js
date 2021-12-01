@@ -7,6 +7,7 @@ import { Redirect } from 'react-router';
 import Stack from '@mui/material/Stack';
 import { Typography, Box, AppBar, Button, Card, CardActions, CardContent, CardMedia, CssBaseline, Grid, Toolbar, Container, CardActionArea } from '@mui/material'
 import MenuChip from '../../GlobalComponents/Chips';
+import { ClassNames } from '@emotion/react';
 
 class Restaurants extends React.Component {
 
@@ -42,16 +43,17 @@ class Restaurants extends React.Component {
         return (
             <div style={{
                 backgroundColor: "#3d3d3d",
-                height: "100vh"
+                height: "100vh",
             }}>
 
                 <GlobalHeader restaurants={this.props.restaurants}
                     isLoggedIn={this.props.isLoggedIn} user={this.props.user}
                 />
                 {/* restaurant chips */}
-                <div style={{backgroundColor: "#f7f7f7"}}>
+                <div style={{backgroundColor: "#f7f7f7", paddingTop: "10px", paddingBottom: "20px"}}>
                     <Stack direction="column" style={{padding: "10px"}}>
                         <Container maxWidth="md">
+                            <Stack direction="column" spacing={2}>
                                 <Stack spacing={3} direction="row" alignItems="center" style={{overflow: "scroll"}}>
                                     <Stack spacing={1} alignItems="center" direction="row" justifyContent="flex-start"
                                         style={{overflow: "scroll"}, {padding: "10px"}}>
@@ -63,6 +65,7 @@ class Restaurants extends React.Component {
                                     </Stack>
                                 </Stack>
                                 <MainSection restaurants={this.props.restaurants} searchValue={this.state.searchValue} selectedTags={this.state.selectedChips}/>
+                            </Stack>
                         </Container>
                     </Stack>
                 </div>
