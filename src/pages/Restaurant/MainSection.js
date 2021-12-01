@@ -38,9 +38,29 @@ class FavoriteStar extends React.Component {
         console.log(this.props.user.favorites);
         if (this.state.favorited) {
             this.setState({ favorited: false, });
+            let userFavorites = this.props.user.favorites;
+            userFavorites.find((restID, i) => {
+                if (restID === this.props.id) {
+                    userFavorites.splice(i, 1);
+                }
+            });
+            let changes = {
+                favorites: userFavorites
+            };
+            editUser(this.props.user.id, changes).then(() => {
+                this.props.changeUserData(changes);
+            });
         }
         else {
             this.setState({ favorited: true });
+            let userFavorites = this.props.user.favorites;
+            userFavorites.push(this.props.id);
+            let changes = {
+                favorites: userFavorites
+            };
+            editUser(this.props.user.id, changes).then(() => {
+                this.props.changeUserData(changes);
+            });
         }
     }
 
@@ -83,7 +103,7 @@ function MainSection(props) {
                                     <Typography>
                                         {props.restaurant.description}
                                     </Typography>
-                                    <FavoriteStar id={props.id} user={props.user} />
+                                    <FavoriteStar id={props.id} user={props.user} changeUserData={props.changeUserData} />
                                 </Stack>
 
                                 <HoursSection restaurant={props.restaurant} />
@@ -118,5 +138,19 @@ function MainSection(props) {
     );
 }
 
+async function editUser(id, editProps) {
+    const body = {
+        data: editProps,
+        id: id
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    };
+    fetch('http://localhost:5001/user/edit', requestOptions)
+        .then(response => response.json())
+        .then(data => { console.log(data) });
+}
 
 export default MainSection;

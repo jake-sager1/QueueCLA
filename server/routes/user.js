@@ -66,7 +66,7 @@ router.route("/edit").post(async (req, res, next) => {
     let userRef = db.collection("users").doc(id);
     let userDoc = await userRef.get();
 
-    console.log(req.body);
+    //console.log(req.body);
 
     if (!userDoc.exists) {
         console.log("No such user");
@@ -75,8 +75,7 @@ router.route("/edit").post(async (req, res, next) => {
             statusCode: 404
         };
         res.status(response.statusCode).send(response);
-    }
-    else {
+    } else {
         // if there exists a user with the same uid, don't merge:
         let found_user_with_uid = false
         const user_with_same_uid = await db.collection("users").where("uid", "==", body.data.uid).get()
