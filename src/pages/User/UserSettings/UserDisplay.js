@@ -1,4 +1,4 @@
-import { Typography, Box, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem, Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
+import { Typography, Box, Container, Stack, Paper, Button, IconButton, TextField, Grid, Select, MenuItem, Card, CardActionArea, CardMedia, CardContent, Alert } from '@mui/material';
 import React from 'react';
 import useStyles from '../user-styles';
 import EditIcon from '@mui/icons-material/Edit';
@@ -114,6 +114,7 @@ class Identification extends React.Component {
             editable: false,
             nameFieldValue: props.user.uid,
             isUIDValid: true,
+            duplicate_UID_entered: false,
         }
     }
 
@@ -139,10 +140,21 @@ class Identification extends React.Component {
     handleSave() {
         let change = { "uid": this.state.nameFieldValue };
         editUser(this.props.user.id, change)
-            .then(() => {
-                this.toggleEdit();
-                this.props.changeUserData(change);
+            .then((statusCode) => {
+                if (statusCode !== 409) {
+                    this.triggerDuplicateUID(false)
+                    this.toggleEdit();
+                    this.props.changeUserData(change);
+                } else {
+                    this.triggerDuplicateUID(true)
+                }
             });
+    }
+
+    triggerDuplicateUID(boolean_value) {
+        this.setState({
+            duplicate_UID_entered: boolean_value
+        })
     }
 
     checkUIDValidity(uid) {
@@ -164,6 +176,11 @@ class Identification extends React.Component {
                     <Typography variant="h5" style={{ fontWeight: "bold" }}>
                         UID:
                     </Typography>
+                    {
+                        this.state.duplicate_UID_entered ? (
+                            <Alert severity="error">That UID belongs to another student. Please enter your UID.</Alert>
+                        ) : (<span></span>)
+                    }
                     <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         {!this.state.editable &&
                             <Stack direction="row" spacing={1} alignItems="center">
@@ -324,14 +341,19 @@ async function editUser(id, editProps) {
         data: editProps,
         id: id
     }
+    console.log("Printing body: ", body)
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
     };
-    fetch('http://localhost:5001/user/edit', requestOptions)
+    let statusCodeReceived = await fetch('http://localhost:5001/user/edit', requestOptions)
         .then(response => response.json())
-        .then(data => { console.log(data) });
+        .then(data => {  
+            return data.statusCode
+        });
+
+    return statusCodeReceived
 }
 
 export default UserDisplay;
