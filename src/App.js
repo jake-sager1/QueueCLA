@@ -167,11 +167,51 @@ class App extends React.Component {
       .then(response => response.json())
       .then(data => {
         let restaurantObj = data.data;
-        if (Object.keys(restaurantObj).length !== Object.keys(this.state.restaurants).length)
-          this.setState({
-            restaurants: restaurantObj
-          })
+        this.setState({
+          restaurants: restaurantObj
+        })
       });
+  }
+
+  getUserAgain = async (userType) => {
+    if (this.state.user === null) return;
+    let body = {
+      id: this.state.user.id
+    };
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    };
+    if (userType === "student") {
+      setTimeout(() => {
+        fetch('http://localhost:5001/user/get', requestOptions)
+          .then(response => response.json())
+          .then(data => {
+            if (data.statusCode === 200) {
+              let userState = data.data.user;
+              this.setState({
+                user: userState,
+              });
+            }
+          });
+      }, 2000);
+    }
+    else if (userType === "restaurant") {
+      setTimeout(() => {
+        fetch('http://localhost:5001/restaurant/get', requestOptions)
+          .then(response => response.json())
+          .then(data => {
+            if (data.statusCode === 200) {
+              let userState = data.data.restaurant;
+              this.setState({
+                user: userState,
+              });
+            }
+          });
+      }, 2000);
+
+    }
   }
 
   //connect function
@@ -195,7 +235,10 @@ class App extends React.Component {
     ws.onmessage = async (evt) => {
       evt.data.text().then(
         (msg) => {
-          console.log({ "incoming message": JSON.parse(msg) });
+          let data = JSON.parse(msg);
+          console.log(data);
+          this.getUserAgain(this.state.userType);
+          this.getRestaurants();
         });
     }
 
@@ -321,6 +364,7 @@ class App extends React.Component {
     this.setState({
       restaurants: oldRestaurants
     });
+    this.broadcastMessage(this.state.userType, this.state.user.id, changes);
   }
 
   users = {

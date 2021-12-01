@@ -28,7 +28,7 @@ admin.initializeApp({
 module.exports = { admin: admin };
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
-const allowedOrigins = ["http://localhost:3000", "http://localhost:8080"];
+const allowedOrigins = ["http://localhost:3000", "http://localhost:3001", "http://localhost:8080"];
 app.use(
   cors({
     origin: function (origin, callback) {
