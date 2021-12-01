@@ -4,6 +4,7 @@ import useStyles from '../restaurant-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
 import validator from 'validator';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 
 class ImageUpload extends React.Component {
     constructor(props) {
@@ -12,19 +13,95 @@ class ImageUpload extends React.Component {
         image: props.default,
         width: props.width,
         height: props.height,
-        type: props.type
+        type: props.type,
+        percentUploaded: 0,
+        showPercentage: false,
       };
       this.onImageChange = this.onImageChange.bind(this);
     }
   
-    onImageChange = event => {
+    onImageChange(event) {
       if (event.target.files && event.target.files[0]) {
         let img = event.target.files[0];
-        this.setState({
-          image: URL.createObjectURL(img)
-        });
+        this.handleSave(event, img);
+        this.setState({showPercentage: true});
       }
     };
+
+    handleProfileImageFirebaseUpload(event, img) {
+        const storage = getStorage();
+        event.preventDefault();
+        if(img === '') {
+            alert("File was not an image. Please upload a .png or .jpg image.");
+        }
+        const storageRef = ref(storage, '/profile-images/' + this.props.restaurant.id + '/' + img.name);
+        const uploadTask = uploadBytesResumable(storageRef, img);
+
+        uploadTask.on('state_changed',
+        (snapshot) => {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const percentUploaded = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          this.setState({percentUploaded: percentUploaded});
+
+        }, (error) => {
+            console.log(error);
+        }, () => {
+            console.log("uploaded file");
+            this.setState({showPercentage: false});
+            getDownloadURL(storageRef)
+            .then(firebaseURL => {
+                let change = { "profileImage": firebaseURL };
+                editUser(this.props.restaurant.id, change)
+                .then(() => {
+                    this.props.changeUserData(change);
+                });
+                this.setState({image: firebaseURL});
+            }); 
+        
+        });
+    }
+
+    handleBannerImageFirebaseUpload(event, img) {
+        const storage = getStorage();
+        event.preventDefault();
+        if(img === '') {
+            alert("File was not an image. Please upload a .png or .jpg image.");
+        }
+        const storageRef = ref(storage, '/banner-images/' + this.props.restaurant.id + '/' + img.name);
+        const uploadTask = uploadBytesResumable(storageRef, img);
+
+        uploadTask.on('state_changed',
+        (snapshot) => {
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const percentUploaded = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          this.setState({percentUploaded: percentUploaded});
+
+        }, (error) => {
+            console.log(error);
+        }, () => {
+            console.log("uploaded file");
+            this.setState({showPercentage: false});
+            getDownloadURL(storageRef)
+            .then(firebaseURL => {
+                let change = { "bannerImage": firebaseURL };
+                editUser(this.props.restaurant.id, change)
+                .then(() => {
+                    this.props.changeUserData(change);
+                });
+                this.setState({image: firebaseURL});
+            }); 
+        
+        });
+        
+    }
+
+    handleSave(event, img) {
+        if (this.state.type === "Profile"){
+            this.handleProfileImageFirebaseUpload(event, img);
+        } else {
+            this.handleBannerImageFirebaseUpload(event, img);
+        }
+    }
   
     render() {
       return (
@@ -35,14 +112,18 @@ class ImageUpload extends React.Component {
                 </Typography>
                 <div>
                     <div>
-                        <img width={this.state.width} height={this.state.height} src={this.state.image}
-                                style={this.props.type == "Profile" ? {borderRadius: "100%"} : {}}/>
+                        {this.state.type === "Profile" && 
+                            <img width={this.state.width} height={this.state.height} src={this.state.image} 
+                                style={{borderRadius: "100%"}}/>}
+                        {this.state.type === "Banner" && 
+                            <img width={this.state.width} height={this.state.height} src={this.state.image}/>}
                         <div>
                                 <Button variant="contained" style={{marginTop: "10px"}}><label for={this.state.type} style={{cursor: "pointer"}}>Upload Image</label></Button>
                                 <input type="file" style={{display: "none"}} id={this.state.type} name="myImage" onChange={this.onImageChange} accept=".png,.jpg"/>
                         </div>
                     </div>
                 </div>
+                <Typography style={this.state.showPercentage ? {display: "block"} : {display: "none"}}>{this.state.percentUploaded.toFixed(2)}% uploaded</Typography>
             </Stack>
         </Paper>
       );
@@ -906,11 +987,11 @@ function SettingsDisplay(props) {
                             <RestaurantWaitTime restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                             <RestaurantTags restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                             <RestaurantMenu restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
-                            <ImageUpload user={props.user} classes={classes} changeUserData={props.changeUserData} 
-                                default="https://www.topshelfrecruitment.com.au/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBaXdRIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--5298fb4188cd114508cc4f93dc8ba3555164f8a9/old-banner-default.jpg" 
+                            <ImageUpload restaurant={props.restaurant} user={props.user} classes={classes} changeUserData={props.changeUserData} 
+                                default={props.restaurant.bannerImage} 
                                 width="700px" height="180px" type="Banner"/>
-                            <ImageUpload user={props.user} classes={classes} changeUserData={props.changeUserData} 
-                                default="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+                            <ImageUpload restaurant={props.restaurant} user={props.user} classes={classes} changeUserData={props.changeUserData} 
+                                default={props.restaurant.profileImage} 
                                 width="100px" height="100px" type="Profile"/>
                         </Stack>
                     </Paper>
