@@ -68,13 +68,13 @@ function JoinLineSection(props) {
 
             <Stack direction="column" spacing={2}>
                 <Typography variant="h4">
-                    {(!props.user.inLine || (props.user.inLine && props.user.restaurantID.id !== props.restaurant.id)) &&
+                    {((!props.user.inLine && !props.user.isSeated && !props.user.isRemoved)  || (props.user.inLine && props.user.restaurantID.id !== props.restaurant.id)) &&
                         "Join the Line"
                     }
-                    {props.user.inLine && props.user.restaurantID.id === props.restaurant.id &&
+                    {props.user.inLine && !props.user.isSeated && !props.user.isRemoved && props.user.restaurantID.id === props.restaurant.id &&
                         "You're in line!"
                     }
-                    {(props.user.inLine && props.user.isSeated ) ? (
+                    {(props.user.inLine && props.user.isSeated && !props.user.isRemoved) ? (
                         <Stack direction="row" justifyContent="space-between">
                             You've been seated!
                             <Button variant="contained" style={{ backgroundColor: "darkRed"}}>
