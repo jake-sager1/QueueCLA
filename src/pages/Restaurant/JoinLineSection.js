@@ -23,7 +23,9 @@ function JoinLineSection(props) {
                 id: props.restaurant.id,
                 name: props.restaurant.name
             },
-            inLine: true
+            inLine: true,
+            isSeated: false,
+            isRemoved: false
         };
 
         let restaurantWaitlist = props.restaurant.waitlist;
@@ -67,14 +69,71 @@ function JoinLineSection(props) {
         return (
 
             <Stack direction="column" spacing={2}>
-                <Typography variant="h4">
-                    {(!props.user.inLine || (props.user.inLine && props.user.restaurantID.id !== props.restaurant.id)) &&
-                        "Join the Line"
-                    }
-                    {props.user.inLine && props.user.restaurantID.id === props.restaurant.id &&
-                        "You're in line!"
-                    }
-                </Typography>
+                {((!props.user.inLine && !props.user.isSeated && !props.user.isRemoved) || (props.user.inLine && props.user.restaurantID.id !== props.restaurant.id)) &&
+                     <Typography variant="h4">
+                        Join the Line
+                    </Typography>
+                }
+                {props.user.inLine && !props.user.isSeated && !props.user.isRemoved && props.user.restaurantID.id === props.restaurant.id &&
+                    <Typography variant="h4">
+                        {currentSpotInLine >= 3 && "You're in line!"}
+                        {currentSpotInLine < 3 && "Visit the restaurant now!"}
+                    </Typography>
+                }
+                {(props.user.inLine && props.user.isSeated && !props.user.isRemoved) &&
+                    <Stack direction="column" spacing={2}>
+                        <Stack direction="row" justifyContent="space-between">
+                            <Typography variant="h4">
+                                You've been seated!
+                            </Typography>
+                            <Button variant="contained" style={{ backgroundColor: "darkRed" }}
+                                onClick={() => {
+                                    let userChange = {
+                                        restaurantID: {},
+                                        inLine: false,
+                                        isSeated: false,
+                                        isRemoved: false
+                                    };
+                                    editUser(props.user.id, userChange).then(() => {
+                                        props.changeUserData(userChange);
+                                    });
+                                }}
+                            >
+                                Dismiss
+                            </Button>
+                        </Stack>
+                        <Typography>
+                            Check in with the host to be seated.
+                        </Typography>
+                    </Stack>
+                }
+                {props.user.isRemoved &&
+                    <Stack direction="column" spacing={2}>
+                        <Stack direction="row" justifyContent="space-between">
+                            <Typography variant="h4">
+                                You've been removed from the line.
+                            </Typography>
+                            <Button variant="contained" style={{ backgroundColor: "darkRed" }}
+                                onClick={() => {
+                                    let userChange = {
+                                        restaurantID: {},
+                                        inLine: false,
+                                        isSeated: false,
+                                        isRemoved: false
+                                    };
+                                    editUser(props.user.id, userChange).then(() => {
+                                        props.changeUserData(userChange);
+                                    });
+                                }}>
+                                Dismiss
+                            </Button>
+                        </Stack>
+                        <Typography>
+                            Your spot was taken. Rejoin the line.
+                        </Typography>
+                    </Stack>
+                }
+                
                 {!(props.user.inLine && props.user.restaurantID.id === props.restaurant.id) &&
                     <Stack direction="column" spacing={2}>
                         <Typography>
@@ -114,7 +173,7 @@ function JoinLineSection(props) {
                         </Dialog>
                     </Stack>
                 }
-                {props.user.inLine && props.user.restaurantID.id == props.restaurant.id &&
+                {props.user.inLine && props.user.restaurantID.id == props.restaurant.id && !props.user.isSeated && !props.user.isRemoved &&
                     <Stack direction="column" spacing={2}>
                         <Typography>
                             {"You are number "}
@@ -129,6 +188,17 @@ function JoinLineSection(props) {
                                 {props.restaurant.avgTimePerCustomer * currentSpotInLine} minutes
                             </Box>
                         </Typography>
+                        {currentSpotInLine >= 3 &&
+                            <Typography>
+                                {"Be sure to visit the restaurant before you reach the front of the line, or the restaurant\
+                                might remove you from their waitlist."}
+                            </Typography>
+                        }
+                        {currentSpotInLine < 3 &&
+                            <Typography>
+                                {"Check in with the host now to preserve your spot in line."}
+                            </Typography>
+                        }
                         <Button variant="contained" style={{ backgroundColor: "darkRed" }} onClick={
                             () => {
                                 //change the user

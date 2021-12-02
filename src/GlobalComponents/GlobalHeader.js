@@ -130,6 +130,9 @@ function Ribbon(props) {
   let spotInLine;
   let desiredRestaurant;
   let desiredRestaurantKey;
+  let line_statement = false;
+  let seated_statement = false;
+  let removed_statement = false;
 
   if (props.user.inLine) {
     //get restaurant
@@ -143,19 +146,42 @@ function Ribbon(props) {
     console.log({ desiredRestaurant: desiredRestaurant });
     console.log(props.restaurants);
     console.log(props);
-    for (let i = 0; i < desiredRestaurant.waitlist.length; i++) {
-      if (desiredRestaurant.waitlist[i].uid === props.user.uid) {
-        spotInLine = i + 1;
-      }
+    if (!props.user.isSeated && !props.user.isRemoved) {
+        for (let i = 0; i < desiredRestaurant.waitlist.length; i++) {
+            if (desiredRestaurant.waitlist[i].uid === props.user.uid) {
+                spotInLine = i + 1;
+                line_statement = true;
+            }
+        }
+    } else if(props.user.isSeated) {
+        seated_statement = true;
+    } else if (props.user.isRemoved) {
+      removed_statement = true;
     }
-  }
+  } 
 
   return (
     <div style={{ backgroundColor: "#2774AE", display: "flex", alignItems: "center", color: "white", padding: "5px" }} elevation={1}>
       <Container>
         <Stack direction="column" alignItems="center">
-          <Typography>You are currently #{spotInLine} in line at&nbsp;
-            <Link style={{ color: "white" }} to={"/restaurants/" + desiredRestaurantKey}>{desiredRestaurant.name}</Link>.</Typography>
+        {
+            line_statement && 
+            <Typography>You are currently #{spotInLine} in line at&nbsp;
+                <Link style={{ color: "white" }} to={"/restaurants/" + desiredRestaurantKey}>{desiredRestaurant.name}</Link>.
+            </Typography>
+        }
+        {
+            seated_statement &&
+            <Typography>You have been seated at&nbsp;
+                <Link style={{ color: "white" }} to={"/restaurants/" + desiredRestaurantKey}>{desiredRestaurant.name}</Link>.
+            </Typography>
+        }
+        {
+            removed_statement &&
+            <Typography>You have been removed from the line at&nbsp;
+            <Link style={{ color: "white" }} to={"/restaurants/" + desiredRestaurantKey}>{desiredRestaurant.name}</Link>.
+            </Typography>
+        }
         </Stack>
       </Container>
     </div>
