@@ -83,6 +83,14 @@ function JoinLineSection(props) {
                         </Stack>
                     ) : (<span></span>)
                     }
+                    {props.user.isRemoved ? (
+                        <Stack direction="row" justifyContent="space-between">
+                            You've been removed from line.
+                            <Button variant="contained" style={{ backgroundColor: "darkRed"}}>
+                                Dismiss
+                            </Button>
+                        </Stack>
+                    ) : (<span></span>)}
                 </Typography>
                 {!(props.user.inLine && props.user.restaurantID.id === props.restaurant.id) &&
                     <Stack direction="column" spacing={2}>
