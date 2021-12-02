@@ -1,4 +1,4 @@
-const { RestaurantTwoTone } = require("@mui/icons-material");
+const { RestaurantTwoTone, FamilyRestroomRounded } = require("@mui/icons-material");
 const { responsiveFontSizes } = require("@mui/material");
 const express = require("express");
 let router = express.Router();
@@ -134,6 +134,57 @@ router.route("/get").post(async (req, res, next) => {
         res.status(response.statusCode).send(response);
     }
 });
+
+router.route("/delete").post(async (req, res, next) => {
+    const body = req.body
+    const id = body.id
+
+    let restaurantRef = db.collection("restaurants").doc(id);
+    let restaurantDoc = await restaurantRef.get();
+
+    // check if restaurant exists
+    if (restaurantDoc.exists) {
+
+        // remove this restaurant from every user's favorites
+        let userSnapshot = await db.collection("users").get();
+        userSnapshot.forEach(async (user) => {
+            let userData = user.data();
+            let userID = userData.id;
+            await db.collection("users").doc(userID).update({
+                "favorites": user.data().favorites.filter(item => item !== id)
+            });
+        });
+
+        //set restaurantID to false and set inLine to false for each user in the waitlist
+        let restaurantData = restaurantDoc.data();
+        console.log(restaurantData);
+        for (let userObj of restaurantData.waitlist) {
+            console.log({ "yeet": userObj });
+            let userID = userObj.id;
+            await db.collection("users").doc(userID).update({
+                restaurantID: {},
+                inLine: false,
+                isSeated: false,
+                isRemoved: false
+            })
+        }
+
+        // delete this restaurant
+        await db.collection("restaurants").doc(id).delete()
+        const response = {
+            message: `Restaurant with id ${id} deleted`,
+            statusCode: 200
+        }
+        res.status(response.statusCode).send(response)
+    } else {
+        const response = {
+            message: `Restaurant with id ${id} does not exist`,
+            statusCode: 404
+        }
+        res.status(response.statusCode).send(response)
+    }
+
+})
 
 router.route("/all").get(async (req, res, next) => {
     //get all the restaurants in the database

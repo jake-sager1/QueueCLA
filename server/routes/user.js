@@ -140,4 +140,39 @@ router.route("/get").post(async (req, res, next) => {
     }
 });
 
+router.route('/delete').post(async(req, res, next) => {
+    console.log('entered /delete request')
+    const body = req.body
+    const id = body.id
+    //check if id in user database
+    let userRef = db.collection("users").doc(id);
+    let userDoc = await userRef.get();
+    // check if user exists
+    if (userDoc.exists) {
+        // remove user if they're in any waitlist
+        restaurantID = userDoc.data().restaurantID.id
+        if (restaurantID) {
+            // find restaurant with id restaurantID and remove user with 'id' from that restaurant's waitlist
+            let restaurantRef = await db.collection("restaurants").doc(restaurantID)
+            let restaurantDoc = await restaurantRef.get()
+
+            await db.collection("restaurants").doc(restaurantID).update({
+                "waitlist": restaurantDoc.data().waitlist.filter(item => item.id !== id)
+            })
+        }
+        await db.collection("users").doc(id).delete()
+        const response = {
+            message: `User with id ${id} deleted`,
+            statusCode: 200
+        }
+        res.status(response.statusCode).send(response)
+    } else {
+        const response = {
+            message: `User with id ${id} not found`,
+            statusCode: 404
+        }
+        res.status(response.statusCode).send(response)
+    }
+})
+
 module.exports = router;
