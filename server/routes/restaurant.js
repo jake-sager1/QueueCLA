@@ -144,6 +144,17 @@ router.route("/delete").post(async (req, res, next) => {
 
     // check if restaurant exists
     if (restaurantDoc.exists) {
+        
+        // remove this restaurant from every user's favorites
+        let userSnapshot = await db.collection("users").get()
+        userSnapshot.forEach(async (user) => {
+            userID = user.data().id
+            await db.collection("users").doc(userID).update({
+                "favorites": user.data().favorites.filter(item => item !== id)
+            })
+        })
+
+        // delete this restaurant
         await db.collection("restaurants").doc(id).delete()
         const response = {
             message: `Restaurant with id ${id} deleted`,
