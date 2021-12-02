@@ -146,19 +146,19 @@ function Ribbon(props) {
     console.log({ desiredRestaurant: desiredRestaurant });
     console.log(props.restaurants);
     console.log(props);
-    if (!props.user.isSeated) {
+    if (!props.user.isSeated && !props.user.isRemoved) {
         for (let i = 0; i < desiredRestaurant.waitlist.length; i++) {
             if (desiredRestaurant.waitlist[i].uid === props.user.uid) {
                 spotInLine = i + 1;
                 line_statement = true;
             }
         }
-    } else {
+    } else if(props.user.isSeated) {
         seated_statement = true;
+    } else if (props.user.isRemoved) {
+      removed_statement = true;
     }
-  } else if (props.user.isRemoved) {
-    removed_statement = true;
-  }
+  } 
 
   return (
     <div style={{ backgroundColor: "#2774AE", display: "flex", alignItems: "center", color: "white", padding: "5px" }} elevation={1}>
@@ -178,7 +178,9 @@ function Ribbon(props) {
         }
         {
             removed_statement &&
-            <Typography>You have been removed from line</Typography>
+            <Typography>You have been removed from the line at&nbsp;
+            <Link style={{ color: "white" }} to={"/restaurants/" + desiredRestaurantKey}>{desiredRestaurant.name}</Link>.
+            </Typography>
         }
         </Stack>
       </Container>

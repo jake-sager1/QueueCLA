@@ -120,8 +120,7 @@ function LineStatus(props) {
                                                 <Button variant="contained" style={{ backgroundColor: "darkRed" }} onClick={() => {
                                                     let customerID = user.id;
                                                     let customerChange = {
-                                                        inLine: false,
-                                                        restaurantID: {},
+                                                        inLine: true,
                                                         isSeated: false,
                                                         isRemoved: true
                                                     };
