@@ -5,72 +5,72 @@ import useStyles from '../restaurant-styles';
 import EditIcon from '@mui/icons-material/Edit';
 import MenuChip from '../../../GlobalComponents/Chips';
 import validator from 'validator';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject} from 'firebase/storage';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { signOutWithGoogle } from '../../../service/firebase'
 
 class ImageUpload extends React.Component {
     constructor(props) {
-      super(props);
-      this.state = {
-        image: props.default,
-        width: props.width,
-        height: props.height,
-        type: props.type,
-        percentUploaded: 0,
-        showPercentage: false,
-      };
-      this.onImageChange = this.onImageChange.bind(this);
+        super(props);
+        this.state = {
+            image: props.default,
+            width: props.width,
+            height: props.height,
+            type: props.type,
+            percentUploaded: 0,
+            showPercentage: false,
+        };
+        this.onImageChange = this.onImageChange.bind(this);
     }
-  
+
     onImageChange(event) {
-      if (event.target.files && event.target.files[0]) {
-        let img = event.target.files[0];
-        this.handleSave(event, img);
-        this.setState({showPercentage: true});
-      }
+        if (event.target.files && event.target.files[0]) {
+            let img = event.target.files[0];
+            this.handleSave(event, img);
+            this.setState({ showPercentage: true });
+        }
     };
 
     handleProfileImageFirebaseUpload(event, img) {
         const storage = getStorage();
         const oldURL = this.state.image;
         event.preventDefault();
-        if(img === '') {
+        if (img === '') {
             alert("File was not an image. Please upload a .png or .jpg image.");
         }
         const storageRef = ref(storage, '/profile-images/' + this.props.restaurant.id + '/' + img.name);
         const uploadTask = uploadBytesResumable(storageRef, img);
 
         uploadTask.on('state_changed',
-        (snapshot) => {
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          const percentUploaded = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.setState({percentUploaded: percentUploaded});
+            (snapshot) => {
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                const percentUploaded = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                this.setState({ percentUploaded: percentUploaded });
 
-        }, (error) => {
-            console.log(error);
-        }, () => {
-            console.log("uploaded file");
-            this.setState({showPercentage: false});
-            getDownloadURL(storageRef)
-            .then(firebaseURL => {
-                let change = { "profileImage": firebaseURL };
-                editUser(this.props.restaurant.id, change)
-                .then(() => {
-                    this.props.changeUserData(change);
-                });
-                this.setState({image: firebaseURL});
-            }); 
-        
-        });
+            }, (error) => {
+                console.log(error);
+            }, () => {
+                console.log("uploaded file");
+                this.setState({ showPercentage: false });
+                getDownloadURL(storageRef)
+                    .then(firebaseURL => {
+                        let change = { "profileImage": firebaseURL };
+                        editUser(this.props.restaurant.id, change)
+                            .then(() => {
+                                this.props.changeUserData(change);
+                            });
+                        this.setState({ image: firebaseURL });
+                    });
+
+            });
 
         const refToDelete = ref(storage, oldURL)
         deleteObject(refToDelete).then(() => {
             // File deleted successfully
             console.log("deleted old image");
-          }).catch((error) => {
-              console.log("error with deleting old image");
+        }).catch((error) => {
+            console.log("error with deleting old image");
             // Uh-oh, an error occurred!
-          });
+        });
 
 
     }
@@ -79,80 +79,80 @@ class ImageUpload extends React.Component {
         const storage = getStorage();
         const oldURL = this.state.image;
         event.preventDefault();
-        if(img === '') {
+        if (img === '') {
             alert("File was not an image. Please upload a .png or .jpg image.");
         }
         const storageRef = ref(storage, '/banner-images/' + this.props.restaurant.id + '/' + img.name);
         const uploadTask = uploadBytesResumable(storageRef, img);
 
         uploadTask.on('state_changed',
-        (snapshot) => {
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          const percentUploaded = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.setState({percentUploaded: percentUploaded});
+            (snapshot) => {
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                const percentUploaded = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                this.setState({ percentUploaded: percentUploaded });
 
-        }, (error) => {
-            console.log(error);
-        }, () => {
-            console.log("uploaded file");
-            this.setState({showPercentage: false});
-            getDownloadURL(storageRef)
-            .then(firebaseURL => {
-                let change = { "bannerImage": firebaseURL };
-                editUser(this.props.restaurant.id, change)
-                .then(() => {
-                    this.props.changeUserData(change);
-                });
-                this.setState({image: firebaseURL});
-            }); 
-        
-        });
+            }, (error) => {
+                console.log(error);
+            }, () => {
+                console.log("uploaded file");
+                this.setState({ showPercentage: false });
+                getDownloadURL(storageRef)
+                    .then(firebaseURL => {
+                        let change = { "bannerImage": firebaseURL };
+                        editUser(this.props.restaurant.id, change)
+                            .then(() => {
+                                this.props.changeUserData(change);
+                            });
+                        this.setState({ image: firebaseURL });
+                    });
+
+            });
 
         const refToDelete = ref(storage, oldURL);
         deleteObject(refToDelete).then(() => {
             // File deleted successfully
             console.log("deleted old image");
-          }).catch((error) => {
-              console.log("error with deleting old image");
+        }).catch((error) => {
+            console.log("error with deleting old image");
             // Uh-oh, an error occurred!
-          });
-        
+        });
+
     }
 
     handleSave(event, img) {
-        if (this.state.type === "Profile"){
+        if (this.state.type === "Profile") {
             this.handleProfileImageFirebaseUpload(event, img);
         } else {
             this.handleBannerImageFirebaseUpload(event, img);
         }
     }
-  
+
     render() {
-      return (
-        <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
-            <Stack direction="column" spacing={1}>
-                <Typography variant="h5" style={{ fontWeight: "bold" }}>
-                    Select a {this.state.type} Photo:
-                </Typography>
-                <div>
+        return (
+            <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
+                <Stack direction="column" spacing={1}>
+                    <Typography variant="h5" style={{ fontWeight: "bold" }}>
+                        Select a {this.state.type} Photo:
+                    </Typography>
                     <div>
-                        {this.state.type === "Profile" && 
-                            <img width={this.state.width} height={this.state.height} src={this.state.image} 
-                                style={{borderRadius: "100%"}}/>}
-                        {this.state.type === "Banner" && 
-                            <img width={this.state.width} height={this.state.height} src={this.state.image}/>}
                         <div>
-                                <Button variant="contained" style={{marginTop: "10px"}}><label for={this.state.type} style={{cursor: "pointer"}}>Upload Image</label></Button>
-                                <input type="file" style={{display: "none"}} id={this.state.type} name="myImage" onChange={this.onImageChange} accept=".png,.jpg"/>
+                            {this.state.type === "Profile" &&
+                                <img width={this.state.width} height={this.state.height} src={this.state.image}
+                                    style={{ borderRadius: "100%" }} />}
+                            {this.state.type === "Banner" &&
+                                <img width={this.state.width} height={this.state.height} src={this.state.image} />}
+                            <div>
+                                <Button variant="contained" style={{ marginTop: "10px" }}><label for={this.state.type} style={{ cursor: "pointer" }}>Upload Image</label></Button>
+                                <input type="file" style={{ display: "none" }} id={this.state.type} name="myImage" onChange={this.onImageChange} accept=".png,.jpg" />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <Typography style={this.state.showPercentage ? {display: "block"} : {display: "none"}}>{this.state.percentUploaded.toFixed(2)}% uploaded</Typography>
-            </Stack>
-        </Paper>
-      );
+                    <Typography style={this.state.showPercentage ? { display: "block" } : { display: "none" }}>{this.state.percentUploaded.toFixed(2)}% uploaded</Typography>
+                </Stack>
+            </Paper>
+        );
     }
-  }
+}
 
 class RestaurantName extends React.Component {
 
@@ -229,9 +229,9 @@ class RestaurantName extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Name"
-                                    onChange={(e) => { 
-                                        this.setState({ 
-                                            nameFieldValue: e.target.value, 
+                                    onChange={(e) => {
+                                        this.setState({
+                                            nameFieldValue: e.target.value,
                                         }, () => {
                                             this.checkNameValidity(e.target.value)
                                         })
@@ -327,12 +327,12 @@ class RestaurantDescription extends React.Component {
                                     size="small"
                                     label="Description"
                                     style={{ width: "400px", }}
-                                    onChange={(e) => { 
-                                        this.setState({ 
-                                            descriptionFieldValue: e.target.value, 
+                                    onChange={(e) => {
+                                        this.setState({
+                                            descriptionFieldValue: e.target.value,
                                         }, () => {
                                             this.checkDescriptionValidity(e.target.value)
-                                        }) 
+                                        })
                                     }}
                                     error={!this.state.isDescriptionValid}
                                     helperText={this.state.isDescriptionValid ? "" : "Enter a valid description with at least 10 characters."}
@@ -450,12 +450,12 @@ class RestaurantPhone extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Phone Number"
-                                    onChange={(e) => { 
+                                    onChange={(e) => {
                                         this.setState({
-                                            phoneValue: e.target.value, 
+                                            phoneValue: e.target.value,
                                         }, () => {
                                             this.checkPhoneValidity(e.target.value)
-                                        }) 
+                                        })
                                     }}
                                     error={!this.state.isPhoneValid}
                                     helperText={this.state.isPhoneValid ? "" : "Enter a valid 10 digit phone number."}
@@ -549,12 +549,12 @@ class RestaurantWebsite extends React.Component {
                                     variant="outlined"
                                     size="small"
                                     label="Website URL"
-                                    onChange={(e) => { 
-                                        this.setState({ 
-                                            websiteValue: e.target.value, 
+                                    onChange={(e) => {
+                                        this.setState({
+                                            websiteValue: e.target.value,
                                         }, () => {
                                             this.checkWebsiteValidity(e.target.value)
-                                        }) 
+                                        })
                                     }}
                                     error={!this.state.isWebsiteValid}
                                     helperText={this.state.isWebsiteValid ? "" : "Enter a valid website URL."}
@@ -734,17 +734,17 @@ class RestaurantHours extends React.Component {
         super(props);
     }
 
-    
+
 
     render() {
         const daysOfWeek = ["Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday"];
-        
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"];
+
         return (
             <Paper className={this.props.classes.lineEntry} style={{ backgroundColor: "#eee" }}>
                 <Stack direction="column" spacing={1}>
@@ -997,7 +997,7 @@ class DeleteButton extends React.Component {
             isDialogBoxVisible: false
         }
     }
-    
+
     setDialogBoxVisibility(boolean_value) {
         this.setState({
             isDialogBoxVisible: boolean_value
@@ -1006,15 +1006,18 @@ class DeleteButton extends React.Component {
 
     handleDelete() {
         deleteUser(this.props.restaurant.id)
-            .then(console.log('deleted from database'));
+            .then(() => {
+                console.log('deleted from database');
+                this.props.changeUserData(this.props.restaurant.id, {});
+            });
     }
 
     render() {
         console.log(this.state)
         return (
             <Box textAlign="center">
-                <Button 
-                    variant="contained" 
+                <Button
+                    variant="contained"
                     style={{ backgroundColor: "darkRed", width: "175px" }}
                     onClick={() => {
                         this.setDialogBoxVisibility(true)
@@ -1022,27 +1025,27 @@ class DeleteButton extends React.Component {
                 >
                     Delete Account
                 </Button>
-                { 
+                {
                     this.state.isDialogBoxVisible ? (
-                      <Dialog open={true} maxWidth="sm" fullWidth>
-                        <DialogTitle>Do you want to delete your account?</DialogTitle>
-                        <Box position="absolute" top={0} right={0}>
-                          <IconButton>
-                            <Close onClick={() => {this.setDialogBoxVisibility(false)}}/>
-                          </IconButton>
-                        </Box>
-                        <DialogContent>
-                          <Typography>This action cannot be undone.</Typography>
-                        </DialogContent>
-                        <DialogActions>
-                          <Button variant="contained" onClick={() => {this.setDialogBoxVisibility(false)}}>
-                            Cancel
-                          </Button>
-                          <Button variant="contained" style={{ backgroundColor: "darkRed" }} onClick={this.handleDelete}>
-                            Delete
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
+                        <Dialog open={true} maxWidth="sm" fullWidth>
+                            <DialogTitle>Do you want to delete your account?</DialogTitle>
+                            <Box position="absolute" top={0} right={0}>
+                                <IconButton>
+                                    <Close onClick={() => { this.setDialogBoxVisibility(false) }} />
+                                </IconButton>
+                            </Box>
+                            <DialogContent>
+                                <Typography>This action cannot be undone.</Typography>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button variant="contained" onClick={() => { this.setDialogBoxVisibility(false) }}>
+                                    Cancel
+                                </Button>
+                                <Button variant="contained" style={{ backgroundColor: "darkRed" }} onClick={this.handleDelete}>
+                                    Delete
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
                     ) : (<span></span>)
                 }
             </Box>
@@ -1072,13 +1075,13 @@ function SettingsDisplay(props) {
                             <RestaurantWaitTime restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                             <RestaurantTags restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
                             <RestaurantMenu restaurant={props.restaurant} classes={classes} changeUserData={props.changeUserData} />
-                            <ImageUpload restaurant={props.restaurant} user={props.user} classes={classes} changeUserData={props.changeUserData} 
-                                default={props.restaurant.bannerImage} 
-                                width="700px" height="180px" type="Banner"/>
-                            <ImageUpload restaurant={props.restaurant} user={props.user} classes={classes} changeUserData={props.changeUserData} 
-                                default={props.restaurant.profileImage} 
-                                width="100px" height="100px" type="Profile"/>
-                            <DeleteButton restaurant={props.restaurant} />
+                            <ImageUpload restaurant={props.restaurant} user={props.user} classes={classes} changeUserData={props.changeUserData}
+                                default={props.restaurant.bannerImage}
+                                width="700px" height="180px" type="Banner" />
+                            <ImageUpload restaurant={props.restaurant} user={props.user} classes={classes} changeUserData={props.changeUserData}
+                                default={props.restaurant.profileImage}
+                                width="100px" height="100px" type="Profile" />
+                            <DeleteButton restaurant={props.restaurant} changeUserData={props.changeUserData} />
                         </Stack>
                     </Paper>
                 </Stack>
