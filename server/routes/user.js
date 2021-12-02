@@ -151,8 +151,12 @@ router.route('/delete').post(async(req, res, next) => {
     //check if id in user database
     let userRef = db.collection("users").doc(id);
     let userDoc = await userRef.get();
-    // delete if user exists
+    console.log("Printing userDoc: ", userDoc)
+    // check if user exists
     if (userDoc.exists) {
+        // remove user if they're in any waitlist
+        //restaurantID = await userDoc.
+
         await db.collection("users").doc(id).delete()
         const response = {
             message: `User with id ${id} deleted`,
