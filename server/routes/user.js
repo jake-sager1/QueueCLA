@@ -109,11 +109,6 @@ router.route("/edit").post(async (req, res, next) => {
                 res.status(response.statusCode).send(response);
             })
             .catch((e) => { console.log(e) });
-        const response = {
-            message: `User with id ${id} edited`,
-            statusCode: 200
-        };
-        res.status(response.statusCode).send(response);
     }
 });
 
