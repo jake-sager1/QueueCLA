@@ -138,6 +138,10 @@ class Identification extends React.Component {
     }
 
     handleSave() {
+        if (this.state.nameFieldValue === this.props.user.uid) {
+            this.toggleEdit();
+            return;
+        }
         let change = { "uid": this.state.nameFieldValue };
         editUser(this.props.user.id, change)
             .then((statusCode) => {
@@ -260,7 +264,7 @@ function CardRender(props) {
                 </CardContent>
                 <CardActions>
                     <Stack className={classes.chips} direction="row" spacing={1}
-                            style={{overflow: "scroll",}}>
+                        style={{ overflow: "scroll", }}>
                         {props.restaurants[props.id].chips.map((name) =>
                             <MenuChip name={name}
                                 onClick={null}
@@ -291,10 +295,10 @@ class Favorites extends React.Component {
                     <Stack direction="row" spacing={1} alignItems="center" style={{ marginLeft: "10px" }}>
                         <Stack direction="row" spacing={1} alignItems="center">
 
-                            <Box sx={{flexGrow: 1}}>
+                            <Box sx={{ flexGrow: 1 }}>
                                 <Grid container spacing={2} alignItems="stretch">
                                     {this.props.user.favorites.map((id) => (
-                                        <Grid item key={id} xs={12} sm={6} md={4} style={{minWidth: "250px"}}>
+                                        <Grid item key={id} xs={12} sm={6} md={4} style={{ minWidth: "250px" }}>
 
                                             <CardRender id={id} restaurants={this.props.restaurants} />
 
@@ -350,7 +354,7 @@ async function editUser(id, editProps) {
     };
     let statusCodeReceived = await fetch('http://localhost:5001/user/edit', requestOptions)
         .then(response => response.json())
-        .then(data => {  
+        .then(data => {
             return data.statusCode
         });
 
