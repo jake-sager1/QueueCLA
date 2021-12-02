@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react';
 import './index.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Home from './pages/Home/Home';
@@ -19,9 +18,8 @@ import RestaurantManagement from './pages/RestaurantManagement/RestaurantManagem
 import RestaurantSettings from './pages/RestaurantManagement/RestaurantSettings/RestaurantSettings';
 import UserSettings from './pages/User/UserSettings/UserSettings.js'
 import { Redirect } from 'react-router';
-import { auth, signOutWithGoogle } from './service/firebase';
+import { auth } from './service/firebase';
 import Loader from "react-loader-spinner";
-import { signOut } from '@firebase/auth';
 import SearchPage from './pages/Restaurants/Search';
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { Web } from '@mui/icons-material';
@@ -393,186 +391,6 @@ class App extends React.Component {
     this.broadcastMessage(this.state.userType, this.state.user.id, changes);
   }
 
-  users = {
-    "901329021": {
-      name: "Jakub Hojsan",
-      email: "jakubhojsan@g.ucla.edu",
-      year: "2024",
-      inLine: true,
-      restaurantID: 1,
-      uid: "901329021",
-      favorites: [1, 2],
-      id: "abcdef"
-    },
-    "205488283": {
-      name: "Jake Sager",
-      email: "jakesager@g.ucla.edu",
-      year: "2024",
-      inLine: true,
-      restaurantID: 1,
-      uid: "205488283",
-      favorites: [1],
-      id: "abcdef"
-    },
-    "305531276": {
-      name: "Avii Ahuja",
-      email: "avii.ahuja@gmail.com",
-      year: "2024",
-      inLine: true,
-      restaurantID: 1,
-      uid: "305531276",
-      favorites: [1, 2],
-      id: "aGakoB5JznQl3AvqWpB0fU56hdu2"
-    }
-  }
-
-  restaurants = {
-    1: {
-      name: "Bruin Plate",
-      chips: ["vegetarian", "gluten-free"],
-      description: "A fun new restaurant for the fittest of Bruins!",
-      hours: {
-        "Monday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Tuesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Wednesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Thursday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Friday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Saturday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Sunday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-      },
-      waitEnabled: true,
-      avgTimePerCustomer: 3,
-      phone: "(760) 123-4567",
-      profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-      bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
-      id: 1,
-      waitlist: ["205488283", "901329021"],
-      email: "bplate@dining.ucla.edu",
-      url: "http://bplate.com",
-      menu: "Taquitos\nA great dish for friends and family!\n\nNachos\nBest for the doggies.",
-    },
-    2: {
-      name: "De Neve",
-      chips: ["vegetarian", "vegan"],
-      description: "A restaurant that prides itself on being mediocre.",
-      hours: {
-        "Monday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Tuesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Wednesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Thursday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Friday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Saturday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Sunday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-      },
-      waitEnabled: false,
-      avgTimePerCustomer: 3,
-      phone: "(760) 123-4123",
-      profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-      bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
-      id: 2,
-      waitlist: [],
-      email: "deneve@dining.ucla.edu",
-      url: "http://deneve.com",
-      menu: "Taquitos\nA great dish for friends and family!\n\nNachos\nBest for the doggies.",
-    },
-    3: {
-      name: "Rendezvous West",
-      chips: ["takeout", "fast-food"],
-      description: "We have really good burritos. We don't give enough guac.",
-      hours: {
-        "Monday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Tuesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Wednesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Thursday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Friday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Saturday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Sunday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-      },
-      waitEnabled: true,
-      avgTimePerCustomer: 3,
-      phone: "(760) 123-4567",
-      profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-      bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
-      id: 3,
-      waitlist: [],
-      email: "rendewest@dining.ucla.edu",
-      url: "http://rendewest.com",
-      menu: "Taquitos\nA great dish for friends and family!\n\nNachos\nBest for the doggies.",
-    },
-    4: {
-      name: "Bruin Plate",
-      chips: ["vegetarian", "gluten-free"],
-      description: "A fun new restaurant for the fittest of Bruins!",
-      hours: {
-        "Monday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Tuesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Wednesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Thursday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Friday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Saturday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Sunday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-      },
-      waitEnabled: true,
-      avgTimePerCustomer: 3,
-      phone: "(760) 123-4567",
-      profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-      bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
-      id: 4,
-      waitlist: [],
-      email: "bplateagain@dining.ucla.edu",
-      url: "http://anotherrestaurant.com",
-      menu: "Taquitos\nA great dish for friends and family!\n\nNachos\nBest for the doggies.",
-    },
-    5: {
-      name: "Bruin Plate",
-      chips: ["vegetarian", "gluten-free"],
-      description: "A fun new restaurant for the fittest of Bruins!",
-      hours: {
-        "Monday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Tuesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Wednesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Thursday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Friday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Saturday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Sunday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-      },
-      waitEnabled: true,
-      avgTimePerCustomer: 3,
-      phone: "(760) 123-4567",
-      profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-      bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
-      id: 5,
-      waitlist: [],
-      email: "morebplate@dining.ucla.edu",
-      url: "http://yeehaw.com",
-      menu: "Taquitos\nA great dish for friends and family!\n\nNachos\nBest for the doggies.",
-    },
-    6: {
-      name: "Bruin Plate",
-      chips: ["vegetarian", "gluten-free"],
-      description: "A fun new restaurant for the fittest of Bruins!",
-      hours: {
-        "Monday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Tuesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Wednesday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Thursday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Friday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Saturday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-        "Sunday": { open: "9:00", openHalf: "am", close: "6:00", closeHalf: "pm", },
-      },
-      waitEnabled: true,
-      avgTimePerCustomer: 3,
-      phone: "(760) 123-4567",
-      profileImage: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-      bannerImage: "https://s3.amazonaws.com/cms.ipressroom.com/173/files/20208/5f735e982cfac252edce64a4_Royce+Hall/Royce+Hall_hero.jpg",
-      id: 6,
-      waitlist: [],
-      email: "againbplate@dining.ucla.edu",
-      url: "http://uhhuh.com",
-      menu: "Taquitos\nA great dish for friends and family!\n\nNachos\nBest for the doggies.",
-    },
-  }
-
   render() {
     console.log(this.state);
     if (this.state.user === null && (this.state.loggingIn || !this.state.signOutClicked)) return (
@@ -600,7 +418,6 @@ class App extends React.Component {
               component={<Home isLoggedIn={this.state.loggedIn} user={this.state.user} restaurants={this.state.restaurants}
                 loggingInToggle={this.loggingInToggle}
               />} />
-            <Route path="/card"><CardPage /></Route>
             <PublicRoute path="/signup"
               isLoggedIn={this.state.loggedIn}
               isSetup={this.state.user ? this.state.user.setup : false}
@@ -615,6 +432,7 @@ class App extends React.Component {
               component={<RestaurantSignup restaurant={this.state.user} changeUserData={this.changeUserData} />} />
             <Route path="/restaurants/:id" render={(props) => <Restaurant {...props}
               isLoggedIn={this.state.loggedIn}
+              isSetup={this.state.user ? this.state.user.setup : false}
               restaurants={this.state.restaurants}
               changeUserData={this.changeUserData}
               changeRestaurantData={this.changeRestaurantData}

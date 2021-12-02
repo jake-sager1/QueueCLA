@@ -16,24 +16,28 @@ class Restaurant extends React.Component {
 
         return (
             this.props.isLoggedIn ? (
-                this.props.restaurants[this.props.match.params.id] ? (
-                    <div style={{
-                        backgroundColor: "#3d3d3d",
-                        height: "100vh"
-                    }}>
-                        <GlobalHeader restaurants={this.props.restaurants}
-                            isLoggedIn={this.props.isLoggedIn} user={this.props.user} />
-                        <BannerSection restaurant={this.props.restaurants[this.props.match.params.id]} />
-                        <MainSection restaurant={this.props.restaurants[this.props.match.params.id]} id={this.props.match.params.id}
-                            restaurants={this.props.restaurants} user={this.props.user}
-                            changeUserData={this.props.changeUserData}
-                            changeRestaurantData={this.props.changeRestaurantData}
-                            index={this.props.match.params.id}
-                        />
-                        <Footer />
-                    </div>
+                this.props.isSetup ? (
+                    this.props.restaurants[this.props.match.params.id] ? (
+                        <div style={{
+                            backgroundColor: "#3d3d3d",
+                            height: "100vh"
+                        }}>
+                            <GlobalHeader restaurants={this.props.restaurants}
+                                isLoggedIn={this.props.isLoggedIn} user={this.props.user} />
+                            <BannerSection restaurant={this.props.restaurants[this.props.match.params.id]} />
+                            <MainSection restaurant={this.props.restaurants[this.props.match.params.id]} id={this.props.match.params.id}
+                                restaurants={this.props.restaurants} user={this.props.user}
+                                changeUserData={this.props.changeUserData}
+                                changeRestaurantData={this.props.changeRestaurantData}
+                                index={this.props.match.params.id}
+                            />
+                            <Footer />
+                        </div>
+                    ) : (
+                        <Redirect to="/404" />
+                    )
                 ) : (
-                    <Redirect to="/404" />
+                    <Redirect exact to="/user/create"/>
                 )
             ) : (
                 <Redirect exact to="/"></Redirect>

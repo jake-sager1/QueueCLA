@@ -19,7 +19,7 @@ function MainSection() {
                         </Grid>
                         <Grid item xs={12} md={5} >
                             <Card className={classes.card}>
-                                <CardMedia className={classes.cardMedia} image="https://source.unsplash.com/random" title="Image Title"></CardMedia>
+                                <CardMedia className={classes.cardMedia} image="https://wp.dailybruin.com/images/2016/10/web.ns_.bcafdrinks.LU_.jpg" title="Image Title"></CardMedia>
                                 <CardContent className={classes.cardContent}>
                                     <Typography gutterBottom variant="h5">
                                         Bruin Café
@@ -29,9 +29,9 @@ function MainSection() {
                                     </Typography>
                                 </CardContent>
                                 <CardActions style={{padding: "15px"}}>
-                                    <Link style={{textDecoration: 'none'}} to={{pathname: "/card", state: {card: {text: "This is a card!", image: "https://source.unsplash.com/random"}, hasValue: true}}}>
-                                        <Button size="small" variant="contained" color="primary" className={classes.cardButtons}>Explore</Button>
-                                    </Link>
+                                
+                                    <Button size="small" variant="contained" color="primary" className={classes.cardButtons}>Explore</Button>
+                                   
                                 </CardActions>
                             </Card>
                         </Grid>

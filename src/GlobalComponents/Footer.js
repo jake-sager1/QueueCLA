@@ -19,8 +19,8 @@ function Footer() {
                             <Link to="/manage" style={{color: "white", textDecoration: "none"}}>
                                 <Typography>Manage Your Restaurant</Typography>
                             </Link>
-                            <Link to="/manage" style={{color: "white", textDecoration: "none"}}>
-                                <Typography>Become a Partner</Typography>
+                            <Link to="/" style={{color: "white", textDecoration: "none"}}>
+                                <Typography>Customer Homepage</Typography>
                             </Link>
                         </Stack>
                     </Grid>

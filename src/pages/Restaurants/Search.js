@@ -16,6 +16,9 @@ class SearchPage extends React.Component {
         if (!this.props.isLoggedIn) {
             return <Redirect exact to="/"></Redirect>;
         }
+        if(!this.props.isSetup) {
+            return <Redirect exact to="/user/create"/>
+        }
         if(this.props.match.params.query === null) {
             return <Redirect exact to="/restaurants"></Redirect>
         }
