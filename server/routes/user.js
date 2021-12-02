@@ -38,6 +38,8 @@ router.route("/create").post(async (req, res, next) => {
             uid: "",
             restaurantID: {},
             id: id,
+            isSeated: false,
+            isRemoved: false
         };
         //create the user
         await userRef.set(userData);
