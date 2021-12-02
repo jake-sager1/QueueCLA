@@ -1,4 +1,4 @@
-const { RestaurantTwoTone } = require("@mui/icons-material");
+const { RestaurantTwoTone, FamilyRestroomRounded } = require("@mui/icons-material");
 const { responsiveFontSizes } = require("@mui/material");
 const express = require("express");
 let router = express.Router();
@@ -144,15 +144,30 @@ router.route("/delete").post(async (req, res, next) => {
 
     // check if restaurant exists
     if (restaurantDoc.exists) {
-        
+
         // remove this restaurant from every user's favorites
-        let userSnapshot = await db.collection("users").get()
+        let userSnapshot = await db.collection("users").get();
         userSnapshot.forEach(async (user) => {
-            userID = user.data().id
+            let userData = user.data();
+            let userID = userData.id;
             await db.collection("users").doc(userID).update({
                 "favorites": user.data().favorites.filter(item => item !== id)
+            });
+        });
+
+        //set restaurantID to false and set inLine to false for each user in the waitlist
+        let restaurantData = restaurantDoc.data();
+        console.log(restaurantData);
+        for (let userObj of restaurantData.waitlist) {
+            console.log({ "yeet": userObj });
+            let userID = userObj.id;
+            await db.collection("users").doc(userID).update({
+                restaurantID: {},
+                inLine: false,
+                isSeated: false,
+                isRemoved: false
             })
-        })
+        }
 
         // delete this restaurant
         await db.collection("restaurants").doc(id).delete()
