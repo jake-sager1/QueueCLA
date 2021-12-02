@@ -149,15 +149,15 @@ router.route('/delete').post(async(req, res, next) => {
     if (userDoc.exists) {
         // remove user if they're in any waitlist
         restaurantID = userDoc.data().restaurantID.id
+        if (restaurantID) {
+            // find restaurant with id restaurantID and remove user with 'id' from that restaurant's waitlist
+            let restaurantRef = await db.collection("restaurants").doc(restaurantID)
+            let restaurantDoc = await restaurantRef.get()
 
-        // find restaurant with id restaurantID and remove user with 'id' from that restaurant's waitlist
-        let restaurantRef = await db.collection("restaurants").doc(restaurantID)
-        let restaurantDoc = await restaurantRef.get()
-
-        await db.collection("restaurants").doc(restaurantID).update({
-            "waitlist": restaurantDoc.data().waitlist.filter(item => item.id !== id)
-        })
-
+            await db.collection("restaurants").doc(restaurantID).update({
+                "waitlist": restaurantDoc.data().waitlist.filter(item => item.id !== id)
+            })
+        }
         await db.collection("users").doc(id).delete()
         const response = {
             message: `User with id ${id} deleted`,
