@@ -23,7 +23,9 @@ function JoinLineSection(props) {
                 id: props.restaurant.id,
                 name: props.restaurant.name
             },
-            inLine: true
+            inLine: true,
+            isSeated: false,
+            isRemoved: false
         };
 
         let restaurantWaitlist = props.restaurant.waitlist;
@@ -68,7 +70,7 @@ function JoinLineSection(props) {
 
             <Stack direction="column" spacing={2}>
                 <Typography variant="h4">
-                    {((!props.user.inLine && !props.user.isSeated && !props.user.isRemoved)  || (props.user.inLine && props.user.restaurantID.id !== props.restaurant.id)) &&
+                    {((!props.user.inLine && !props.user.isSeated && !props.user.isRemoved) || (props.user.inLine && props.user.restaurantID.id !== props.restaurant.id)) &&
                         "Join the Line"
                     }
                     {props.user.inLine && !props.user.isSeated && !props.user.isRemoved && props.user.restaurantID.id === props.restaurant.id &&
@@ -77,7 +79,19 @@ function JoinLineSection(props) {
                     {(props.user.inLine && props.user.isSeated && !props.user.isRemoved) ? (
                         <Stack direction="row" justifyContent="space-between">
                             You've been seated!
-                            <Button variant="contained" style={{ backgroundColor: "darkRed"}}>
+                            <Button variant="contained" style={{ backgroundColor: "darkRed" }}
+                                onClick={() => {
+                                    let userChange = {
+                                        restaurantID: {},
+                                        inLine: false,
+                                        isSeated: false,
+                                        isRemoved: false
+                                    };
+                                    editUser(props.user.id, userChange).then(() => {
+                                        props.changeUserData(userChange);
+                                    });
+                                }}
+                            >
                                 Dismiss
                             </Button>
                         </Stack>
@@ -85,8 +99,19 @@ function JoinLineSection(props) {
                     }
                     {props.user.isRemoved ? (
                         <Stack direction="row" justifyContent="space-between">
-                            You've been removed from line.
-                            <Button variant="contained" style={{ backgroundColor: "darkRed"}}>
+                            You've been removed from the line.
+                            <Button variant="contained" style={{ backgroundColor: "darkRed" }}
+                                onClick={() => {
+                                    let userChange = {
+                                        restaurantID: {},
+                                        inLine: false,
+                                        isSeated: false,
+                                        isRemoved: false
+                                    };
+                                    editUser(props.user.id, userChange).then(() => {
+                                        props.changeUserData(userChange);
+                                    });
+                                }}>
                                 Dismiss
                             </Button>
                         </Stack>
@@ -131,7 +156,7 @@ function JoinLineSection(props) {
                         </Dialog>
                     </Stack>
                 }
-                {props.user.inLine && props.user.restaurantID.id == props.restaurant.id &&
+                {props.user.inLine && props.user.restaurantID.id == props.restaurant.id && !props.user.isSeated &&
                     <Stack direction="column" spacing={2}>
                         <Typography>
                             {"You are number "}

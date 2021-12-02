@@ -35,6 +35,8 @@ function LineStatus(props) {
                                             let customerID = props.restaurant.waitlist[i].id;
                                             let customerChange = {
                                                 inLine: false,
+                                                isSeated: false,
+                                                isRemoved: false,
                                                 restaurantID: {}
                                             };
                                             //remove that customer was in line
@@ -92,8 +94,9 @@ function LineStatus(props) {
                                                     onClick={() => {
                                                         let customerID = user.id;
                                                         let customerChange = {
-                                                            inLine: false,
-                                                            restaurantID: {}
+                                                            inLine: true,
+                                                            isSeated: true,
+                                                            isRemoved: false
                                                         };
                                                         let restaurantWaitlist = props.restaurant.waitlist;
                                                         let indexToRemove;
@@ -118,7 +121,9 @@ function LineStatus(props) {
                                                     let customerID = user.id;
                                                     let customerChange = {
                                                         inLine: false,
-                                                        restaurantID: {}
+                                                        restaurantID: {},
+                                                        isSeated: false,
+                                                        isRemoved: true
                                                     };
                                                     let restaurantWaitlist = props.restaurant.waitlist;
                                                     let indexToRemove;
